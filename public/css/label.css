@@ -1,0 +1,57 @@
+/*!
+ * Label css
+ */
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+
+#page {
+	height:1054px;
+	width:816px;
+}
+
+
+
+div.packlabel {
+	width:382px;
+	height:382px;
+	margin:0px 5px;
+	display:inline;
+	float:left;
+}
+
+.first-row {
+	height:100px;
+
+}
+.first-row span, .second-row p{
+	display: inline;
+  	width: 50%;
+  	float:left;
+}
+
+span.title p {
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	margin: 5px 0px;
+}
+span.packtype {
+	font-size:85px;
+	text-align: center;
+}
+
+.second-row p{
+	margin: 3px 0;
+    font-size: 12px;
+}
+
+.second-row {
+overflow:auto;
+}
+
