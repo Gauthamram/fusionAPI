@@ -11,9 +11,8 @@ use Carbon\Carbon;
 use App\TicketPrinted;
 use App\TicketRequest;
 use App\TipsTicketPrinted;
-use App\Fusion\UserSetting;
 use Illuminate\Http\Request;
-use App\Helpers\LabelHelper;
+use App\Helpers\TicketHelper;
 use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;
 use App\Fusion\Transformers\TicketTransformer;
@@ -31,14 +30,12 @@ class TicketController extends ApiController
      * @param userSetting              $userSetting              [instance of usersetting]
      * @param ticketPrintedTransformer $ticketPrintedTransformer [instance of ticketprintedtransformer]
      */
-    public function __construct(ticketTransformer $ticketTransformer, userSetting $userSetting, ticketPrintedTransformer $ticketPrintedTransformer)
+    public function __construct(ticketTransformer $ticketTransformer, ticketPrintedTransformer $ticketPrintedTransformer)
     {
-    	$this->userSetting = $userSetting->getuserSetting();
-        $this->admin = $userSetting->isAdmin();
-        $this->warehouse = $userSetting->isWarehouse();
         $this->ticketTransformer = $ticketTransformer;
-        $this->labelHelper = New LabelHelper($userSetting);
+        $this->ticketHelper = New ticketHelper();
         $this->ticketPrintedTransformer = $ticketPrintedTransformer;
+        $this->setUserSetting();
     }
 
     /**
@@ -75,8 +72,8 @@ class TicketController extends ApiController
             $tickets = $ticket->take(10)->get()->toArray();
             // dd(DB::getQueryLog());
     	} else {
-    		$tickets = Cache::remember("'".$this->userSetting['number']."-tickets",Carbon::now()->addMinutes(60),function() {
-    			return Supplier::findOrFail($this->userSetting['number'])->tickets()->OrderBy('createdate','asc')->take(10)->get()->toArray();
+    		$tickets = Cache::remember("'".$this->supplierid."-tickets",Carbon::now()->addMinutes(60),function() {
+    			return Supplier::findOrFail($this->supplierid)->tickets()->OrderBy('createdate','asc')->take(10)->get()->toArray();
     		});	
     	}
         
@@ -186,7 +183,7 @@ class TicketController extends ApiController
     public function tipsticketdata(Request $request, $order_no, $item_number)
     {
         //get label data
-        $data = $this->labelHelper->TipsTicketData($order_no, $item_number);
+        $data = $this->ticketHelper->TipsTicketData($order_no, $item_number);
 
         //tips ticket printed creation
         

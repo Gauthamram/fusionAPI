@@ -27,13 +27,10 @@ class OrderController extends ApiController
 
     public function __construct(orderTransformer $orderTransformer, userSetting $userSetting, orderdetailTransformer $orderdetailTransformer)
     {
-        $this->userSetting = $userSetting->getuserSetting();
         $this->labelHelper = New LabelHelper($userSetting);
-        $this->orderHelper = New OrderHelper($userSetting);
-        $this->admin = $userSetting->isAdmin();
-        $this->warehouse = $userSetting->isWarehouse();
         $this->orderTransformer = $orderTransformer;
-        $this->orderdetailTransformer = $orderdetailTransformer;    
+        $this->orderdetailTransformer = $orderdetailTransformer; 
+        $this->setUserSetting();   
     }
 
     /**
@@ -41,14 +38,14 @@ class OrderController extends ApiController
      */
     public function index($status = '')
     {    
-        $orders = $this->orderHelper->allOrders($status);   
+        $orders = $this->labelHelper->allOrders($status);   
 		$data = $this->orderTransformer->transformCollection($orders);
         return 	$this->respond(['data' => $data]);	 					 			
     }
 
     public function order($order_no)
     {
-        $orders = $this->orderHelper->searchOrders($order_no);
+        $orders = $this->labelHelper->searchOrders($order_no);
         $data = $this->orderTransformer->transformCollection($orders);
         return  $this->respond(['data' => $data]);
     }
@@ -60,9 +57,9 @@ class OrderController extends ApiController
      */
     public function orderdetails($order_no)
     {
-        if($order = $this->orderHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->userSetting['number']) || ($this->admin) || ($this->warehouse)){
-                $orders = $this->orderHelper->OrderDetails($order_no,'orderdetails');
+        if($order = $this->labelHelper->orderCheck($order_no)) {
+            if (($order->supplier == $this->supplierid) || ($this->admin) || ($this->warehouse)){
+                $orders = $this->labelHelper->OrderDetails($order_no,'orderdetails');
                 $data = $this->orderdetailTransformer->transformCollection($orders);
                 return $this->respond(['data' => $data]);
             }  else {
@@ -81,7 +78,7 @@ class OrderController extends ApiController
      */
     public function supplier($supplier, $type = 'Tickets')
     {
-        if (($supplier == $this->userSetting['number']) || ($this->admin) || ($this->warehouse)) {
+        if (($supplier == $this->supplierid) || ($this->admin) || ($this->warehouse)) {
             if($this->labelHelper->supplierCheck($supplier)){
                 $response = $this->labelHelper->OrderSupplier($supplier, $type);
                 return $this->respond(['data' => $response]);
@@ -107,8 +104,8 @@ class OrderController extends ApiController
             $item_number = $request->item_number;
         }
 
-        if($order = $this->orderHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->userSetting['number']) || ($this->admin)){
+        if($order = $this->labelHelper->orderCheck($order_no)) {
+            if (($order->supplier == $this->supplierid) || ($this->admin)){
                 if($this->labelHelper->EDICheck($order_no)){
                     $response = $this->labelHelper->OrderCartonpack($order_no,$item_number,$label);
                     return $this->respond(['data' => $response]);
@@ -137,8 +134,8 @@ class OrderController extends ApiController
             $item_number = $request->item_number;
         }
 
-        if($order = $this->orderHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->userSetting['number']) || ($this->admin)){
+        if($order = $this->labelHelper->orderCheck($order_no)) {
+            if (($order->supplier == $this->supplierid) || ($this->admin)){
                 if($this->labelHelper->EDICheck($order_no)){
                     $response = $this->labelHelper->OrderCartonloose($order_no,$item_number,$label);
                     return $this->respond(['data' => $response]);
@@ -161,8 +158,8 @@ class OrderController extends ApiController
      */
     public function ratiopack($order_no)
     {
-        if($order = $this->orderHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->userSetting['number']) || ($this->admin)){
+        if($order = $this->labelHelper->orderCheck($order_no)) {
+            if (($order->supplier == $this->supplierid) || ($this->admin)){
                 $response = $this->labelHelper->OrderSticky($order_no,'RatioPack');
                 return $this->respond(['data' => $response]);
             }  else {
@@ -180,8 +177,8 @@ class OrderController extends ApiController
      */
     public function looseitem($order_no)
     {
-        if($order = $this->orderHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->userSetting['number']) || ($this->admin)){
+        if($order = $this->labelHelper->orderCheck($order_no)) {
+            if (($order->supplier == $this->supplierid) || ($this->admin)){
                 $response = $this->labelHelper->OrderSticky($order_no,'LooseItem');
                 return $this->respond(['data' => $response]);
             }  else {
@@ -199,8 +196,8 @@ class OrderController extends ApiController
      */
     public function simplepack($order_no)
     {
-        if($order = $this->orderHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->userSetting['number']) || ($this->admin)){
+        if($order = $this->labelHelper->orderCheck($order_no)) {
+            if (($order->supplier == $this->supplierid) || ($this->admin)){
                 $response = $this->labelHelper->OrderSticky($order_no,'SimplePack');
                 return $this->respond(['data' => $response]);
             }  else {
@@ -218,7 +215,7 @@ class OrderController extends ApiController
      */
     public function sticky($order_no)
     {
-        if($order = $this->orderHelper->orderCheck($order_no)) {
+        if($order = $this->labelHelper->orderCheck($order_no)) {
             if (($this->admin) || ($this->warehouse)){
                 $response = $this->labelHelper->OrderSticky($order_no,'sticky');
                 return $this->respond(['data' => $response]);

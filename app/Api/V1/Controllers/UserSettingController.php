@@ -20,9 +20,7 @@ class UserSettingController extends ApiController
     public function __construct()
     {
     	$this->currentuser = JWTAuth::parseToken()->authenticate();
-    	$this->userSetting = $userSetting->getuserSetting();
-        $this->admin = $userSetting->isAdmin();
-        $this->warehouse = $userSetting->isWarehouse();
+    	$this->setUserSetting();
     }
 
     public function index(Request $request,$id='')

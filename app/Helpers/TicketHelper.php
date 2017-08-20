@@ -3,12 +3,10 @@
 namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 use Config;
-use App\Helpers\SqlHelper;
 use Cache;
 use Carbon\Carbon;
-use App\Fusion\UserSetting;
 use Illuminate\Support\Facades\Log;
-use App/TipsTicketPrinted;
+use App\TipsTicketPrinted;
 
 class TicketHelper extends ApiHelper
 {
@@ -17,99 +15,6 @@ class TicketHelper extends ApiHelper
      * @var string
      */
     protected $setting_name = 'ticket%';
-    protected $admin = false;
-    
-    /**
-     * [__construct]
-     */
-    public function __construct(userSetting $userSetting)
-    {
-      $this->admin = $userSetting->isAdmin();
-      $this->warehouse = $userSetting->isWarehouse();
-      $this->sqlHelper = New sqlHelper($userSetting);
-      $this->setting = $this->setSetting($this->setting_name);
-      $this->userSetting = $userSetting->getuserSetting(); 
-    }
-       
-	  /**
-     * [supplier details of the supplier order]
-     * @param [int] $supplier [supplierid]
-     */
-    public function OrderSupplier($supplierid,$type)
-    {
-      $supplier = Cache::remember("'".$this->userSetting['number']."-ordersupplier",Carbon::now()->addMinutes(60),function() use ($type) {
-        $supplier_query = $this->sqlHelper->GetSql('Supplier','',$type);
-        if($this->admin || $this->warehouse){
-          $supplier = DB::select($supplier_query);
-        } else {
-          $supplier = DB::select($supplier_query,[':supplier'=>$this->userSetting['number']]);
-        }
-        return $supplier[0];
-      });
-      return $supplier;
-    }
-
-    /**
-     * [OrderCartonpack details of the order]
-     * @param [int] $order_no [id of the order]
-     */       
-    public function OrderCartonpack($order_no,$item_number,$label)
-    {
-        $cartonpack_query = $this->sqlHelper->GetSql('CartonPack','',$item_number);
-        
-        if(!$item_number){
-          $cartonpacks = DB::select($cartonpack_query,[':order_no'=>$order_no]);    
-        } else {
-          $cartonpacks = DB::select($cartonpack_query,[':order_no'=>$order_no,'item_number'=>$item_number]);
-        }
-        
-        if(!$label){
-           return $cartonpacks; 
-        } else {
-          $cartonpackdetails = array_map([$this,"CartonDetails"], $cartonpacks);
-          $this->setCartonSequence();
-          return $cartonpackdetails;
-        }
-    }
-
-    /**
-     * [OrderCartonLoose details]
-     * @param [int] $order_no [id of the order]
-     */
-    public function OrderCartonLoose($order_no,$item_number,$label)
-    {
-      $cartonloose_query = $this->sqlHelper->GetSql('CartonLoose','',$item_number);
-        
-      if(!$item_number){
-          $cartonloose = DB::select($cartonloose_query,[':order_no'=>$order_no]);    
-        } else {
-          $cartonloose = DB::select($cartonloose_query,[':order_no'=>$order_no,'item_number'=>$item_number]);
-        }
-      
-      if(!$label){
-           return $cartonloose; 
-      } else {
-          $cartonloosedetails = array_map([$this,"CartonDetails"], $cartonloose);
-          $this->setCartonSequence();
-          return $cartonloosedetails;
-      }  
-    }
-
-    /**
-     * [OrderSticky description]
-     * @param [int] $order_no [id of the order]
-     * @param [string] $type     [type of label required "simplepack,looseitems,ratiopack"]
-     */
-    public function OrderSticky($order_no,$type)
-    {
-      $stickies_query = $this->sqlHelper->GetSql($type,'','');
-
-      $stickies = DB::select($stickies_query,[':order_no'=>$order_no]);
-
-      $stickydetails = array_map([$this,"StickyDetails"], $stickies);
-      
-      return $stickydetails;
-    }
 
     /**
      * [OrderTipsTicketData create tips ticket for the order]
@@ -119,7 +24,7 @@ class TicketHelper extends ApiHelper
     public function TipsTicketData($order_no, $item_number)
     {
       //get ticket request 
-      $ticketrequest_query = $this->sqlHelper->GetSql('ticketrequests','','');
+      $ticketrequest_query = $this->sql->GetSql('ticketrequests','','');
       $ticketrequests = DB::select($ticketrequest_query,[':order_no' => $order_no,':item_number' => $item_number]);
 
       
@@ -175,7 +80,7 @@ class TicketHelper extends ApiHelper
     public function TicketRequestCartonLoose($ticket)
     {
       //get item
-      $cartonloose_query = $this->sqlHelper->GetSql('ticketcartonpack','','');
+      $cartonloose_query = $this->sql->GetSql('ticketcartonpack','','');
       $cartonloose = DB::select($cartonloose_query,[':order_no' => $ticket->order_no]);
       
       $cartonloosedetails = array_map([$this,"CartonDetails"], $cartonloose); 
@@ -190,7 +95,7 @@ class TicketHelper extends ApiHelper
     public function TicketRequestCartonPack($ticket)
     {
       //get item
-      $cartonpack_query = $this->sqlHelper->GetSql('ticketcartonpack','','');
+      $cartonpack_query = $this->sql->GetSql('ticketcartonpack','','');
       $cartonpacks = DB::select($cartonpack_query,[':order_no' => $ticket->order_no]);
       
       $cartonpackdetails = array_map([$this,"CartonDetails"], $cartonpacks); 
@@ -205,7 +110,7 @@ class TicketHelper extends ApiHelper
     public function TicketRequestItem($ticket)
     {
       //get item
-      $orderitem_query = $this->sqlHelper->GetSql('ticketitem','','');
+      $orderitem_query = $this->sql->GetSql('ticketitem','','');
       $orderitems = DB::select($orderitem_query,[':order_no' => $ticket->order_no,':item_number' => $ticket->item_number]);
 
       foreach ($orderitems as $orderitem) {
@@ -234,7 +139,7 @@ class TicketHelper extends ApiHelper
       $prev_item = '';
       $i =1;
       //get simple pack items
-      $ordersimplepack_query = $this->sqlHelper->GetSql('ticketsimplepack','','');
+      $ordersimplepack_query = $this->sql->GetSql('ticketsimplepack','','');
       $ordersimplepacks = DB::select($ordersimplepack_query,[':order_no' => $ticket->order_no,':packnumber' => $ticket->itemnumber,':location1' => $ticket->location,':location2' => $ticket->location,':location3' => $ticket->location]);
 
       if ($ticket->sort_order_type == config::get('ticket.sort_type.packandloose')) {
@@ -277,7 +182,7 @@ class TicketHelper extends ApiHelper
       $prev_item = '';
       $i =1;
       //get pack items
-      $orderpack_query = $this->sqlHelper->GetSql('ticketpack','','');
+      $orderpack_query = $this->sql->GetSql('ticketpack','','');
       $orderpacks = DB::select($orderpack_query,[':order_no' => $ticket->order_no,':packnumber' => $ticket->itemnumber,':location1' => $ticket->location,
         ':location2' => $ticket->location,':location3' => $ticket->location]);
 
@@ -316,7 +221,7 @@ class TicketHelper extends ApiHelper
      */
     public function DeleteLooseCarton($ticket)
     {
-        $loosecarton_query = $this->sqlHelper->GetSql('deleteloosecartons','','');
+        $loosecarton_query = $this->sql->GetSql('deleteloosecartons','','');
         return DB::select($cartonloose_query,[':order_no' => $ticket->order_no]);
     } 
 }
