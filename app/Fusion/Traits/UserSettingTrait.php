@@ -1,12 +1,13 @@
 <?php
 namespace App\Fusion\Traits;
-
-trait UserSetting {
+use App\Fusion\userSetting;
+trait UserSettingTrait {
 	/**
-	 * get usersetting from userSetting object
+	 * set usersetting from userSetting object
 	 */
-	public function getUserSetting(){
-		$this->userSetting = $userSetting->getuserSetting();
+	public function setUserSetting(){
+		$userSetting = New UserSetting();
+		$this->supplierid = $userSetting->getSupplierId();
 	    $this->admin = $userSetting->isAdmin();
 	    $this->warehouse = $userSetting->isWarehouse();	
 	}

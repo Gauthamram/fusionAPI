@@ -9,9 +9,44 @@ use App\Supplier;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Fusion\Traits\UserSettingTrait;
+use App\Fusion\Interfaces\iUserSetting;
+use App\Fusion\Commands\Sql;
 
-class ApiHelper
+class ApiHelper implements iUserSetting
 {
+  use UserSettingTrait;
+
+  protected $setting;
+  protected $admin = false;
+  
+  public function __construct() 
+  {
+    $this->sql = New sql();
+    $this->setting = $this->setSetting($this->setting_name);
+    $this->setUserSetting();
+  }
+
+  /**
+   * [OrderCheck for existence]
+   * @param [int] $order_no [order number]
+   */
+  public function OrderCheck($order_no)
+  {    
+      if($cache_order = Cache::get("'".$order_no."-order'", false)){
+        return $cache_order;
+      } else{
+        $order = Order::find($order_no);
+        if($order) {
+          Cache::put("'".$order_no."-order",$order,60);
+            return $order; 
+        } else {
+          Cache::put("'".$order_no."-order",false,60);
+            return false;
+        }
+      }
+    }
+
 	/**
 	 * [setSetting for the requested setting to be retrieved by name]
 	 * @param [type] $name [type of setting]

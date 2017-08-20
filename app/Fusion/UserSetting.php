@@ -24,18 +24,19 @@ class UserSetting
      */
     public function getUsersetting()
     {
-
         $settings = Cache::remember("'".$this->currentuser->id."-userSetting'", Carbon::now()->addMinutes(60), function() {
             return $this->currentuser->apiSettings()->get();
         });
-        
         foreach ($settings as $setting) {
             $user_setting[$setting->keys] = $setting->val;
         }
-
-        $this->user_setting = $user_setting;
         
         return $this->user_setting;
+    }
+
+    public function getSupplierId()
+    {
+        return $this->getUsersetting()['number'];
     }
 
     /**

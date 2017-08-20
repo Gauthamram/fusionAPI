@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Fusion\Commands;
 use App\Fusion\UserSetting;
 use Config;
 
-class SqlHelper
+class Sql
 {
     /**
      * [__construct]
      */
-    public function __construct(userSetting $userSetting)
+    public function __construct()
     {
+      $userSetting = New UserSetting();
       $this->admin = $userSetting->isAdmin();
       $this->warehouse = $userSetting->isWarehouse();
     }

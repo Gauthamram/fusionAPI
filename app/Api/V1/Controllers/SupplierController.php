@@ -27,11 +27,9 @@ class SupplierController extends ApiController
 	 */
 	public function __construct(supplierTransformer $supplierTransformer,userSetting $userSetting)
 	{
-		$this->userSetting = $userSetting->getuserSetting();
         $this->labelHelper = New LabelHelper($userSetting);
-        $this->admin = $userSetting->isAdmin();
-        $this->warehouse = $userSetting->isWarehouse();
         $this->supplierTransformer = $supplierTransformer;
+        $this->setUserSetting();
 	}
 
     public function index()
