@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\TipsTicketPrinted;
 
-class TicketHelper extends ApiHelper
+class TicketHelper extends Printer
 {
     /**
      * [$setting_name - restrict retrieval of only named settings instead of everything]

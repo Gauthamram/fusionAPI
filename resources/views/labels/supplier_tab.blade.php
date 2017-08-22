@@ -1,10 +1,12 @@
 <!-- SUpplier labels -->
 <div class="tab-pane fade" id="supplier">
     <div class="table-responsive">
-    <h4>Sticky Labels - <a href="/portal/label/print/stickies/{{$order_no}}">Print</a></h4>
+    <p>
+        <a class="btn btn-primary btn-lg" href="/portal/label/print/stickies/{{$order_no}}">Print all sticky labels</a>
     @if((!empty($orderdetails['cartonpack'])) or (!empty($orderdetails['cartonloose'])))
-        <h4>Carton Labels - <a href="/portal/label/print/cartons/{{$order_no}}">Print</a></h4>
+        <a class="btn btn-primary btn-lg" href="/portal/label/print/cartons/{{$order_no}}">Print all Carton labels</a>
     @endif
+    </p>
     @if(!empty($orderdetails['cartonpack']))
         <h4>Supplier Carton Pack Labels</h4>
         <table class="table table-striped table-bordered table-hover">
@@ -29,11 +31,6 @@
             @endforeach    
             </tbody>
         </table>
-        @else
-            <h4>Supplier Carton Pack Labels</h4>
-            <div class="alert alert-danger col-md-12">
-                No carton pack labels to print for this order.
-            </div><br/>
         @endif
     </div>
     @if(!empty($orderdetails['cartonloose']))
@@ -62,10 +59,5 @@
             </tbody>
         </table>
     </div>
-    @else
-        <h4>Supplier Carton Loose Labels</h4>
-        <div class="alert alert-danger col-md-12">
-            No carton loose labels to print for this order.
-        </div>
     @endif
 </div>
