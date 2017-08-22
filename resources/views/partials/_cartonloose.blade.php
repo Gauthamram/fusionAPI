@@ -10,7 +10,7 @@
 				<div class="packlabel">
 			@endif
 					<div class="first-row">
-						<span class="title-nopack">
+						<span class="title">
 							<p>Order No  {{$cartonloose['ordernumber']}}</p>
 							<p>Style No  {{$cartonloose['style']}}</p>
 							<p>Size  {{$cartonloose['size']}}</p>
@@ -26,7 +26,6 @@
 					</div>
 					<div class="third-row">
 						<div class="barcode">
-
 							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($cartonloose['productindicatorbarcode'], 'S25',1,60)}}" alt="barcode" /><br/>
 							{{$cartonloose['productindicator']}}
 						</div>

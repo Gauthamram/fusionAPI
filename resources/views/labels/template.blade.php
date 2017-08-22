@@ -37,8 +37,15 @@
 			float:left;
 		}
 
+		div.stickylabel {
+			width:144px;
+			height:144px;
+			margin:10px 5px;
+			display:inline;
+			float:left;
+		}
 		
-		.first-row span{
+		.first-row span.title-pack,.first-row span.packtype{
 			display: inline;
 		  	width: 50%;
 		  	float:left;
@@ -50,17 +57,10 @@
 		  	float:left;
 		}
 
-		.first-row span.title-nopack {
+		.first-row span {
 			display:block;
 			float:none;
 			width:80%;
-		}
-
-		span.title-nopack p {
-			font-size: 18px;
-			font-weight: bold;
-			text-align: center;
-			margin: 5px 0px;
 		}
 
 		span.title p {
@@ -69,8 +69,9 @@
 			text-align: center;
 			margin: 5px 0px;
 		}
+
 		span.packtype {
-			font-size:85px;
+			font-size:105px;
 			text-align: center;
 		}
 
@@ -82,31 +83,44 @@
 		.second-row {
 		width:100%;
 		}
+
+		.stickylabel .barcode img{
+			width:100%;
+			height:25px;
+		}
+
+		.stickylabel .fourth-row p{
+			margin:3px 0;
+			font-size: 12px;
+		}
     </style>
 </head>
 <body>
 	<div id="page">
 		@if(!empty($data))
-		<!-- Cartonpack labels -->
-		@if(isset($data['cartonpack']))
-			@include('partials._cartonpack')
-		@endif
-		<!-- Cartonloose labels -->
-		@if(isset($data['cartonloose']))
-			@include('partials._cartonloose')
-		@endif	
-		<!-- Ratiopack labels -->
-		@if(isset($data['ratiopack']))
-			@include('partials._ratiopack')
-		@endif	
-		<!-- Simplepack labels -->
-		@if(isset($data['simplepack']))
-			@include('partials._simplepack')
-		@endif
-		<!-- Looseitem labels -->
-		@if(isset($data['looseitem']))
-			@include('partials._looseitem')
-		@endif	
+			@if($format == 'carton')
+				<!-- Cartonpack labels -->
+				@if(isset($data['cartonpack']))
+					@include('partials._cartonpack')
+				@endif
+				<!-- Cartonloose labels -->
+				@if(isset($data['cartonloose']))
+					@include('partials._cartonloose')
+				@endif
+			@else		
+				<!-- Ratiopack labels -->
+				@if(isset($data['ratiopack']))
+					@include('partials._ratiopack')
+				@endif	
+				<!-- Simplepack labels -->
+				@if(isset($data['simplepack']))
+					@include('partials._simplepack')
+				@endif
+				<!-- Looseitem labels -->
+				@if(isset($data['looseitem']))
+					@include('partials._looseitem')
+				@endif
+			@endif		
 	@endif	
     </div>
 </body>

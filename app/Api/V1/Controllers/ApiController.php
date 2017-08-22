@@ -12,7 +12,8 @@ use App\Fusion\Interfaces\iUserSetting;
 class ApiController extends Controller implements iUserSetting
 {
     use UserSettingTrait;
-
+    protected $admin = false;
+    
 	/**
      * [$statuscode description]
      * @var integer

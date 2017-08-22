@@ -8,7 +8,6 @@ use Config;
 use App\User;
 use App\Role;
 use App\ApiSetting;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Fusion\userSetting;
 use Illuminate\Mail\Message;

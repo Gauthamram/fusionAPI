@@ -12,7 +12,7 @@
                     </li>
                      @role(['admin','supplier'])
                     <li>
-                        <a @if (substr($title,6) == 'carton') class="active-menu" @endif href="/portal/label/carton">Individual Carton</a>
+                        <a @if (substr($title,6) == 'carton') class="active-menu" @endif href="/portal/label/carton/search">Individual Carton</a>
                     </li>
                     @endrole
                     <li>

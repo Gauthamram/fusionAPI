@@ -1,7 +1,10 @@
 <!-- SUpplier labels -->
 <div class="tab-pane fade" id="supplier">
     <div class="table-responsive">
-    <h4>Print all Labels - <a href="/portal/label/new/{{$order_no}}">Print all</a></h4>
+    <h4>Sticky Labels - <a href="/portal/label/print/stickies/{{$order_no}}">Print</a></h4>
+    @if((!empty($orderdetails['cartonpack'])) or (!empty($orderdetails['cartonloose'])))
+        <h4>Carton Labels - <a href="/portal/label/print/cartons/{{$order_no}}">Print</a></h4>
+    @endif
     @if(!empty($orderdetails['cartonpack']))
         <h4>Supplier Carton Pack Labels</h4>
         <table class="table table-striped table-bordered table-hover">
@@ -21,7 +24,7 @@
                     <td>{{$order['style']}}</td>
                     <td>{{$order['item']}}</td>
                     <td>{{$order['qty_ordered']}}</td>
-                    <td><a class="btn btn-primary btn-sm" href="/portal/label/{{strtolower($order['cartontype'])}}/{{$order['order_no']}}/{{$order['item']}}">Print</a></td>
+                    <td><a class="btn btn-primary btn-sm" href="/portal/label/print/{{strtolower($order['cartontype'])}}/{{$order['order_no']}}/{{$order['item']}}">Print</a></td>
                 </tr>
             @endforeach    
             </tbody>
@@ -53,7 +56,7 @@
                     <td>{{$order['style']}}</td>
                     <td>{{$order['item']}}</td>
                     <td>{{$order['qty_ordered']}}</td>
-                    <td><a class="btn btn-primary btn-sm" href="/portal/label/{{strtolower($order['cartontype'])}}/{{$order['order_no']}}/{{$order['item']}}">Print</a></td>
+                    <td><a class="btn btn-primary btn-sm" href="/portal/label/print/{{strtolower($order['cartontype'])}}/{{$order['order_no']}}/{{$order['item']}}">Print</a></td>
                 </tr>
             @endforeach    
             </tbody>

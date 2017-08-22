@@ -10,7 +10,7 @@
 				<div class="packlabel">
 			@endif
 					<div class="first-row">
-						<span class="title">
+						<span class="title-pack">
 							<p>Order No  {{$cartonpack['ordernumber']}}</p>
 							<p>Style No  {{$cartonpack['style']}}</p>
 							<p>Pack Item  {{$cartonpack['packnumber']}}</p>

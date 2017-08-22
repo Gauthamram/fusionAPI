@@ -30,7 +30,7 @@ class OrderController extends ApiController
         $this->labelHelper = New LabelHelper($userSetting);
         $this->orderTransformer = $orderTransformer;
         $this->orderdetailTransformer = $orderdetailTransformer; 
-        $this->setUserSetting();   
+        $this->setUserSetting($userSetting);   
     }
 
     /**
