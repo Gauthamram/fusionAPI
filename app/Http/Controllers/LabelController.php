@@ -167,9 +167,9 @@ class LabelController extends Controller
                     ),
                   );
     
-                  $pdf = PDF::loadView('labels.template',['data' => $data,'format' => 'carton']);
+                  $pdf = PDF::loadView('labels.template',['data' => $data,'format' => 'carton'])->setPaper('a6');
                   return $pdf->download('invoice.pdf');
-             // return view('labels.template',['data' => $data,'format' => 'carton'])->withTitle('label_carton');        
+              // return view('labels.template',['data' => $data,'format' => 'carton'])->withTitle('label_carton');        
         } catch (InternalHttpException $e) {
             $error = json_decode($e->getResponse()->getContent(),true);
                 $errors = [$error['data']['message']];

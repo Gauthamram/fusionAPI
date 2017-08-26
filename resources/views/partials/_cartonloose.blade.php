@@ -4,7 +4,7 @@
 	@foreach ($data['cartonloose'] as $cartonloose)
 		@foreach ($cartonloose['carton'] as $carton)
 		<?php $i++; ?>
-			@if(($i == 4) || ($loop->parent->first))
+			@if(($i == 5) || ($loop->parent->first))
 				<div class="packlabel" style="page-break-after:always;">
 			@else
 				<div class="packlabel">

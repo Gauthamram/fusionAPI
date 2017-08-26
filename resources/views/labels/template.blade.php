@@ -18,9 +18,11 @@
 		  margin: 0;
 		}
 
-		#page {
-			height:1122px;
-			width:816px;
+		#page-sheet {
+			/*height:1200px;
+			width:816px;*/
+			width:396px;
+			height:559px;
 			margin:0 auto;
 		}
 
@@ -30,9 +32,10 @@
 		}*/
 
 		div.packlabel {
-			width:382px;
-			height:410px;
-			margin:10px 5px;
+			width:396px;
+			height:559px;
+			margin:10px 0px;
+			padding:0 5px;
 			display:inline;
 			float:left;
 		}
@@ -45,12 +48,19 @@
 			float:left;
 		}
 		
+		.first-row {
+			overflow:auto;
+		}
+
 		.first-row span.title-pack,.first-row span.packtype{
 			display: inline;
 		  	width: 50%;
 		  	float:left;
 		}
 
+		.first-row span.title-pack p{
+			font-size: 20px;
+		}
 		.second-row p{
 			display: inline;
 		  	width: 40%;
@@ -63,6 +73,14 @@
 			width:80%;
 		}
 
+		.third-row {
+			margin:10px 0px;
+		}
+
+		.fourth-row {
+			margin:10px 0px;
+		}
+
 		span.title p {
 			font-size: 18px;
 			font-weight: bold;
@@ -71,17 +89,18 @@
 		}
 
 		span.packtype {
-			font-size:105px;
+			font-size:125px;
 			text-align: center;
 		}
 
 		.second-row p{
 			margin: 3px 0;
-		    font-size: 12px;
+		    font-size: 16px;
 		}
 
 		.second-row {
 		width:100%;
+		overflow: auto;
 		}
 
 		.stickylabel .barcode img{
