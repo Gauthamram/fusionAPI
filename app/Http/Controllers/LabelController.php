@@ -344,7 +344,9 @@ class LabelController extends Controller
                 //         ),
                 //     ),    
                 //   );
-                return view('labels.template',['data' => $data,'format' => 'carton'])->withTitle('label_carton');  
+                // return view('labels.template',['data' => $data,'format' => 'carton'])->withTitle('label_carton');  
+                $pdf = PDF::loadView('labels.template',['data' => $data,'format' => 'carton'])->setPaper('a6');
+                  return $pdf->download('invoice.pdf');
         } catch (Exception $e) {
             $error = json_decode($e->getResponse()->getContent(),true);
                 $errors = [$error['data']['message']];
