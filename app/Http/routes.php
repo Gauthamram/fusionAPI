@@ -59,5 +59,39 @@ Route::group(['prefix' => 'portal','middleware' => 'auth.portal'], function () {
 Route::post('login','AuthenticateController@login');
 Route::get('login','AuthenticateController@login');
 
+route::get('barcodes', function(){
+    echo "C39 <br/>";
+    echo DNS1D::getBarcodeHTML("4445645656", "C39"); echo "<br/>"; echo "C39+ <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C39+"); echo "<br/>";echo "C39E <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C39E"); echo "<br/>";echo "C39E+ <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C39E+"); echo "<br/>";echo "C93 <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C93"); echo "<br/>";echo "S25 <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "S25"); echo "<br/>";echo "S25+ <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "S25+"); echo "<br/>";echo "I25 <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "I25"); echo "<br/>";echo "I25+ <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "I25+"); echo "<br/>";echo "C128 <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C128"); echo "<br/>";echo "C128A <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C128A"); echo "<br/>";echo "C128B <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C128B"); echo "<br/>";echo "C128C <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "C128C"); echo "<br/>";echo "EAN2 <br/>";
+echo DNS1D::getBarcodeHTML("44455656", "EAN2"); echo "<br/>";echo "EAN5 <br/>";
+echo DNS1D::getBarcodeHTML("4445656", "EAN5"); echo "<br/>";echo "EAN8 <br/>";
+echo DNS1D::getBarcodeHTML("4445", "EAN8"); echo "<br/>";echo "EAN13 <br/>";
+echo DNS1D::getBarcodeHTML("4445", "EAN13"); echo "<br/>";echo "UPCA <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "UPCA"); echo "<br/>";echo "UPCE <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "UPCE"); echo "<br/>";echo "MSI <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "MSI"); echo "<br/>";echo "MSI+ <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "MSI+"); echo "<br/>";echo "POSTNET <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "POSTNET"); echo "<br/>";echo "PLANET <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "PLANET"); echo "<br/>";echo "RMS4CC <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "RMS4CC"); echo "<br/>";echo "KIX <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "KIX"); echo "<br/>";echo "IMB <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "IMB"); echo "<br/>";echo "CODABAR <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "CODABAR"); echo "<br/>";echo "CODE11 <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "CODE11"); echo "<br/>";echo "PHARMA <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "PHARMA"); echo "<br/>";echo "PHARMA2T <br/>";
+echo DNS1D::getBarcodeHTML("4445645656", "PHARMA2T"); echo "<br/>";
+});
+
 Route::get('reset_password/{token}','UserController@reset')->name('password.reset');
 Route::post('reset_password/{token}','UserController@reset');

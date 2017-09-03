@@ -33,13 +33,13 @@
 					</div>
 					<div class="third-row">
 						<div class="barcode">
-							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($cartonpack['productindicatorbarcode'], 'EAN8',1,60)}}" alt="barcode" /><br/>
+							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($cartonpack['productindicatorbarcode'], 'C39',1,60)}}" alt="barcode" /><br/>
 							{{$cartonpack['productindicator']}}
 						</div>
 					</div>
 					<div class="fourth-row">
 						<div class="barcode">
-							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($carton['barcode'], 'EAN8',1,60)}}" alt="barcode" /><br/>
+							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($carton['barcode'], 'C39',1,60)}}" alt="barcode" /><br/>
 							{{$carton['number']}}
 						</div>
 					</div>
