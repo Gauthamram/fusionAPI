@@ -40,4 +40,14 @@ class UserSettingController extends ApiController
         $data = array_map([$this, "transformSettingsToArray"], $users);
         return $this->respond(['data' => $data]);
     }
+
+    public function transformSettingsToArray($user)
+    {
+    	$data = $user;
+		$settings = User::findOrFail($user['id'])->apiSettings()->get();
+		foreach ($settings as $setting) {
+			$data[$setting->keys] = $setting->val;
+		}
+		return $data;
+    }
 }

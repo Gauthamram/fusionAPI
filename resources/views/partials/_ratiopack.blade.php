@@ -12,7 +12,7 @@
 		</div>
 		<div class="third-row">
 			<div class="barcode">
-				<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($ratiopack['barcode'], 'EAN13',1,60)}}" alt="barcode" />
+				<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($ratiopack['barcode'], 'UPCA',1,60)}}" alt="barcode" />
 				{{$ratiopack['barcode']}}
 			</div>
 		</div>
