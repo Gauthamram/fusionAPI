@@ -5,7 +5,7 @@
 		@foreach ($cartonloose['carton'] as $carton)
 		<?php $i++; ?>
 			@if(($i == 5) || ($loop->parent->first))
-				<div class="packlabel" style="page-break-after:always;">
+				<div class="packlabel">
 			@else
 				<div class="packlabel">
 			@endif
@@ -26,13 +26,13 @@
 					</div>
 					<div class="third-row">
 						<div class="barcode">
-							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($cartonloose['productindicatorbarcode'], 'S25',1,60)}}" alt="barcode" /><br/>
+							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($cartonloose['productindicatorbarcode'], 'C128',2,100)}}" alt="barcode" /><br/>
 							{{$cartonloose['productindicator']}}
 						</div>
 					</div>
 					<div class="fourth-row">
 						<div class="barcode">
-							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($carton['barcode'], 'S25',1,60)}}" alt="barcode" /><br/>
+							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($carton['barcode'], 'C128',2,100)}}" alt="barcode" /><br/>
 							{{$carton['number']}}
 						</div>
 					</div>
