@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-            <form action="{{ action('LabelController@label_request_create') }}" method="post">
+            <form action="{{ action('LabelController@createticket') }}" method="post">
             <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
             <input name="type" class="form-control" type="hidden" value="sticky">
             @foreach ($orderdetails['orderdetails'] as $order)

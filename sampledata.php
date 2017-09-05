@@ -125,3 +125,107 @@
                 // dd($data);
                 // $pdf = PDF::loadView('labels.new',['data' => $data]);
                 // return $pdf->stream();
+
+                $data['cartonpack'][0] = array(
+                    'ordernumber' => '1087717',
+                    'printquantity' => '1', 
+                    'style' => '112379490',
+                    'description' => 'wts:KYLIEBAG2:8pk:multi',
+                    'productindicator' => '(00) 193327670001155097',
+                    'productindicatorbarcode' => '00193327670001155097',
+                    'packnumber' => '113245741',
+                    'packtype'=> 'A',
+                    'group'=> 'Accessories',
+                    'dept' =>'Accessories',
+                    'class' =>'Bags',
+                    'subclass'=> 'Casual',
+                    'carton' => array(
+                        0 => array(
+                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
+                        'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
+                        ),
+                        1 => array(
+                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
+                        'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
+                        ),
+                        2 => array(
+                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
+                        'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
+                        ),
+                    ),
+                  );
+            
+            $data['cartonpack'][3] = array(
+                    'ordernumber' => '1087717',
+                    'printquantity' => '1', 
+                    'style' => '112379490',
+                    'description' => 'wts:KYLIEBAG2:8pk:multi',
+                    'productindicator' => '(00) 193327670001155097',
+                    'productindicatorbarcode' => '00193327670001155097',
+                    'packnumber' => '113245741',
+                    'packtype'=> 'A',
+                    'group'=> 'Accessories',
+                    'dept' =>'Accessories',
+                    'class' =>'Bags',
+                    'subclass'=> 'Casual',
+                    'carton' => array(
+                        array(
+                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
+                        'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
+                        ),
+                    ),
+                  );
+            $data['cartonpack'][4] = array(
+                    'ordernumber' => '1087717',
+                    'printquantity' => '1', 
+                    'style' => '112379490',
+                    'description' => 'wts:KYLIEBAG2:8pk:multi',
+                    'productindicator' => '(00) 193327670001155097',
+                    'productindicatorbarcode' => '00193327670001155097',
+                    'packnumber' => '113245741',
+                    'packtype'=> 'A',
+                    'group'=> 'Accessories',
+                    'dept' =>'Accessories',
+                    'class' =>'Bags',
+                    'subclass'=> 'Casual',
+                    'carton' => array(
+                        array(
+                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
+                        'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
+                        ),
+                    ),
+                  );
+            $data['cartonloose'][] = array(
+                    'ordernumber' => '1087717',
+                    'cartonquantity' => '6', 
+                    'style' => '112379490',
+                    'description' => 'wts:KYLIEBAG2:8pk:multi',
+                    'productindicator' => '(00) 193327670001155097',
+                    'productindicatorbarcode' => '00193327670001155097',
+                    'itemnumber' => '113245741',
+                    'size'=> '1SIZ',
+                    'colour'=> 'BLK~Black',
+                    'carton' => array(
+                        array(
+                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
+                        'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
+                        ),
+                    ),
+                  );
+            $data['cartonloose'][] = array(
+                    'ordernumber' => '1087717',
+                    'cartonquantity' => '6', 
+                    'style' => '112379490',
+                    'description' => 'wts:KYLIEBAG2:8pk:multi',
+                    'productindicator' => '(00) 193327670001155097',
+                    'productindicatorbarcode' => '00193327670001155097',
+                    'itemnumber' => '113245741',
+                    'size'=> '1sdfsdfSIZ',
+                    'colour'=> 'BLK~Black',
+                    'carton' => array(
+                        array(
+                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
+                        'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
+                        ),
+                    ),
+                  );

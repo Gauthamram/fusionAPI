@@ -8,8 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\TipsTicketPrinted;
 
-class LabelHelper extends ApiHelper
-{
+class LabelHelper extends Printer
+{    
     /**
      * [$setting_name - restrict retrieval of only named settings instead of everything]
      * @var string

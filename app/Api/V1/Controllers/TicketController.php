@@ -19,6 +19,7 @@ use App\Fusion\Transformers\TicketTransformer;
 use App\Fusion\Transformers\TicketPrintedTransformer;
 use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Support\Facades\DB;
+use App\Fusion\UserSetting;
 
 class TicketController extends ApiController
 {
@@ -30,12 +31,12 @@ class TicketController extends ApiController
      * @param userSetting              $userSetting              [instance of usersetting]
      * @param ticketPrintedTransformer $ticketPrintedTransformer [instance of ticketprintedtransformer]
      */
-    public function __construct(ticketTransformer $ticketTransformer, ticketPrintedTransformer $ticketPrintedTransformer)
+    public function __construct(ticketTransformer $ticketTransformer, userSetting $userSetting, ticketPrintedTransformer $ticketPrintedTransformer)
     {
         $this->ticketTransformer = $ticketTransformer;
-        $this->ticketHelper = New ticketHelper();
+        $this->ticketHelper = New ticketHelper($userSetting);
         $this->ticketPrintedTransformer = $ticketPrintedTransformer;
-        $this->setUserSetting();
+        $this->setUserSetting($userSetting);
     }
 
     /**

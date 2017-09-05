@@ -25,23 +25,31 @@ Route::group(['prefix' => 'portal','middleware' => 'auth.portal'], function () {
     Route::get('/setting','HomeController@setting');
     Route::post('/setting','HomeController@setting');
     
-    Route::post('/label/request/create','LabelController@label_request_create');
-    Route::get('/labels/{order?}','OrderController@orderdetails');
+    Route::post('/label/create/ticket','LabelController@createticket');
+    Route::get('/label/order/{order?}','OrderController@orderdetails');
+
     Route::get('/label/orders','OrderController@orderlist');
-    Route::post('/label/orders','OrderController@orderlist');
-    Route::get('/label/new/{order?}','LabelController@label_new');
-    Route::get('/label/carton','LabelController@search');
-    Route::post('/label/carton','LabelController@search');
-    Route::get('/label/history','LabelController@label_history');
+    Route::post('/label/orders/search','OrderController@orderlist');
+    
+    Route::get('/label/carton/search','LabelController@search');
+    Route::post('/label/carton/search','LabelController@search');
+    
+    Route::get('/label/history','LabelController@history');
     Route::get('/label/reprint/{order_no}','LabelController@reprint');
-    Route::get('/label/{cartontype}/{order_no}/{item}','LabelController@label_cartontype');
+    Route::get('/label/print/cartons/{order?}','LabelController@printcartons');
+    Route::get('/label/print/stickies/{order?}','LabelController@printstickies');
+    Route::get('/label/print/{cartontype}/{order_no}/{item}','LabelController@printcartontype');
 
     Route::get('/users','UserController@users');
+    
     Route::get('/user/new','UserController@create');
     Route::post('/user/new','UserController@create');
+    
     Route::post('/users/search','UserController@search');
+    
     Route::get('/user/recovery/{id?}','UserController@recovery');
     Route::post('/user/recovery','UserController@recovery');
+    
     Route::get('/user/logout','UserController@logout');
 
     Route::get('/suppliers','SupplierController@index');
