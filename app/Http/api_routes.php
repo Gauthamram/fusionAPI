@@ -45,23 +45,10 @@ $api->version('v1', function ($api) {
 
 		$api->get('suppliers', 'App\Api\V1\Controllers\SupplierController@index');
 		$api->post('supplier/edit/{supplier}/{type?}', 'App\Api\V1\Controllers\SupplierController@edit');
-	});
-	
-	$api->group(['middleware' => ['ability:admin,adminTask']], function ($api) {		
-		$api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
-		// Route to create a new role
-        $api->post('role', 'App\Api\V1\Controllers\RolePermissionController@createRole');
-        // Route to create a new permission
-        $api->post('permission', 'App\Api\V1\Controllers\RolePermissionController@createPermission');
-        // Route to assign role to user
-        $api->post('assign-role', 'App\Api\V1\Controllers\RolePermissionController@assignRole');
-        // Route to attache permission to a role
-        $api->post('attach-permission', 'App\Api\V1\Controllers\RolePermissionController@attachPermission');
-        // Route to supplier search by term
         $api->get('supplier/search/{term}','App\Api\V1\Controllers\SupplierController@search');
-        //Route to get all roles
-        $api->get('roles','App\Api\V1\Controllers\RolePermissionController@getRoles');
-    });
+
+		$api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
+	});
 
 	// example of protected route
 	$api->get('protected', ['middleware' => ['api.auth'], function () {		

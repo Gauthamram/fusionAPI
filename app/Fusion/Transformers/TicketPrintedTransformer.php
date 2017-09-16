@@ -2,16 +2,13 @@
 
 namespace App\Fusion\Transformers;
 use Carbon\Carbon;
-use App\Fusion\UserSetting;
 
 class TicketPrintedTransformer extends Transformer
 {
 	
 	public function transform($ticket)
 	{
-		$userSetting = New UserSetting();
-// dd($userSetting->isWarehouse());
-		if($userSetting->isWarehouse()){
+		if($this->user->isWarehouse()){
 			return [
 				'order' => $ticket['order_no'],
 				'date' => Carbon::parse($ticket['createdate'])->toDayDateTimeString(),

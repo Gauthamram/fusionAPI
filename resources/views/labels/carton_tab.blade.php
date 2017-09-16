@@ -29,10 +29,10 @@
                     <input name="data[{{$order['item']}}][retail]" class="form-control" type="hidden" value="{{$order['retail']}}">
                     <input name="data[{{$order['item']}}][country]" class="form-control" type="hidden" value="{{$order['country']}}">
                     <tr>
-                        <td>{{$order['order_no']}}</td>
+                        <td>{{$order['order_number']}}</td>
                         <td>{{$order['style']}}</td>
                         <td>{{$order['item']}}</td>
-                        <td>{{$order['qty_ordered']}}</td>
+                        <td>{{$order['quantity']}}</td>
                         <td><input name="data[{{$order['item']}}][over_print_qty]" class="form-control" type="number" value="0" required></td>
                         <td>
                             <select class="form-control" name="data[{{$order['item']}}][sort_order_type]">

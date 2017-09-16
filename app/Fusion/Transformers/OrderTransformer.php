@@ -3,25 +3,24 @@
 namespace App\Fusion\Transformers;
 
 use Carbon\Carbon;
-use App\Fusion\UserSetting;
+
 
 class OrderTransformer extends Transformer
 {
 	
 	public function transform($order)
 	{
-		$userSetting = New UserSetting();
-		if($userSetting->isWarehouse()){
+		if($this->user->isWarehouse()){
 			return [
-				'order_no' => $order->order_no,
-				'supplier' => $order->sup_name,
-				'approval_date' => Carbon::parse($order->orig_approval_date)->toDayDateTimeString(),
+				'order_number' => $order->order_number,
+				'supplier' => $order->supplier_name,
+				'approval_date' => Carbon::parse($order->approved_date)->toDayDateTimeString(),
 			];
 		} else {
 			return [
-				'order_no' => $order->order_no,
-				'supplier' => $order->sup_name,
-				'approval_date' => Carbon::parse($order->orig_approval_date)->toDayDateTimeString(),
+				'order_number' => $order->order_number,
+				'supplier' => $order->supplier_name,
+				'approval_date' => Carbon::parse($order->approved_date)->toDayDateTimeString(),
 				// 'reprint' => $order->reprint_required ? $order->reprint_required:'Y'
 			];	
 		}

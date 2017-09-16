@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Response;
-use App\Fusion\Traits\UserSettingTrait;
-use App\Fusion\Interfaces\iUserSetting;
 
-class ApiController extends Controller implements iUserSetting
-{
-    use UserSettingTrait;
+class ApiController extends Controller
+{    
     protected $admin = false;
     
 	/**

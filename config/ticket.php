@@ -21,6 +21,18 @@ return [
 		'none' => '0',
 		'transport' => '1',
 		'simple' => '2'
-	]
+	],
+	'ssccompanyprefix' => '0049346297',
+	'barcodetype' => 'code128',
+	'productindicator' => [
+		'first' => '(400)',
+		'second' => '(02)',
+		'third' => '(30)',
+	],
+	'edi' => 'N',
+	'looseitem' => 'LooseItem',
+	'ratiopack' => 'RatioPack',
+	'simplepack' => 'SimplePack',
+	'overprintpercentage' => '10'
 ];
 

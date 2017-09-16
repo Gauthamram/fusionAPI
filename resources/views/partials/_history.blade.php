@@ -8,7 +8,7 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover">
                     <!-- warehouse table is different from other users -->
-                    @role('warehouse')
+                    @if($user['roles'] == 'warehouse')
                         <thead>
                             <tr>
                                 <th>Order No.</th>
@@ -27,9 +27,9 @@
                             </tr>
                         @endforeach
                         </tbody>
-                    @endrole
+                    @endif
                     <!-- Admin and suppliers is different -->
-                    @role(['admin','supplier'])
+                    @if($user['roles'] != 'warehouse')
                         <thead>
                             <tr>
                                 <th>label ID</th>

@@ -19,7 +19,6 @@ use App\Fusion\Transformers\TicketTransformer;
 use App\Fusion\Transformers\TicketPrintedTransformer;
 use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Support\Facades\DB;
-use App\Fusion\UserSetting;
 
 class TicketController extends ApiController
 {
@@ -31,12 +30,12 @@ class TicketController extends ApiController
      * @param userSetting              $userSetting              [instance of usersetting]
      * @param ticketPrintedTransformer $ticketPrintedTransformer [instance of ticketprintedtransformer]
      */
-    public function __construct(ticketTransformer $ticketTransformer, userSetting $userSetting, ticketPrintedTransformer $ticketPrintedTransformer)
+    public function __construct(ticketTransformer $ticketTransformer, ticketPrintedTransformer $ticketPrintedTransformer)
     {
         $this->ticketTransformer = $ticketTransformer;
-        $this->ticketHelper = New ticketHelper($userSetting);
+        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->ticketHelper = New ticketHelper();
         $this->ticketPrintedTransformer = $ticketPrintedTransformer;
-        $this->setUserSetting($userSetting);
     }
 
     /**
@@ -60,7 +59,7 @@ class TicketController extends ApiController
     public function printed()
     {
         // DB::enableQueryLog();
-        if($this->warehouse) {
+        if($this->user->isWarehouse()) {
             $ticket = New TipsTicketPrinted();
         } else {
             $ticket = New TicketPrinted();
@@ -68,7 +67,7 @@ class TicketController extends ApiController
     	$supplier = New Supplier();    
         
 
-    	if($this->admin || ($this->warehouse)) {
+    	if($this->user->isAdmin() || $this->user->isWarehouse()) {
     		// $tickets = $ticket->printedlastmonth()->get()->toArray();
             $tickets = $ticket->take(10)->get()->toArray();
             // dd(DB::getQueryLog());

@@ -34,7 +34,7 @@ class ApiAuthenticate
 		} else {
 			return redirect('login');
 		}
-
+        
 		\View::share('user', $result['authuser']);
         return $next($request);
     }

@@ -9,7 +9,6 @@ use App\User;
 use App\Role;
 use App\ApiSetting;
 use Illuminate\Http\Request;
-use App\Fusion\userSetting;
 use Illuminate\Mail\Message;
 use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;
@@ -22,13 +21,10 @@ class AuthController extends ApiController
 {
     use Helpers;
 
-    public function user(userSetting $userSetting)
+    public function user()
     {
-        if ($currentuser = JWTAuth::parseToken()->authenticate()){
-            $authuser['id'] = $currentuser['id'];
-            $authuser['email'] = $currentuser['email'];
-            $authuser['name'] = $currentuser['name'];
-            $authuser['admin'] = $userSetting->isAdmin();
+        if ($currentuser = JWTAuth::parseToken()->authenticate()) {
+            $authuser = $currentuser;
         } else {
             $authuser = false;
         }
@@ -44,7 +40,7 @@ class AuthController extends ApiController
             'password' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             throw new ValidationHttpException($validator->errors()->all());
         }
 
@@ -69,7 +65,7 @@ class AuthController extends ApiController
 
             $validator = Validator::make($userData, Config::get('boilerplate.signup_fields_rules'));
         
-            if($validator->fails()) {
+            if ($validator->fails()) {
                 throw new ValidationHttpException($validator->errors()->all());
             }
 

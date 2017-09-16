@@ -22,11 +22,11 @@
             <tbody>
             @foreach ($orderdetails['cartonpack'] as $order)
                 <tr>
-                    <td>{{$order['order_no']}}</td>
+                    <td>{{$order['order_number']}}</td>
                     <td>{{$order['style']}}</td>
                     <td>{{$order['item']}}</td>
-                    <td>{{$order['qty_ordered']}}</td>
-                    <td><a class="btn btn-primary btn-sm" href="/portal/label/print/{{strtolower($order['cartontype'])}}/{{$order['order_no']}}/{{$order['item']}}">Print</a></td>
+                    <td>{{$order['quantity']}}</td>
+                    <td><a class="btn btn-primary btn-sm" href="/portal/label/print/{{strtolower($order['carton_type'])}}/{{$order['order_number']}}/{{$order['item']}}">Print</a></td>
                 </tr>
             @endforeach    
             </tbody>
@@ -49,11 +49,11 @@
             <tbody>
             @foreach ($orderdetails['cartonloose'] as $order)
                 <tr>
-                    <td>{{$order['order_no']}}</td>
+                    <td>{{$order['order_number']}}</td>
                     <td>{{$order['style']}}</td>
                     <td>{{$order['item']}}</td>
-                    <td>{{$order['qty_ordered']}}</td>
-                    <td><a class="btn btn-primary btn-sm" href="/portal/label/print/{{strtolower($order['cartontype'])}}/{{$order['order_no']}}/{{$order['item']}}">Print</a></td>
+                    <td>{{$order['quantity']}}</td>
+                    <td><a class="btn btn-primary btn-sm" href="/portal/label/print/{{strtolower($order['carton_type'])}}/{{$order['order_number']}}/{{$order['item']}}">Print</a></td>
                 </tr>
             @endforeach    
             </tbody>

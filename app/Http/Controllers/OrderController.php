@@ -67,7 +67,7 @@ class OrderController extends Controller
     	
     }
 
-    public function orderdetails(Request $request,$order_no)
+    public function orderdetails(Request $request, int $order_no)
     {
         try 
         {

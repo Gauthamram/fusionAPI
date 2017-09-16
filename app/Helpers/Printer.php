@@ -1,62 +1,28 @@
 <?php 
 
 namespace App\Helpers;
+
 use Illuminate\Support\Facades\DB;
 use Config;
-use Setting;
 use App\Order;
+use App\Carton;
 use App\Supplier;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use App\Fusion\Traits\UserSettingTrait;
-use App\Fusion\Interfaces\iUserSetting;
 use App\Fusion\Commands\Sql;
-use App\Fusion\userSetting;
+use JWTAuth;
 
-class Printer implements iUserSetting
+class Printer 
 {
 
-  use UserSettingTrait;
-
-  protected $setting;
   protected $admin = false;
   
-  public function __construct(userSetting $userSetting) 
+  public function __construct() 
   {
-    $this->sql = New sql();
-    $this->setting = $this->setSetting($this->setting_name);
-    $this->setUserSetting($userSetting);
+    $this->user = JWTAuth::parseToken()->authenticate();
+    $this->sql = New sql($this->user);
   }
-
-  /**
-	 * [setSetting for the requested setting to be retrieved by name]
-	 * @param [type] $name [type of setting]
-	 */
-	public function setSetting($name)
-	{
-		Setting::setConstraint(function($query,$insert = false) use ($name){
-        	$query->Where('keys','like',$name);
-      	});
-
-		$process_setting = Cache::remember('settings', Carbon::now()->addMinutes(60), function() {
-		return Setting::all();
-		});
-
-		return $this->setting = $process_setting['label'];
-	}
-
-  public function getSetting() 
-  {
-      return $this->setting;
-  }
-
-	public function setCartonSequence()
-	{
-		//save Config carton sequence number to db
-        Setting::set('label.cartonsequence',$this->setting['cartonsequence']);
-        Setting::save();
-	}
 
   /**
    * [OrderCheck for existence]
@@ -100,48 +66,19 @@ class Printer implements iUserSetting
      * [CartonDetails]
      * @param [object] $carton [carton object from the collections]
      */
-    public function CartonDetails($carton)
+    public function CartonDetails($cartons)
     {
-      $cartondetails = array();
-      //product indicator and barcode - they are same but different format
-      //it is same for all carton under the cartonpack - only chnage for different item and order and quantity combined
-      $productindicator = $this->GenerateProductBarcode($carton->order_no,$carton->item,1);
-
-      $details = array(
-        'ordernumber' => $carton->order_no,
-        'printquantity' => '1', 
-        'style' => $carton->style,
-        'description' => $carton->item_desc,
-        'productindicatorbarcode' => $productindicator['barcode'],
-        'productindicator' => $productindicator['number']
-      );  
-  
-      if(!(property_exists($carton, "pickup_no"))){
-        $details['size'] = $carton->diff_desc;
-        $details['colour'] = $carton->colour;
-        $details['cartonquantity'] = $carton->pickup_loc;
-        $details['itemnumber'] = $carton->item;
-      } else {
-        $details['packnumber'] = $carton->item;
-        $details['packtype'] = $carton->pickup_no;
-        $details['group'] = $carton->group_name;
-        $details['dept'] = $carton->dept_name;
-        $details['class'] = $carton->class_name;
-        $details['subclass'] = $carton->sub_name;
+      $cartons = Carton::hydrate($cartons);
+      
+      foreach ($cartons as $carton) {
+          $carton->getCartonSequence();
+          $carton->setCartonDetails();
+          $carton->setProductIndicator();
+          $cartondetails[] = $carton;
       }
-      /**
-       * calculation of aty based on pack or loose carton or simple and mixed 
-       */
-      $qty = $this->CalcQtyPerCarton($carton->qty_ordered,$carton->pickup_loc);
-
-      //create carton barcode for each pack - if qty is 3 then three barcodes 
-      for ($i=1; $i <= $qty; $i++) { 
-        $cartonBarcodes = $this->GenerateCartonBarcode();
-        //adding carton numbers to the detail array
-        $details['carton'][] = $cartonBarcodes;        
-      }
-
-      return $details;  
+      
+      $carton->setCartonSequence();
+      return $cartondetails;  
     }
 
     /**
@@ -174,105 +111,18 @@ class Printer implements iUserSetting
      */
     public function EDICheck($order_no)
     {
-
-      //Try cached items first
       if ($cache_value = Cache::get("'".$order_no."-isEDI", false)){
         return $cache_value;  
       } else {
         $order = Order::find($order_no);
       } 
-      if($order->edi_po_ind == $this->setting['edi']){
+      if($order->edi_po_ind == config::get('ticket.edi')){
           Cache::put("'".$order_no."-isEDI",true,60);
           return true;
       } else {
           Cache::put("'".$order_no."-isEDI",false,60);
           return false;
       }
-    }
-
-    /**
-     * Get product barcode and product barcode indicator generated
-     * @param - detail array [0] - order_no,[1] - item,[2] - quantiy
-     */
-    public function GenerateProductBarcode($orderno,$item,$qty)
-    {
-      $pinumber = $this->setting['productindicator']['first']." ".$orderno." ".$this->setting['productindicator']['second']." ".$item." ".$this->setting['productindicator']['third']." ".$qty;
-      
-      $productindicator = [
-        'number' => $pinumber,
-        'barcode' => str_replace(array(')','(',' '),"",$pinumber),
-      ];
-
-      return $productindicator;
-    }
-
-    /**
-     * Generate Carton barcode for each carton 
-     *@params
-     */
-    public function GenerateCartonBarcode()
-    {
-      
-      $carton_sequence = $this->setting['cartonsequence'] + 1;
-      
-      if($carton_sequence == 999999999){
-        $carton_sequence = 1;
-      } 
-
-      $this->setting['cartonsequence'] = $carton_sequence;
-      
-      $cartonsequence = str_pad($carton_sequence,9,"0",STR_PAD_LEFT);
-      $cs_no_check = $this->setting['sscccompanyprefix'].$cartonsequence;
-      $cs_check = $this->luhn_check_digit($cs_no_check);
-      $cs_barcode = $cs_no_check . $cs_check;
-      $cartonBarcodes = [
-          'barcode' => $cs_barcode, 
-          'number' => '('.substr($cs_barcode, 0,2).') '.substr($cs_barcode, 2)
-      ];
-    
-      return $cartonBarcodes;
-    }
-
-    /**
-     * [luhn_check_digit to calculate the last digit of the carton]
-     * @param  [int] $number [ssccompanyprefix and cartoln sequence]
-     * @return [type]         [description]
-     */
-    public function luhn_check_digit($number)
-    {
-    
-      settype($number, 'string');
-      
-      $sumTable = array(
-        array(0,1,2,3,4,5,6,7,8,9),
-        array(0,2,4,6,8,1,3,5,7,9)
-      );
-      
-      $sum = 0;
-      $flip = 0;
-      
-      for ($i = strlen($number) - 1; $i >= 0; $i--) {
-        $sum += $sumTable[$flip++ & 0x1][$number[$i]];
-      }
-      return $sum % 10;
-    }
-
-    /**
-     * [CalcQtyPerCarton check to create number of required cartons based on aty and pick loc qty]
-     * @param [int] $qty    [qty of the items]
-     * @param [type] $qtyloc [description]
-     */
-    public function CalcQtyPerCarton($qty,$qtyloc)
-    {
-      /**
-       * for loose and mixed carton details
-       */
-      if($qtyloc){
-        return ceil(($qty/$qtyloc));
-      } else {
-        return $qty;
-      }
-      
     }
 
     /**

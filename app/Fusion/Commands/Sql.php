@@ -1,19 +1,18 @@
 <?php
 
 namespace App\Fusion\Commands;
-use App\Fusion\UserSetting;
 use Config;
+use App\User;
 
 class Sql
 {
+  protected $user;
     /**
      * [__construct]
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-      $userSetting = New UserSetting();
-      $this->admin = $userSetting->isAdmin();
-      $this->warehouse = $userSetting->isWarehouse();
+      $this->user = $user;
     }
     /**
      * Get Sql QUery based on the string
@@ -22,7 +21,7 @@ class Sql
 
       switch ($string) {
         case 'AllOrders':
-          $sql = "select distinct ordhead.order_no, sups.sup_name, ordhead.ORIG_APPROVAL_DATE,cgl_tickets_printed.reprint_required, ordhead.status
+          $sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, ordhead.ORIG_APPROVAL_DATE as approved_date,cgl_tickets_printed.reprint_required, ordhead.status
               from ordhead
                   left join cgl_tickets_printed on ordhead.order_no = cgl_tickets_printed.order_no
                   inner join ordloc on ordhead.order_no = ordloc.order_no and ordhead.status = 'A'
@@ -34,7 +33,7 @@ class Sql
                   inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')."
                   inner join sups on sups.supplier = ordhead.supplier";
 
-          if ((!$this->admin) && (!$this->warehouse)){
+          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())){
             $sql .= " and ordhead.supplier = :supplier";
           } 
 
@@ -54,19 +53,19 @@ class Sql
           break;
 
         case 'SearchOrders':
-          $sql = "select distinct ordhead.order_no, sups.sup_name, ordhead.ORIG_APPROVAL_DATE, ordhead.status
+          $sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, ordhead.ORIG_APPROVAL_DATE as approved_date, ordhead.status
               from ordhead
                   inner join ordloc on ordhead.order_no = ordloc.order_no 
                   inner join sups on sups.supplier = ordhead.supplier ";
 
           //if admin or warehouse no restriction on supplier else apply user supplier number to restrict what they can see       
-          if ((!$this->admin) && (!$this->warehouse)){
+          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())){
             $sql .= "inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')." and ordhead.supplier = :supplier";
           } 
 
           $sql .= " where ordloc.QTY_Ordered > 0 ";
 
-          if(($this->admin) || ($this->warehouse)){
+          if(($this->user->isAdmin()) || ($this->user->isWarehouse())){
             $sql .= " and (ordhead.status = 'A' or ordhead.status = 'C')";
           } else {
             $sql .= " and (ordhead.status = 'A')";
@@ -94,8 +93,8 @@ class Sql
 
         //External Ticket - CartonPack Sql
         case 'CartonPack':
-          $sql = "SELECT ordloc.order_no,PackStyle.Style, ordsku.pickup_no,ordloc.item,  ordloc.QTY_Ordered, ordsku.PickUP_LOC,
-          item_master.item_desc, Groups.Group_Name, Deps.Dept_Name, Class.Class_Name, SubClass.Sub_Name, ordhead.EDI_PO_IND, 'CartonPack' as CartonType
+          $sql = "SELECT ordloc.order_no as order_number,PackStyle.Style, ordsku.pickup_no as pickNumber,ordloc.item,  ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location,
+          item_master.item_desc as description, Groups.Group_Name, Deps.Dept_Name as department_name, Class.Class_Name, SubClass.Sub_Name as sub_class_name, ordhead.EDI_PO_IND as edi_po_index, 'CartonPack' as carton_type
           from ordhead
           inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
           inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
@@ -116,9 +115,10 @@ class Sql
         
         //External Ticket - Carton Simple Loose Pack
         case 'CartonLoose':
-          $sql = "SELECT  ordhead.order_no , ordsku.item, item_master.item_parent as style, sizeDiff.Diff_Desc, 
-          colour.diff_desc  as Colour, ordloc.QTY_Ordered, ordsku.PickUP_LOC, 
-          item_master.item_desc , ordhead.pickup_date, ordhead.Supplier, 'CartonLoose' as CartonType, ordhead.EDI_PO_IND
+          $sql = "SELECT  ordhead.order_no as order_number, ordsku.item, item_master.item_parent as style, sizeDiff.Diff_Desc as item_size, 
+          colour.diff_desc  as Colour, ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location, 
+          item_master.item_desc as description, ordhead.pickup_date, ordhead.Supplier, 'CartonLoose' as carton_type, 
+          ordhead.EDI_PO_IND as edi_po_index 
           from ordhead 
           inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
           inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item 

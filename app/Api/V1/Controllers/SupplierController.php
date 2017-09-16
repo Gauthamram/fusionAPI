@@ -14,7 +14,6 @@ use Carbon\Carbon;
 use App\Supplier;
 use App\Address;
 use App\Helpers\LabelHelper;
-use App\Fusion\UserSetting;
 use Dingo\Api\Exception\ValidationHttpException;
 use App\Fusion\Transformers\SupplierTransformer;
 
@@ -24,19 +23,19 @@ class SupplierController extends ApiController
 	/**
 	 * [__constructor]
 	 */
-	public function __construct(supplierTransformer $supplierTransformer,userSetting $userSetting)
+	public function __construct(supplierTransformer $supplierTransformer)
 	{
         $this->supplierTransformer = $supplierTransformer;
-        $this->setUserSetting($userSetting);
+        $this->user = JWTAuth::parseToken()->authenticate();
 	}
 
     public function index()
     {
         // DB::enableQueryLog();
-        if ($this->admin) {
+        if ($this->user->isAdmin()) {
             $suppliers = Supplier::Active()->get()->toArray();
-        } elseif ($this->userSetting['number']) {
-            $suppliers = Supplier::Active()->Where('supplier',$this->userSetting['number'])->get()->toArray();
+        } elseif ($this->user->getRoleId()) {
+            $suppliers = Supplier::Active()->Where('supplier',$this->user->getRoleId())->get()->toArray();
         } else {
             return $this->respondNotFound('Supplier Not Found');
         }
@@ -47,7 +46,7 @@ class SupplierController extends ApiController
 
     public function search($term)
     {
-        if($this->admin) {
+        if($this->user->isAdmin()) {
             $supplier = New Supplier();
             $suppliers = $supplier::Active()->Search($term)->get(['supplier', 'sup_name','contact_email','contact_name','contact_phone']);
             $data = array();
