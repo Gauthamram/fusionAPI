@@ -19,13 +19,11 @@
                         <tbody>
                         @foreach ($orders as $order)
                             <tr>
-                                <td>{{$order['order_no']}}</td>
+                                <td>{{$order['order_number']}}</td>
                                 <td>{{$order['supplier']}}</td>
                                 <td>{{$order['approval_date']}}</td>
                                 <td>
-                                    <!-- <a href="/portal/label/new/{{$order['order_no']}}/STNP">STNP</a><br/>
-                                    <a href="/portal/label/new/{{$order['order_no']}}/CRTN">Carton</a><br/> -->
-                                    <a class="btn btn-primary btn-sm" href="/portal/label/order/{{$order['order_no']}}">Labels</a><br/>
+                                    <a class="btn btn-primary btn-sm" href="/portal/label/order/{{$order['order_number']}}">Labels</a><br/>
                                 </td>
                             </tr>
                         @endforeach    

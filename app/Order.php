@@ -24,7 +24,7 @@ class Order extends Model
      */
     public function supplier()
     {
-    	return $this->belongsTo('App\Supplier','supplier');
+        return $this->belongsTo('App\Supplier', 'supplier');
     }
 
     
@@ -33,8 +33,8 @@ class Order extends Model
      * @param  [type] $query [description]
      * @return [type]        [description]
      */
-	public function scopeApproved($query)
-	{
-		$query->where('status','A');
-	}
+    public function scopeApproved($query)
+    {
+        $query->where('status', 'A');
+    }
 }

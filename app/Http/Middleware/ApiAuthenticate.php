@@ -9,7 +9,7 @@ use Closure;
 */
 class ApiAuthenticate
 {
-	/**
+    /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -19,23 +19,23 @@ class ApiAuthenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if($token = $request->session()->get('token')){
+        if ($token = $request->session()->get('token')) {
             try {
-                $response = app('Dingo\Api\Dispatcher')->raw()->get('auth/user',['token' => $token]);
-                if($response->getstatusCode() == 200){
+                $response = app('Dingo\Api\Dispatcher')->raw()->get('auth/user', ['token' => $token]);
+                if ($response->getstatusCode() == 200) {
                     $result = json_decode($response->getContent(), true);
-                    if(!$result['authuser']){
-                    	return redirect('login');
+                    if (!$result['authuser']) {
+                        return redirect('login');
                     }
-                }                 
+                }
             } catch (\Dingo\Api\Exception\InternalHttpException $e) {
-                return redirect('login');               
+                return redirect('login');
             }
-		} else {
-			return redirect('login');
-		}
-
-		\View::share('user', $result['authuser']);
+        } else {
+            return redirect('login');
+        }
+        
+        \View::share('user', $result['authuser']);
         return $next($request);
     }
 }

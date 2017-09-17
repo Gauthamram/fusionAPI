@@ -13,10 +13,10 @@ class Address extends Model
     protected $table = "addr";
     public $timestamps = false;
     /**
-	 * [$primaryKey description]
-	 * @var string
-	 */
-	protected $primaryKey = 'addr_key';
+     * [$primaryKey description]
+     * @var string
+     */
+    protected $primaryKey = 'addr_key';
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +31,7 @@ class Address extends Model
      */
     public function supplier()
     {
-    	$this->belongsTo('App\Supplier','key_value_1');
+        $this->belongsTo('App\Supplier', 'key_value_1');
     }
 
     /**
@@ -40,7 +40,8 @@ class Address extends Model
      * @param  [type] $type  [config value for the type passed]
      * @return [type]        [description]
      */
-    public function scopeType($query, $type){
-    	$query->Where('addr_type',$type);
+    public function scopeType($query, $type)
+    {
+        $query->Where('addr_type', $type);
     }
 }

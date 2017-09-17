@@ -12,7 +12,6 @@
                     <th>Quantity</th>
                     <th>Over Print</th>
                     <th>Sort Order Type</th>
-                    <th>Printer</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -40,12 +39,12 @@
                             <option value="L" <?php if((empty($input['sort_order_type'])) ? '' : $input['sort_order_type'] == 'L'){echo "selected";}?>>Loose</option>
                         </select>
                     </td>
-                    <td>
+                    <!-- <td>
                         <select class="form-control" name="data[{{$order['item']}}][printer]">
-                            <option value="S1" <?php if((empty($input['printer'])) ? '' : $input['printer'] == 'S1'){echo "selected";}?>>SATO 1</option>
-                            <option value="S2" <?php if((empty($input['printer'])) ? '' : $input['printer'] == 'S2'){echo "selected";}?>>SATO 2</option>
+                            // <option value="S1" <?php //if((empty($input['printer'])) ? '' : $input['printer'] == 'S1'){echo "selected";}?>>SATO 1</option>
+                            <option value="S2" <?php //if((empty($input['printer'])) ? '' : $input['printer'] == 'S2'){echo "selected";}?>>SATO 2</option>
                         </select>
-                    </td>
+                    </td> -->
                     <td><button type="button" class="btn btn-danger btn-sm" id="btn_delete"><i class="fa fa-times"></i> Delete
                             </button></td>
                 </tr>

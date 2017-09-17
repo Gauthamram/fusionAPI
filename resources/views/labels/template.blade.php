@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>   
     <link href="{{ asset('css/print.css') }}" rel="stylesheet" media="print" />
-    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/label.css') }}">   -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/label.css') }}" media="screen">
 </head>
 <body>
 	<div id="page">

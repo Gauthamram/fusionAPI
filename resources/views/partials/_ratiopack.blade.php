@@ -8,7 +8,7 @@
 		</div>
 		<div class="second-row">
 			<p>Size  {{$ratiopack['size']}}</p>
-			<p>Item  {{$ratiopack['itemnumber']}}</p>
+			<p>Item  {{$ratiopack['item']}}</p>
 		</div>
 		<div class="third-row">
 			<div class="barcode">
@@ -18,7 +18,7 @@
 		</div>
 		<div class="fourth-row">
 			<p>
-				{{$ratiopack['description1']." ".$ratiopack['description2']}}
+				{{$ratiopack['description']." ".$ratiopack['colour']." ".$ratiopack['size']}}
 			</p>
 		</div>
 	</div>

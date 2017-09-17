@@ -1,106 +1,107 @@
-/*!
-		 * Label css
-		 */
-		html {
-		  font-family: sans-serif;
-		  -webkit-text-size-adjust: 100%;
-		      -ms-text-size-adjust: 100%;
-		}
-		body {
-		  margin: 0;
-		}
+/*
+ * Label css
+ */
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
 
-		#page-sheet {
-			/*height:1200px;
-			width:816px;*/
-			width:396px;
-			height:559px;
-			margin:0 auto;
-		}
+#page-sheet {
+	/*height:1200px;
+	width:816px;*/
+	width:396px;
+	height:559px;
+	margin:0 auto;
+}
 
-		/*#page-sheet{
-			margin: 128px 22px;
-			overflow:hidden;
-		}*/
+/*#page-sheet{
+	margin: 128px 22px;
+	overflow:hidden;
+}*/
 
-		div.packlabel {
-			width:396px;
-			height:559px;
-			margin:10px 0px;
-			padding:0 5px;
-			display:inline;
-			float:left;
-		}
+div.packlabel {
+	width:396px;
+	height:559px;
+	margin:10px 0px;
+	padding:0 5px;
+	display:inline;
+	float:left;
+}
 
-		div.stickylabel {
-			width:144px;
-			height:144px;
-			margin:10px 5px;
-			display:inline;
-			float:left;
-		}
-		
-		.first-row {
-			overflow:auto;
-		}
+div.stickylabel {
+	width:144px;
+	height:144px;
+	margin:10px 5px;
+	display:inline;
+	float:left;
+}
 
-		.first-row span.title-pack,.first-row span.packtype{
-			display: inline;
-		  	width: 50%;
-		  	float:left;
-		}
+.first-row {
+	overflow:auto;
+}
 
-		.first-row span.title-pack p{
-			font-size: 20px;
-		}
-		.second-row p{
-			display: inline;
-		  	width: 40%;
-		  	float:left;
-		}
+.first-row span.title-pack,.first-row span.packtype{
+	display: inline;
+  	width: 50%;
+  	float:left;
+}
 
-		.first-row span {
-			display:block;
-			float:none;
-			width:80%;
-		}
+.first-row span.title-pack p{
+	font-size: 20px;
+}
+.second-row p{
+	display: inline;
+  	width: 40%;
+  	float:left;
+}
 
-		.third-row {
-			margin:10px 0px;
-		}
+.first-row span {
+	display:block;
+	float:none;
+	width:80%;
+}
 
-		.fourth-row {
-			margin:10px 0px;
-		}
+.third-row {
+	margin:10px 0px;
+}
 
-		span.title p {
-			font-size: 18px;
-			font-weight: bold;
-			text-align: center;
-			margin: 5px 0px;
-		}
+.fourth-row {
+	margin:10px 0px;
+}
 
-		span.packtype {
-			font-size:125px;
-			text-align: center;
-		}
+span.title p {
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	margin: 5px 0px;
+}
 
-		.second-row p{
-			margin: 3px 0;
-		    font-size: 16px;
-		}
+span.packtype {
+	font-size:125px;
+	text-align: center;
+}
 
-		.second-row {
-		width:100%;
-		overflow: auto;
-		}
+.second-row p{
+	margin: 3px 0;
+    font-size: 16px;
+}
 
-		.stickylabel .barcode img{
-			width:100%;
-			height:25px;
-		}
+.second-row {
+width:100%;
+overflow: auto;
+}
 
-		.stickylabel .fourth-row p{
-			margin:3px 0;
-			font-size: 12px;
-		}
+.stickylabel .barcode img{
+	width:100%;
+	height:25px;
+}
+
+.stickylabel .fourth-row p{
+	margin:3px 0;
+	font-size: 12px;
+}
+>>>>>>> 3fd0f3e4d589729d43d8b77c40c4c1ac747041a0
