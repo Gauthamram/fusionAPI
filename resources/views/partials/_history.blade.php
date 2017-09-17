@@ -48,7 +48,7 @@
                             </tr>
                         @endforeach
                         </tbody>
-                    @endrole    
+                    @endif    
                     </table>
                 </div>
             </div>
