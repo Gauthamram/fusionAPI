@@ -1,8 +1,8 @@
 <?php
 return [
-	'setting_keys' => [
-		'supplier' => ['number','creator'],
-		'warehouse' => ['number','creator'],
-		'administrator' => ['creator']
+	'roles' => [
+		'supplier',
+		'warehouse',
+		'administrator'
 	] 
 ];

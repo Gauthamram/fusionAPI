@@ -13,7 +13,7 @@ use Dingo\Api\Exception\InternalHttpException;
 
 class HomeController extends Controller
 {
-	use Helpers;
+    use Helpers;
 
     public function __construct()
     {
@@ -22,38 +22,37 @@ class HomeController extends Controller
     
     /**
      * [dashboard]
-     * @param  Request $request 
-     * @return 
+     * @param  Request $request
+     * @return
      */
     public function dashboard(Request $request)
     {
-    	
-    	try {
-	    		$token = $request->session()->get('token');
-	            $response = $this->api->raw()->get('orders/pending',['token' => $token]);
-                $tickets_response = $this->api->raw()->get('ticket/tips/printed',['token' => $token]);
+        try {
+            $token = $request->session()->get('token');
+            $response = $this->api->raw()->get('orders/pending', ['token' => $token]);
+            $tickets_response = $this->api->raw()->get('ticket/tips/printed', ['token' => $token]);
 
-	            if($response->getstatusCode() == 200){
-	                $result = json_decode($response->getContent(),true);
-	            }
-
-                if($tickets_response->getstatusCode() == 200){
-                    $order_result = json_decode($tickets_response->getContent(),true);    
-                }                 
-            } catch (InternalHttpException $e) {
-                $error = json_decode($e->getResponse()->getContent(),true);
-                $errors = [$error['data']['message']];
-                return view('dashboard')->withErrors($errors)->withTitle('dashboard');              
+            if ($response->getstatusCode() == 200) {
+                $result = json_decode($response->getContent(), true);
             }
+
+            if ($tickets_response->getstatusCode() == 200) {
+                $order_result = json_decode($tickets_response->getContent(), true);
+            }
+        } catch (InternalHttpException $e) {
+            $error = json_decode($e->getResponse()->getContent(), true);
+            $errors = [$error['data']['message']];
+            return view('dashboard')->withErrors($errors)->withTitle('dashboard');
+        }
                       
-    	//return dshboard with user details 
-    	//summary of all
-    	return view('dashboard',['orders' => $result['data'],'labels' => $order_result['data']])->withTitle('dashboard'); 
+        //return dshboard with user details
+        //summary of all
+        return view('dashboard', ['orders' => $result['data'],'labels' => $order_result['data']])->withTitle('dashboard');
     }
 
     /**
      * [orderlist]
-     * @param  Request $request 
+     * @param  Request $request
      * @return
      */
     
@@ -63,10 +62,11 @@ class HomeController extends Controller
         //get user account from user
         $currentuser = JWTAuth::parseToken()->authenticate();
         
-        if ($request->isMethod('post')){
-
+        if ($request->isMethod('post')) {
             $credentials = $request->only(
-            'email', 'password', 'password_confirmation'
+            'email',
+                'password',
+                'password_confirmation'
             );
 
             $validator = Validator::make($credentials, [
@@ -74,26 +74,25 @@ class HomeController extends Controller
                 'password' => 'required|confirmed|min:6',
             ]);
 
-            if($validator->fails()) {
+            if ($validator->fails()) {
                 $errors = $validator->errors()->all();
                 return view('account.edit')->withErrors($errors)->withTitle('setting');
             }
 
             try {
-
                 $token = $request->session()->get('token');
                 dd($token);
                 $request->merge(['token' => $token]);
-                $response = $this->api->raw()->post('auth/reset',$request->only( 'email', 'password', 'password_confirmation','token'));
-                if($response->getstatusCode() == 200){
-                    $result = json_decode($response->getContent(),true);
+                $response = $this->api->raw()->post('auth/reset', $request->only('email', 'password', 'password_confirmation', 'token'));
+                if ($response->getstatusCode() == 200) {
+                    $result = json_decode($response->getContent(), true);
                 }
                  
-                dd($result); 
+                dd($result);
             } catch (InternalHttpException $e) {
-                $error = json_decode($e->getResponse()->getContent(),true);
+                $error = json_decode($e->getResponse()->getContent(), true);
                 $errors = [$error['data']['message']];
-                return view('account.edit')->withErrors($errors)->withTitle('dashboard');               
+                return view('account.edit')->withErrors($errors)->withTitle('dashboard');
             }
         } else {
             return view('account.edit')->withTitle('setting');

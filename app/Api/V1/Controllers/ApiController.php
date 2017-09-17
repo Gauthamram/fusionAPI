@@ -6,15 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Response;
-use App\Fusion\Traits\UserSettingTrait;
-use App\Fusion\Interfaces\iUserSetting;
 
-class ApiController extends Controller implements iUserSetting
+class ApiController extends Controller
 {
-    use UserSettingTrait;
     protected $admin = false;
     
-	/**
+    /**
      * [$statuscode description]
      * @var integer
      */
@@ -22,12 +19,11 @@ class ApiController extends Controller implements iUserSetting
 
     /**
      * [getStatusCode description]
-     * @return [integer] 
+     * @return [integer]
      */
     public function getStatusCode()
     {
-    	return $this->statuscode;
-
+        return $this->statuscode;
     }
 
     /**
@@ -36,15 +32,15 @@ class ApiController extends Controller implements iUserSetting
      */
     public function setStatusCode($value)
     {
-    	$this->statuscode = $value;
+        $this->statuscode = $value;
 
-    	return $this;
+        return $this;
     }
 
     /**
      * [responseNotFound Forbidden]
-     * @param  string $message 
-     * @return [type]          
+     * @param  string $message
+     * @return [type]
      */
     public function respondForbidden($message = 'Forbidden')
     {
@@ -53,17 +49,17 @@ class ApiController extends Controller implements iUserSetting
 
     /**
      * [responseNotFound description]
-     * @param  string $message 
-     * @return [type]          
+     * @param  string $message
+     * @return [type]
      */
     public function respondNotFound($message = 'Not found')
     {
-    	return $this->setStatusCode(404)->respondWithError($message);
+        return $this->setStatusCode(404)->respondWithError($message);
     }
 
     /**
      * [responsePreConditionFailed description]
-     * @param  string $message 
+     * @param  string $message
      * @return [type]
      */
     public function respondPreConditionFailed($message = 'Precondition failed')
@@ -78,7 +74,7 @@ class ApiController extends Controller implements iUserSetting
      */
     public function respond($data, $headers=[])
     {
-    	return Response::json($data, $this->getStatusCode(), $headers);
+        return Response::json($data, $this->getStatusCode(), $headers);
     }
 
     /**
@@ -95,18 +91,18 @@ class ApiController extends Controller implements iUserSetting
             ]
         ]);
     }
-        /**
+    /**
      * @param  string
      * @return object
      */
     public function respondWithError($message)
     {
-    	return $this->respond([
-    		'data' => [
+        return $this->respond([
+            'data' => [
                 'status' => 'error',
-    			'message' => $message,
-    			'status_code' => $this->getStatusCode()
-    		]
-    	]);
+                'message' => $message,
+                'status_code' => $this->getStatusCode()
+            ]
+        ]);
     }
 }

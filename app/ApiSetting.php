@@ -20,12 +20,12 @@ class ApiSetting extends Model
      */
     protected $fillable = ['keys','val','user_id'];
 
-	/**
-	 * [user description]
-	 * @return [type] [description]
-	 */
+    /**
+     * [user description]
+     * @return [type] [description]
+     */
     public function user()
     {
-    	return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User');
     }
 }

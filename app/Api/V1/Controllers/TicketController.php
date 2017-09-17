@@ -19,11 +19,10 @@ use App\Fusion\Transformers\TicketTransformer;
 use App\Fusion\Transformers\TicketPrintedTransformer;
 use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Support\Facades\DB;
-use App\Fusion\UserSetting;
 
 class TicketController extends ApiController
 {
-	protected $ticketTransformer;
+    protected $ticketTransformer;
 
     /**
      * [__construct]
@@ -31,12 +30,12 @@ class TicketController extends ApiController
      * @param userSetting              $userSetting              [instance of usersetting]
      * @param ticketPrintedTransformer $ticketPrintedTransformer [instance of ticketprintedtransformer]
      */
-    public function __construct(ticketTransformer $ticketTransformer, userSetting $userSetting, ticketPrintedTransformer $ticketPrintedTransformer)
+    public function __construct(ticketTransformer $ticketTransformer, ticketPrintedTransformer $ticketPrintedTransformer)
     {
         $this->ticketTransformer = $ticketTransformer;
-        $this->ticketHelper = New ticketHelper($userSetting);
+        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->ticketHelper = new ticketHelper();
         $this->ticketPrintedTransformer = $ticketPrintedTransformer;
-        $this->setUserSetting($userSetting);
     }
 
     /**
@@ -60,26 +59,26 @@ class TicketController extends ApiController
     public function printed()
     {
         // DB::enableQueryLog();
-        if($this->warehouse) {
-            $ticket = New TipsTicketPrinted();
+        if ($this->user->isWarehouse()) {
+            $ticket = new TipsTicketPrinted();
         } else {
-            $ticket = New TicketPrinted();
+            $ticket = new TicketPrinted();
         }
-    	$supplier = New Supplier();    
+        $supplier = new Supplier();
         
 
-    	if($this->admin || ($this->warehouse)) {
-    		// $tickets = $ticket->printedlastmonth()->get()->toArray();
+        if ($this->user->isAdmin() || $this->user->isWarehouse()) {
+            // $tickets = $ticket->printedlastmonth()->get()->toArray();
             $tickets = $ticket->take(10)->get()->toArray();
             // dd(DB::getQueryLog());
-    	} else {
-    		$tickets = Cache::remember("'".$this->supplierid."-tickets",Carbon::now()->addMinutes(60),function() {
-    			return Supplier::findOrFail($this->supplierid)->tickets()->OrderBy('createdate','asc')->take(10)->get()->toArray();
-    		});	
-    	}
+        } else {
+            $tickets = Cache::remember("'".$this->supplierid."-tickets", Carbon::now()->addMinutes(60), function () {
+                return Supplier::findOrFail($this->supplierid)->tickets()->OrderBy('createdate', 'asc')->take(10)->get()->toArray();
+            });
+        }
         
-    	$data = $this->ticketPrintedTransformer->transformCollection($tickets);
-    	return $this->respond(['data' => $data]);
+        $data = $this->ticketPrintedTransformer->transformCollection($tickets);
+        return $this->respond(['data' => $data]);
     }
 
     /**
@@ -89,7 +88,7 @@ class TicketController extends ApiController
      */
     // public function create_tickets_printed($data)
     // {
-    // 	$validator = Validator::make($request->all(), [
+    //  $validator = Validator::make($request->all(), [
     //         'orderno' => 'required|integer',
     //         'sticky' => 'required|integer|nullable',
     //         'swing' => 'required|integer|nullable',
@@ -120,9 +119,9 @@ class TicketController extends ApiController
     //     TicketsPrinted::reguard();
         
     //     if ($insert){
-    //     	return $this->respondSuccess('Update Successfull');
+    //      return $this->respondSuccess('Update Successfull');
     //     } else {
-    //     	return $this->repondWithError('Ticket could not be create at this moment. Please try again later.');
+    //      return $this->repondWithError('Ticket could not be create at this moment. Please try again later.');
     //     }
     // }
 
@@ -133,7 +132,6 @@ class TicketController extends ApiController
      */
     public function create(Request $request)
     {
-        
         $validator = Validator::make($request->all(), [
             'item' => 'required|integer',
             'qty'  => 'required|integer',
@@ -146,14 +144,14 @@ class TicketController extends ApiController
 
         $currentuser = JWTAuth::parseToken()->authenticate();
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             dd($validator->errors()->all());
             throw new ValidationHttpException($validator->errors()->all());
         }
 
         TicketRequest::unguard();
         // $id = TicketRequest::max('ticketrequestid');
-        $ticket = New TicketRequest();
+        $ticket = new TicketRequest();
         $ticket->ticket_type_id = Config::get("ticket.request_default.".$request->ticket_type);
         $ticket->item = $request->item;
         $ticket->qty = $request->qty + $request->over_print_qty;
@@ -173,7 +171,7 @@ class TicketController extends ApiController
         $insert = $ticket->save();
         TicketRequest::reguard();
         
-        if ($insert){
+        if ($insert) {
             return $this->respondSuccess('Update Successfull');
         } else {
             return $this->repondWithError('Ticket could not be create at this moment. Please try again later.');
@@ -190,5 +188,4 @@ class TicketController extends ApiController
         
         return $this->respond(['data' => $data]);
     }
-
 }

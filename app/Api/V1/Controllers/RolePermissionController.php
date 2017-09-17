@@ -15,7 +15,6 @@ use Log;
 
 class RolePermissionController extends ApiController
 {
-
     public function index()
     {
         return response()->json(['auth'=>Auth::user(), 'users'=>User::all()]);
@@ -47,14 +46,14 @@ class RolePermissionController extends ApiController
         $role->description = $request->input('description');
         $role->save();
 
-        return response()->json("created");       
+        return response()->json("created");
     }
 
     public function getRoles(Request $request)
     {
         $roles = Role::all();
 
-        if($roles) {
+        if ($roles) {
             return  $this->respond(['data' => $roles]);
         } else {
             return $this->respondNotFound('No Roles Found');
@@ -69,10 +68,11 @@ class RolePermissionController extends ApiController
         $viewUsers->description = $request->input('description');
         $viewUsers->save();
 
-        return response()->json("created");       
+        return response()->json("created");
     }
 
-    public function assignRole(Request $request){
+    public function assignRole(Request $request)
+    {
         $user = User::where('email', '=', $request->input('email'))->first();
 
         $role = Role::where('name', '=', $request->input('role'))->first();
@@ -82,12 +82,13 @@ class RolePermissionController extends ApiController
         return response()->json("created");
     }
 
-    public function attachPermission(Request $request){
+    public function attachPermission(Request $request)
+    {
         $role = Role::where('name', '=', $request->input('role'))->first();
         $permission = Permission::where('name', '=', $request->input('name'))->first();
         $role->attachPermission($permission);
 
-        return response()->json("created");       
+        return response()->json("created");
     }
 
     public function ability(Request $request)
@@ -96,5 +97,4 @@ class RolePermissionController extends ApiController
         $user = User::find($this->currentuser->id);
         dd($user->roles);
     }
-
 }

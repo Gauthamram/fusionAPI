@@ -22,31 +22,32 @@
             <div class="panel-body">
                 <ul class="nav nav-pills">  
                 <!-- Admin and Warehouse restricted -->
-                @role(['admin','warehouse'])  
+                @if(($user['roles'] == 'administrator') || ($user['roles'] == 'warehouse')) 
                     <li class="active"><a href="#carton" data-toggle="tab">Carton</a>
                     </li>
                     <li class=""><a href="#stnp" data-toggle="tab">Sticky No Price</a>
                     </li>
-                @endrole
+                @endif
+                
                 <!-- Admin and supplier restricted -->
-                @role(['admin','supplier'])
+                @if($user['roles'] != 'warehouse')
                     <li class=""><a href="#supplier" data-toggle="tab">Supplier</a>
                     </li>
-                @endrole
+                @endif
                 </ul>
 
                 <div class="tab-content">
                 <!-- Admin and supplier restricted -->
-                    @role(['admin','supplier'])
+                    @if($user['roles'] != 'warehouse')
                         @include('labels.supplier_tab')
-                    @endrole
+                    @endif
                     <!-- End restriction -->
 
                     <!-- Admin and warehouse restricted -->
-                    @role(['admin','warehouse'])
+                    @if(($user['roles'] == 'administrator') || ($user['roles'] == 'warehouse'))
                         @include('labels.carton_tab')
                         @include('labels.sticky_tab')
-                @endrole    
+                    @endif    
                 </div>          
             </div>
         </div>

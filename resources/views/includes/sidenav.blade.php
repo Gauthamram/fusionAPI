@@ -10,24 +10,24 @@
                     <li>
                         <a @if (substr($title,6) == 'orders') class="active-menu" @endif href="/portal/label/orders">Orders</a>
                     </li>
-                     @role(['admin','supplier'])
+                    @if(($user['roles'] == 'administrator') || ($user['roles'] == 'warehouse'))
                     <li>
                         <a @if (substr($title,6) == 'carton') class="active-menu" @endif href="/portal/label/carton/search">Individual Carton</a>
                     </li>
-                    @endrole
+                    @endif
                     <li>
                         <a @if (substr($title,6) == 'history') class="active-menu" @endif href="/portal/label/history">History</a>
                     </li>
                 </ul>
             </li>
-            @role('admin')
+            @if($user['roles'] == 'administrator')
             <li>
                 <a @if ($title == 'users') class="active-menu" @endif href="/portal/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a>
             </li>
             <li>
                 <a @if ($title == 'suppliers') class="active-menu" @endif href="/portal/suppliers"><i class="fa fa-truck" aria-hidden="true"></i> Suppliers</a>
             </li>
-            @endrole
+            @endif
             <li>
                 <a @if ($title == 'setting') class="active-menu" @endif id="recovery" data-fancybox data-type="ajax" data-src="/portal/user/recovery/{{$user['id']}}" href="javascript:;"><i class="fa fa-cog" aria-hidden="true"></i>Setting</a>
             </li>

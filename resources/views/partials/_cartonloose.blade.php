@@ -2,7 +2,7 @@
 <?php $i=0; ?>
 <div id="page-sheet">
 	@foreach ($data['cartonloose'] as $cartonloose)
-		@foreach ($cartonloose['carton'] as $carton)
+		@foreach ($cartonloose['carton_details'] as $carton)
 		<?php $i++; ?>
 			@if(($i == 5) || ($loop->parent->first))
 				<div class="packlabel">
@@ -11,28 +11,28 @@
 			@endif
 					<div class="first-row">
 						<span class="title">
-							<p>Order No  {{$cartonloose['ordernumber']}}</p>
+							<p>Order No  {{$cartonloose['order_number']}}</p>
 							<p>Style No  {{$cartonloose['style']}}</p>
-							<p>Size  {{$cartonloose['size']}}</p>
+							<p>Size  {{$cartonloose['item_size']}}</p>
 							<p>Colour  {{$cartonloose['colour']}}</p>
-							<p>QTY  {{$cartonloose['cartonquantity']}}</p>
+							<p>QTY  {{$cartonloose['quantity']}}</p>
 						</span>
 					</div>
 					<div class="second-row">	
 						<p>Item No</p>
-						<p>{{$cartonloose['itemnumber']}}</p>
+						<p>{{$cartonloose['item']}}</p>
 						<p>Description</p>
 						<p>{{$cartonloose['description']}}</p>
 					</div>
 					<div class="third-row">
 						<div class="barcode">
-							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($cartonloose['productindicatorbarcode'], 'C128',2,100)}}" alt="barcode" /><br/>
-							{{$cartonloose['productindicator']}}
+							{{$cartonloose['product_indicator_number']}}
+							{{$cartonloose['product_indicator_barcode']}}
 						</div>
 					</div>
 					<div class="fourth-row">
 						<div class="barcode">
-							<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($carton['barcode'], 'C128',2,100)}}" alt="barcode" /><br/>
+							{{$carton['barcode']}}
 							{{$carton['number']}}
 						</div>
 					</div>

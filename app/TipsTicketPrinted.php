@@ -32,21 +32,22 @@ class TipsTicketPrinted extends Model
      */
     public function order()
     {
-        return $this->belongsTo('App\Order','order_no');
+        return $this->belongsTo('App\Order', 'order_no');
     }
 
 
     /**
      * [scopePrintedLastMonth only ticket from last month till now]
-     * @param  [querybuilder] $query 
+     * @param  [querybuilder] $query
      * @return [type]        [description]
      */
-    public function scopePrintedLastMonth($query){
+    public function scopePrintedLastMonth($query)
+    {
         $today = new Carbon();
         $start = $today->subMonth()->startOfMonth()->format('m/d/Y');
         
         $end = $today->addMonths(2)->format('m/d/Y');
-        return $query->where('createdate','>=',$start)
-                     ->where('createdate','<=',$end);
+        return $query->where('createdate', '>=', $start)
+                     ->where('createdate', '<=', $end);
     }
 }

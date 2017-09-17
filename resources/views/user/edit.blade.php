@@ -33,16 +33,16 @@
                     <form action="{{action('UserController@create')}}" method="post">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                     <input name="token" type="hidden" id="token" value="{{$token}}" />
-                    @role('admin')
+                    @if($user['roles'] == 'administrator')
                         <div class="form-group">
                             <label>Role</label>
                             <select class="form-control" name="role" id="role">
-                            @foreach($roles as $role)
-                                <option value="{{$role['name']}}" <?php if((empty($input['role'])) ? '' : $input['role'] == "{{$role['name']}}"){echo "selected";}?>>{{$role['display_name']}}</option>
-                            @endforeach
+                            <!--@foreach($roles as $role)
+                                 <option value="$role['name']" <?php //if((empty($input['role'])) ? '' : $input['role'] == "{{$role['name']}}"){echo "selected";}?>></option> 
+                            @endforeach-->
                             </select>
                         </div>
-                    @endrole
+                    @endif
                         <div class="form-group">
                             <label>Name *</label>
                             <input class="form-control" name="name" type="text" value="{{(empty($input['name'])) ? '' : $input['name']}}" required>

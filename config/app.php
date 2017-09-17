@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'development'),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -162,12 +162,9 @@ return [
          */
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
         Yajra\Oci8\Oci8ServiceProvider::class,
         anlutro\LaravelSettings\ServiceProvider::class,
-        Milon\Barcode\BarcodeServiceProvider::class,
-        Barryvdh\Cors\ServiceProvider::class,
-        Barryvdh\Snappy\ServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class
     ],
 
     /*
@@ -214,20 +211,14 @@ return [
         'Storage' => Illuminate\Support\Facades\Storage::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
-        'View' => Illuminate\Support\Facades\View::class,        
+        'View' => Illuminate\Support\Facades\View::class,
 
         /*
          * Third Party Facades...
          */
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Setting' => anlutro\LaravelSettings\Facade::class,
-        // 'LabelHelper' => App\Helpers\LabelHelper::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-        'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
-        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
-        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
-        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'Setting' => anlutro\LaravelSettings\Facade::class
     ],
 
 ];

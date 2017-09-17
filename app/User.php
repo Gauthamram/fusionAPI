@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+// use Zizaco\Entrust\Traits\EntrustUserTrait;
+use App\Fusion\Interfaces\UserInterface;
 
-class User extends Authenticatable
+class User extends Authenticatable implements UserInterface
 {
-    use Notifiable,EntrustUserTrait;
+    use Notifiable;
     /**
      * [$table set name of the table]
      * @var string
@@ -20,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password','roles','role_id'
     ];
 
     /**
@@ -42,12 +43,26 @@ class User extends Authenticatable
         $this->attributes['password'] = \Hash::make($value);
     }
 
-    /**
-     * [apiSettings relationship ]
-     * @return [type] [description]
-     */
-    public function apiSettings()
+    public function isAdmin()
     {
-        return $this->hasMany('App\ApiSetting');
+        if ($this->attributes['roles'] == 'administrator') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isWarehouse()
+    {
+        if ($this->attributes['roles'] == 'warehouse') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getRoleId()
+    {
+        return $this->attributes['role_id'];
     }
 }

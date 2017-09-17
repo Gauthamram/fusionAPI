@@ -34,7 +34,7 @@
                         <tbody>
                         @foreach ($orders as $order) 
                             <tr>
-                                <td>{{$order['order_no']}}</td>
+                                <td>{{$order['order_number']}}</td>
                                 <td>{{$order['supplier']}}</td>
                                 <td>{{$order['approval_date']}}</td>
                             </tr>

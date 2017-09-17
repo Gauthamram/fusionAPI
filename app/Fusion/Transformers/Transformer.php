@@ -2,15 +2,20 @@
 
 namespace App\Fusion\Transformers;
 
+use JWTAuth;
 
 abstract class Transformer
 {
-	
-	public function TransformCollection(array $items)
-	{
-		return array_map([$this, 'transform'], $items);
-	}
+    protected $user;
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+    public function TransformCollection(array $items)
+    {
+        return array_map([$this, 'transform'], $items);
+    }
 
 
-	public abstract function transform($item);
+    abstract public function transform($item);
 }

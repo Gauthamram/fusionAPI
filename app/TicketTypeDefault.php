@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class TicketTypeDefault extends Model
 {
     /**
-	 * [$primaryKey description]
-	 * @var string
-	 */
-	protected $primaryKey = 'ticket_type_id';
+     * [$primaryKey description]
+     * @var string
+     */
+    protected $primaryKey = 'ticket_type_id';
 
-	//turn off timestamps
-	public $timestamps = false;
+    //turn off timestamps
+    public $timestamps = false;
     /**
      * [$table description]
      * @var string
@@ -24,9 +24,8 @@ class TicketTypeDefault extends Model
      * [printer for the defaults]
      * @return [type] [description]
      */
-	public function printer()
-	{
-		return $this->hasOne('App\TicketTypePrinter','ticket_type_id');    	
-	}
-
+    public function printer()
+    {
+        return $this->hasOne('App\TicketTypePrinter', 'ticket_type_id');
+    }
 }
