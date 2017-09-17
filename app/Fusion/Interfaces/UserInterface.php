@@ -1,11 +1,11 @@
 <?php
 namespace App\Fusion\Interfaces;
 
-interface UserInterface {
-	
-	public function isAdmin();
+interface UserInterface
+{
+    public function isAdmin();
 
-	public function isWarehouse();
+    public function isWarehouse();
 
-	public function getRoleId();
+    public function getRoleId();
 }

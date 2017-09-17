@@ -45,7 +45,7 @@ class User extends Authenticatable implements UserInterface
 
     public function isAdmin()
     {
-        if ($this->attributes['roles'] == 'administrator'){
+        if ($this->attributes['roles'] == 'administrator') {
             return true;
         } else {
             return false;
@@ -54,7 +54,7 @@ class User extends Authenticatable implements UserInterface
 
     public function isWarehouse()
     {
-        if ($this->attributes['roles'] == 'warehouse'){
+        if ($this->attributes['roles'] == 'warehouse') {
             return true;
         } else {
             return false;

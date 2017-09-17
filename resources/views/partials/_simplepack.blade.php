@@ -8,7 +8,7 @@
 			</div>
 			<div class="second-row">
 				<p>Size  {{$simplepack['size']}}</p>
-				<p>Item  {{$simplepack['itemnumber']}}</p>
+				<p>Item  {{$simplepack['item']}}</p>
 			</div>
 			<div class="third-row">
 				<div class="barcode">
@@ -18,7 +18,7 @@
 			</div>
 			<div class="fourth-row">
 				<p>
-					{{$simplepack['description1']." ".$simplepack['description2']}}
+					{{$simplepack['description']." ".$simplepack['colour']." ".$simplepack['size']}}
 				</p>
 			</div>
 		</div>

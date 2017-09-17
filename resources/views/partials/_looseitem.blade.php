@@ -8,17 +8,16 @@
 		</div>
 		<div class="second-row">
 			<p>Size  {{$looseitem['size']}}</p>
-			<p>Item  {{$looseitem['itemnumber']}}</p>
+			<p>Item  {{$looseitem['item']}}</p>
 		</div>
 		<div class="third-row">
 			<div class="barcode">
-				<img src="data:image/png;base64,{{DNS1D::getBarcodePNG($looseitem['barcode'], 'UPCA',1,60)}}" alt="barcode" />
 				{{$looseitem['barcode']}}
 			</div>
 		</div>
 		<div class="fourth-row">
 			<p>
-				{{$looseitem['description1']." ".$looseitem['description2']}}
+				{{$looseitem['description']." ".$looseitem['colour']." ".$looseitem['size']}}
 			</p>
 		</div>
 	</div>

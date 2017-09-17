@@ -71,7 +71,7 @@ class AuthController extends ApiController
 
             User::unguard();
 
-            $user = New User;
+            $user = new User;
             $user->name = $request->name;
             $user->password = $request->password;
             $user->remember_token = '1';
@@ -84,16 +84,15 @@ class AuthController extends ApiController
                 $request->merge(['supplier' => 0]);
             }
 
-            if(!$user->id) {
+            if (!$user->id) {
                 return $this->response->error('could_not_create_user', 500);
             } else {
-
                 $keys = Config::get("'user.setting_keys.".$request->role."'");
 
                 foreach ($keys as $value) {
                     if ($request->has($value)) {
-                        $apisetting = ApiSetting::create(['keys' => $value, 'val'=>$request->input($value),'user_id'=>$user->id]);        
-                    }    
+                        $apisetting = ApiSetting::create(['keys' => $value, 'val'=>$request->input($value),'user_id'=>$user->id]);
+                    }
                 }
 
                 $role = Role::where('name', '=', $request->input('role'))->first();
@@ -101,19 +100,18 @@ class AuthController extends ApiController
                 $user->roles()->attach($role->id);
             }
 
-            if(!$apisetting->user_id){
+            if (!$apisetting->user_id) {
                 return $this->response->error('could not setup setting for the user', 500);
             }
 
-            if($hasToReleaseToken) {
+            if ($hasToReleaseToken) {
                 return $this->login($request);
             }
             
-            return $this->response->created();    
+            return $this->response->created();
         } else {
             return $this->respondForbidden('Forbidden from performing this action');
         }
-        
     }
 
     public function recovery(Request $request)
@@ -122,7 +120,7 @@ class AuthController extends ApiController
             'email' => 'required|email'
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             throw new ValidationHttpException($validator->errors()->all());
         }
 
@@ -140,9 +138,12 @@ class AuthController extends ApiController
 
     public function reset(Request $request)
     {
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
             $credentials = $request->only(
-            'email', 'password', 'password_confirmation', 'token'
+            'email',
+                'password',
+                'password_confirmation',
+                'token'
             );
 
             $validator = Validator::make($credentials, [
@@ -152,12 +153,11 @@ class AuthController extends ApiController
                 'password_confirmation' => 'required',
             ]);
 
-            if($validator->fails()) {
+            if ($validator->fails()) {
                 throw new ValidationHttpException($validator->errors()->all());
             }
             
             $response = Password::reset($credentials, function ($user, $password) {
-                
                 $user->password = $password;
                 $user->save();
             });
@@ -168,6 +168,6 @@ class AuthController extends ApiController
                 default:
                     return $this->response->error('could_not_reset_password', 500);
             }
-        } 
+        }
     }
 }

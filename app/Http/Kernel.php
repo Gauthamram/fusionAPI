@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:30,1',
+            'throttle:60,1',
             'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
         ],
     ];

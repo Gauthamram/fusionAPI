@@ -25,20 +25,20 @@ class OrderController extends ApiController
 
     public function __construct(orderTransformer $orderTransformer, orderdetailTransformer $orderdetailTransformer)
     {
-        $this->labelHelper = New LabelHelper();
+        $this->labelHelper = new LabelHelper();
         $this->orderTransformer = $orderTransformer;
         $this->orderdetailTransformer = $orderdetailTransformer;
-        $this->user = JWTAuth::parseToken()->authenticate();    
+        $this->user = JWTAuth::parseToken()->authenticate();
     }
 
     /**
      * List all pending orders that needs to be listed for printing or printed orders from the supplier
      */
     public function index($status = '')
-    {    
-        $orders = $this->labelHelper->allOrders($status);   
-		$data = $this->orderTransformer->transformCollection($orders);
-        return 	$this->respond(['data' => $data]);	 					 			
+    {
+        $orders = $this->labelHelper->allOrders($status);
+        $data = $this->orderTransformer->transformCollection($orders);
+        return    $this->respond(['data' => $data]);
     }
 
     public function order($order_no)
@@ -57,10 +57,10 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
-                $orders = $this->labelHelper->OrderDetails($order_no,'orderdetails');
+                $orders = $this->labelHelper->OrderDetails($order_no, 'orderdetails');
                 $data = $this->orderdetailTransformer->transformCollection($orders);
                 return $this->respond(['data' => $data]);
-            }  else {
+            } else {
                 return $this->respondForbidden('Forbidden from performing this action');
             }
         } else {
@@ -69,7 +69,7 @@ class OrderController extends ApiController
     }
 
     /**
-     * 
+     *
      * [supplier details]
      * @param  [integer] $supplier [description]
      * @return [type]           [description]
@@ -80,7 +80,7 @@ class OrderController extends ApiController
             if ($this->labelHelper->supplierCheck($supplier)) {
                 $response = $this->labelHelper->OrderSupplier($supplier, $type);
                 return $this->respond(['data' => $response]);
-            } else{
+            } else {
                 return $this->respondNotFound('Supplier Not Found');
             }
         } else {
@@ -90,10 +90,10 @@ class OrderController extends ApiController
 
     /**
      * [cartonpack]
-     * @param  [int] $order_no 
-     * @return [type]           
+     * @param  [int] $order_no
+     * @return [type]
      */
-    public function cartonpack(Request $request,$order_no = '',$item_number = '',$listing = false)
+    public function cartonpack(Request $request, $order_no = '', $item_number = '', $listing = false)
     {
         //if it is post we should return db result by setting listing flag to true else return label data
         if ($request->isMethod('post')) {
@@ -103,11 +103,9 @@ class OrderController extends ApiController
         }
 
         if ($order = $this->labelHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()))
-            {
-                if($this->labelHelper->EDICheck($order_no))
-                {
-                    $response = $this->labelHelper->OrderCartonpack($order_no,$item_number,$label);
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
+                if ($this->labelHelper->EDICheck($order_no)) {
+                    $response = $this->labelHelper->OrderCartonpack($order_no, $item_number, $listing);
                     return $this->respond(['data' => $response]);
                 } else {
                     return $this->respondPreConditionFailed('EDI Order check failed');
@@ -125,7 +123,7 @@ class OrderController extends ApiController
      * @param  [type] $order_no [description]
      * @return [type]           [description]
      */
-    public function cartonloose(Request $request,$order_no = '',$item_number = '',$listing = false)
+    public function cartonloose(Request $request, $order_no = '', $item_number = '', $listing = false)
     {
         //if it is post we should return db result by setting listing flag to true else return label data
         if ($request->isMethod('post')) {
@@ -137,7 +135,7 @@ class OrderController extends ApiController
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
                 if ($this->labelHelper->EDICheck($order_no)) {
-                    $response = $this->labelHelper->OrderCartonloose($order_no,$item_number,$listing);
+                    $response = $this->labelHelper->OrderCartonloose($order_no, $item_number, $listing);
                     return $this->respond(['data' => $response]);
                 } else {
                     return $this->respondPreConditionFailed('EDI Order check failed');
@@ -148,7 +146,6 @@ class OrderController extends ApiController
         } else {
             return $this->respondNotFound('Order Not Found');
         }
-        
     }
 
     /**
@@ -160,9 +157,9 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                $response = $this->labelHelper->OrderSticky($order_no,'RatioPack');
+                $response = $this->labelHelper->OrderSticky($order_no, 'RatioPack');
                 return $this->respond(['data' => $response]);
-            }  else {
+            } else {
                 return $this->respondForbidden('Forbidden from performing this action');
             }
         } else {
@@ -179,9 +176,9 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                $response = $this->labelHelper->OrderSticky($order_no,'LooseItem');
+                $response = $this->labelHelper->OrderSticky($order_no, 'LooseItem');
                 return $this->respond(['data' => $response]);
-            }  else {
+            } else {
                 return $this->respondForbidden('Forbidden from performing this action');
             }
         } else {
@@ -198,9 +195,9 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                $response = $this->labelHelper->OrderSticky($order_no,'SimplePack');
+                $response = $this->labelHelper->OrderSticky($order_no, 'SimplePack');
                 return $this->respond(['data' => $response]);
-            }  else {
+            } else {
                 return $this->respondForbidden('Forbidden from performing this action');
             }
         } else {
@@ -217,9 +214,9 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($this->user->isAdmin()) || ($this->user->isWarehouse())) {
-                $response = $this->labelHelper->OrderSticky($order_no,'sticky');
+                $response = $this->labelHelper->OrderSticky($order_no, 'sticky');
                 return $this->respond(['data' => $response]);
-            }  else {
+            } else {
                 return $this->respondForbidden('Forbidden from performing this action');
             }
         } else {

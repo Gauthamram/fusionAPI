@@ -1,25 +1,26 @@
 <?php
 
 namespace App\Fusion\Commands;
+
 use Config;
 use App\User;
 
 class Sql
 {
-  protected $user;
+    protected $user;
     /**
      * [__construct]
      */
     public function __construct(User $user)
     {
-      $this->user = $user;
+        $this->user = $user;
     }
     /**
      * Get Sql QUery based on the string
      */
-    public function GetSql($string, $status, $type = 'Tickets'){
-
-      switch ($string) {
+    public function GetSql($string, $status, $type = 'Tickets')
+    {
+        switch ($string) {
         case 'AllOrders':
           $sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, ordhead.ORIG_APPROVAL_DATE as approved_date,cgl_tickets_printed.reprint_required, ordhead.status
               from ordhead
@@ -33,21 +34,21 @@ class Sql
                   inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')."
                   inner join sups on sups.supplier = ordhead.supplier";
 
-          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())){
-            $sql .= " and ordhead.supplier = :supplier";
-          } 
+          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())) {
+              $sql .= " and ordhead.supplier = :supplier";
+          }
 
-          $sql .= " where ordloc.QTY_Ordered > 0 and (cgl_tickets_printed.reprint_required = 'Y'"; 
+          $sql .= " where ordloc.QTY_Ordered > 0 and (cgl_tickets_printed.reprint_required = 'Y'";
 
-          if (!$status){
-            $sql .= " or cgl_tickets_printed.reprint_required = 'N')";    
+          if (!$status) {
+              $sql .= " or cgl_tickets_printed.reprint_required = 'N')";
           } else {
-            $sql .= ")";
+              $sql .= ")";
           }
 
           $sql .= " or (cgl_tickets_printed.order_no is null and ordhead.app_datetime is null )
               AND (ordhead.otb_eow_date between sysdate AND sysdate + cgl_tickets_leadtime.leaddays ) 
-              order by ordhead.order_no"; 
+              order by ordhead.order_no";
 
 
           break;
@@ -58,22 +59,22 @@ class Sql
                   inner join ordloc on ordhead.order_no = ordloc.order_no 
                   inner join sups on sups.supplier = ordhead.supplier ";
 
-          //if admin or warehouse no restriction on supplier else apply user supplier number to restrict what they can see       
-          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())){
-            $sql .= "inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')." and ordhead.supplier = :supplier";
-          } 
+          //if admin or warehouse no restriction on supplier else apply user supplier number to restrict what they can see
+          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())) {
+              $sql .= "inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')." and ordhead.supplier = :supplier";
+          }
 
           $sql .= " where ordloc.QTY_Ordered > 0 ";
 
-          if(($this->user->isAdmin()) || ($this->user->isWarehouse())){
-            $sql .= " and (ordhead.status = 'A' or ordhead.status = 'C')";
+          if (($this->user->isAdmin()) || ($this->user->isWarehouse())) {
+              $sql .= " and (ordhead.status = 'A' or ordhead.status = 'C')";
           } else {
-            $sql .= " and (ordhead.status = 'A')";
+              $sql .= " and (ordhead.status = 'A')";
           }
 
           $sql .= " and ordhead.order_no = :order_no";
              
-          break;  
+          break;
 
         //External Ticket - Supplier Details Sql
         case 'Supplier':
@@ -85,15 +86,15 @@ class Sql
               "' inner join country on addr.country_id = country.country_id";
         
         //If not admin restrict by supplier orders
-        if (!$admin){
-          $sql .= " where sups.supplier = :supplier";
+        if (!$admin) {
+            $sql .= " where sups.supplier = :supplier";
         }
 
         break;
 
         //External Ticket - CartonPack Sql
         case 'CartonPack':
-          $sql = "SELECT ordloc.order_no as order_number,PackStyle.Style, ordsku.pickup_no as pickNumber,ordloc.item,  ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location,
+          $sql = "SELECT ordloc.order_no as order_number, PackStyle.Style, ordsku.pickup_no as pack_type, ordloc.item,  ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location,
           item_master.item_desc as description, Groups.Group_Name, Deps.Dept_Name as department_name, Class.Class_Name, SubClass.Sub_Name as sub_class_name, ordhead.EDI_PO_IND as edi_po_index, 'CartonPack' as carton_type
           from ordhead
           inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
@@ -106,11 +107,11 @@ class Sql
           inner join ( select pack_no, max(item_parent) as Style from packitem group by pack_no ) PackStyle on ordloc.item = PackStyle.pack_no
           where ordloc.order_no = :order_no";
 
-          if($type){
-            $sql .= " AND ordloc.item = :item_number";
-          } 
+          if ($type) {
+              $sql .= " AND ordloc.item = :item_number";
+          }
 
-          $sql .= " Order by  ordloc.Order_No , ordsku.pickup_no, ordloc.item"; 
+          $sql .= " Order by  ordloc.Order_No , ordsku.pickup_no, ordloc.item";
         break;
         
         //External Ticket - Carton Simple Loose Pack
@@ -127,9 +128,9 @@ class Sql
           left join diff_ids sizeDiff on item_master.diff_2 = sizeDiff.diff_id and sizeDiff.diff_type = 'S' 
           where ordhead.order_no = :order_no  and ordloc.QTY_Ordered > 0";
 
-          if($type){
-            $sql .= " AND ordloc.item = :item_number";
-          } 
+          if ($type) {
+              $sql .= " AND ordloc.item = :item_number";
+          }
           
           $sql .= " UNION 
           select ordhead.Order_No , ordsku.item, item.item_parent as style, sizeDiff.Diff_Desc, 
@@ -142,22 +143,22 @@ class Sql
           inner join packitem on ordloc.item = packitem.pack_no 
           inner join item_master item on packitem.item = item.item 
           left join diff_ids colour on item.diff_1 = colour.diff_id and colour.diff_type = 'C' 
-          left join diff_ids sizeDiff on item.diff_2 = sizeDiff.diff_id and sizeDiff.diff_type = 'S'"; 
+          left join diff_ids sizeDiff on item.diff_2 = sizeDiff.diff_id and sizeDiff.diff_type = 'S'";
           
           $sql .= " where ordhead.order_no  = :order_no  and ordloc.QTY_Ordered > 0";
           
-          if($type){
-            $sql .= " AND ordloc.item = :item_number";
+          if ($type) {
+              $sql .= " AND ordloc.item = :item_number";
           }
         break;
 
-        //External Ticket - Ratio Packs    
+        //External Ticket - Ratio Packs
         case 'RatioPack':
-        $sql = "SELECT item_master.item_parent AS Style, ColourSEQ.Display_Seq AS ColourSEQ, SizeSEQ.Display_Seq AS SizeSEQ, 'RatioPack' AS TYPE, ordhead.order_no
-              ,ordloc.item AS OrderItem,item_master.item AS Item,Pack.item_desc AS PackDescription,item_master.short_desc AS description,Barcodes.Item AS barcode
-              ,Barcodes.Item_Number_Type AS barcodetype,ColourDiff.Diff_Desc AS colour,SizeDiff.DIFF_DESC AS item_size,coalesce(stockroomlocator.UDA_TEXT, '0000') AS
-              stockroomlocator,division.div_name,coalesce(AUD.UNIT_RETAIL, -1) AS AUD,coalesce(NZD.Unit_Retail, -1) AS NZD,ordloc.qty_ordered,Packitem.Pack_Qty
-              ,ordsku.earliest_ship_date,coalesce(sup_attributes.Pre_Ticket_Ind, 'N') AS Pre_Ticket_Ind,0 AS SimplePackItemTicketsReq,AUStore.Channel_Id
+        $sql = "SELECT item_master.item_parent AS Style, ColourSEQ.Display_Seq AS Colour_SEQ, SizeSEQ.Display_Seq AS Size_SEQ, 'RatioPack' AS TYPE, ordhead.order_no as order_number
+              ,ordloc.item AS Order_Item,item_master.item AS Item,Pack.item_desc AS Pack_Description,item_master.short_desc AS description,Barcodes.Item AS barcode
+              ,Barcodes.Item_Number_Type AS barcode_type,ColourDiff.Diff_Desc AS colour,SizeDiff.DIFF_DESC AS item_size,coalesce(stockroomlocator.UDA_TEXT, '0000') AS
+              stockroomlocator, division.div_name as division_name, coalesce(AUD.UNIT_RETAIL, -1) AS AUD, coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered as quantity, Packitem.Pack_Quantity
+              , ordsku.earliest_ship_date, coalesce(sup_attributes.Pre_Ticket_Ind, 'N') AS Pre_Ticket_Ind,0 AS SimplePackItemTicketsReq,AUStore.Channel_Id
             FROM ordhead
             LEFT JOIN sup_attributes ON ordhead.supplier = sup_attributes.supplier
           INNER JOIN ordloc ON ordloc.order_no = ordhead.order_no
@@ -182,16 +183,16 @@ class Sql
                     AND AUD.item = item_master.item
             LEFT JOIN item_zone_price NZD ON NZD.ZONE_GROUP_ID = 1 AND NZD.zone_id = 4 AND NZD.ITEM = item_master.item
           WHERE ordhead.order_no = :order_no AND ordloc.qty_ordered > 0
-          ORDER BY Style, ColourSEQ, SizeSEQ ";   
+          ORDER BY Style, ColourSEQ, SizeSEQ ";
             break;
 
-        //External Ticket - Loose Items Sql      
+        //External Ticket - Loose Items Sql
         case 'LooseItem':
-        $sql = "SELECT item_master.item_parent AS Style, ColourSEQ.Display_Seq AS ColourSEQ, SizeSEQ.Display_Seq AS SizeSEQ, 'LooseItem' AS TYPE
-              ,ordhead.order_no, ordsku.item AS OrderItem, item_master.item AS Item, '' AS PackDescription, item_master.short_desc AS description
-              ,Barcodes.Item AS barcode, Barcodes.Item_Number_Type AS barcodetype, ColourDiff.Diff_Desc AS colour, SizeDiff.DIFF_DESC AS item_size
-            ,coalesce(stockroomlocator.UDA_TEXT, '0000') AS stockroomlocator, division.div_name, coalesce(AUD.UNIT_RETAIL, -1) AS AUD,
-            coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered, 1 AS Pack_Qty, ordsku.earliest_ship_date,
+        $sql = "SELECT item_master.item_parent AS Style, ColourSEQ.Display_Seq AS Colour_SEQ, SizeSEQ.Display_Seq AS Size_SEQ, 'LooseItem' AS TYPE
+              ,ordhead.order_no as order_number, ordsku.item AS Order_Item, item_master.item, '' AS Pack_Description, item_master.short_desc AS description
+              ,Barcodes.Item AS barcode, Barcodes.Item_Number_Type AS barcode_type, ColourDiff.Diff_Desc AS colour, SizeDiff.DIFF_DESC AS item_size
+            ,coalesce(stockroomlocator.UDA_TEXT, '0000') AS stockroomlocator, division.div_name as division_name, coalesce(AUD.UNIT_RETAIL, -1) AS AUD,
+            coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered as quantity, 1 AS Pack_Quantity, ordsku.earliest_ship_date,
             coalesce(sup_attributes.Pre_Ticket_Ind, 'N') AS Pre_Ticket_Ind, 0 AS SimplePackItemTicketsReq, AUStore.Channel_Id
             FROM ordhead
             LEFT JOIN sup_attributes ON ordhead.supplier = sup_attributes.supplier
@@ -220,12 +221,12 @@ class Sql
 
         //External Ticket - Simple Packs
         case 'SimplePack':
-        $sql = "SELECT item_master.item_parent AS Style, ColourSEQ.Display_Seq AS ColourSEQ, SizeSEQ.Display_Seq AS SizeSEQ, 'SimplePack' AS TYPE
-              ,ordhead.order_no, ordsku.item AS OrderItem, item_master.item AS Item, Pack.item_desc AS PackDescription, item_master.short_desc AS description
-              ,PackBarcodes.Item AS PackBarcode, PackBarcodes.Item_Number_Type AS Packbarcodetype, Barcodes.Item AS barcode
-              ,Barcodes.Item_Number_Type AS barcodetype, ColourDiff.Diff_Desc AS colour, SizeDiff.DIFF_DESC AS item_size
-              ,coalesce(stockroomlocator.UDA_TEXT, 'PACK') AS stockroomlocator, division.div_name, coalesce(AUD.UNIT_RETAIL, -1) AS AUD
-            ,coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered, Packitem.Pack_Qty, ordsku.earliest_ship_date
+        $sql = "SELECT item_master.item_parent AS Style, ColourSEQ.Display_Seq AS Colour_SEQ, SizeSEQ.Display_Seq AS Size_SEQ, 'SimplePack' AS TYPE
+              ,ordhead.order_no as order_number, ordsku.item AS OrderItem, item_master.item AS Item, Pack.item_desc AS Pack_Description, item_master.short_desc AS description
+              ,PackBarcodes.Item AS Pack_Barcode, PackBarcodes.Item_Number_Type AS Pack_barcode_type, Barcodes.Item AS barcode
+              ,Barcodes.Item_Number_Type AS barcode_type, ColourDiff.Diff_Desc AS colour, SizeDiff.DIFF_DESC AS item_size
+              ,coalesce(stockroomlocator.UDA_TEXT, 'PACK') AS stockroomlocator, division.div_name as division_name, coalesce(AUD.UNIT_RETAIL, -1) AS AUD
+            ,coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered as quantity, Packitem.Pack_Qty as pack_quantity, ordsku.earliest_ship_date
             ,coalesce(sup_attributes.Pre_Ticket_Ind, 'N') AS Pre_Ticket_Ind
             ,coalesce(decode(sup_traits_matrix.sup_trait, 9008, 1, 0), 0) AS SimplePackItemTicketsReq, AUStore.Channel_Id
             FROM ordhead
@@ -255,7 +256,7 @@ class Sql
             LEFT JOIN item_zone_price NZD ON NZD.ZONE_GROUP_ID = 1 AND NZD.zone_id = 4 AND NZD.ITEM = item_master.item
           WHERE ordhead.order_no = :order_no
           ORDER BY Style, ColourSEQ, SizeSEQ ";
-        break;      
+        break;
         
         //Warehouse Ticket - Orderdetails
         case 'orderdetails':
@@ -376,13 +377,13 @@ class Sql
                      inner  join ordhead on Ordloc.Order_No = ordhead.order_no 
                      inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item 
                      inner join item_master on item_master.item = ordloc.item and ( item_master.pack_ind = 'N' or item_master.simple_pack_ind = 'Y' ) 
-                where ordsku.PickUP_LOC is null and ordloc.QTY_Ordered > 0 and ticket_request.order_no = :order_no)"; 
+                where ordsku.PickUP_LOC is null and ordloc.QTY_Ordered > 0 and ticket_request.order_no = :order_no)";
         break;
         
         case 'ticketcartonpack':
-          $sql = "select  ticket_request.Create_DateTime, ticket_request.Ticket_Type_ID,  ticket_request.Order_No , ticket_request.Printer_Type, 
-                  PackStyle.Style, ordsku.pickup_no, ticket_request.item,  ticket_request.QTY as PrintQTY, ordloc.QTY_Ordered, ordsku.PickUP_LOC, 
-                  item_master.item_desc, Groups.Group_Name, Deps.Dept_Name, Class.Class_Name, SubClass.Sub_Name, ordloc.loc_type, ordloc.location 
+          $sql = "select ticket_request.Create_DateTime, ticket_request.Ticket_Type_ID, ticket_request.Order_No as order_number, ticket_request.Printer_Type, 
+                  PackStyle.Style, ordsku.pickup_no as pack_type, ticket_request.item, ticket_request.QTY as overprint_quantity, ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location, 
+                  item_master.item_desc as description, Groups.Group_Name, Deps.Dept_Name as department_name, Class.Class_Name, SubClass.Sub_Name as sub_class_name, ordloc.loc_type as location_type, ordloc.location 
                   from ticket_request 
                   inner join ordloc on ticket_request.order_no = ordloc.order_no and ordloc.item = ticket_request.item and ordloc.location = ticket_request.location
                   inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item 
@@ -397,10 +398,10 @@ class Sql
         break;
 
         case 'ticketcartonloose':
-          $sql = " select ticket_request.Create_DateTime, ticket_request.Order_No , ticket_request.Ticket_Type_ID,   ticket_request.Printer_Type, 
+          $sql = " select ticket_request.Create_DateTime, ticket_request.Order_No as order_number, ticket_request.Ticket_Type_ID,   ticket_request.Printer_Type, 
                   ticket_request.item, item_master.item_parent as style, sizeDiff.Diff_Desc as item_size, 
-                  colour.diff_desc  as Colour, ticket_request.QTY as PrintQTY, ordloc.QTY_Ordered, ordsku.PickUP_LOC, 
-                  item_master.item_desc , ordhead.pickup_date, ordhead.Supplier 
+                  colour.diff_desc  as Colour, ticket_request.QTY as overprint_quantity, ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location, 
+                  item_master.item_desc as description, ordhead.pickup_date, ordhead.Supplier 
                   from ticket_request 
                   inner join ordhead on ticket_request.order_no = ordhead.order_no 
                   inner join ordloc on ticket_request.order_no = ordloc.order_no and ordloc.item = ticket_request.item and ordloc.location = ticket_request.location 
@@ -429,9 +430,9 @@ class Sql
         break;
         default:
           $sql = "SELECT * FROM DUAL";
-          break;      
+          break;
       }
 
-    return $sql;
+        return $sql;
     }
-} 
+}
