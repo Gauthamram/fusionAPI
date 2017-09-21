@@ -38,7 +38,7 @@ class OrderController extends ApiController
     {
         $orders = $this->labelHelper->allOrders($status);
         $data = $this->orderTransformer->transformCollection($orders);
-        return    $this->respond(['data' => $data]);
+        return $this->respond(['data' => $data]);
     }
 
     public function order($order_no)

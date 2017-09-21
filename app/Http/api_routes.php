@@ -2,13 +2,19 @@
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function ($api) {
+//include middleware only if it is not test
+$middleware = [ ];
+if (!App::runningUnitTests()) {
+    $middleware[] = 'api';
+}
+
+$api->version('v1', function ($api) use ($middleware) {
     $api->post('auth/login', 'App\Api\V1\Controllers\AuthController@login');
     $api->post('auth/reset', 'App\Api\V1\Controllers\AuthController@reset');
     // $api->get('label/order/{orderno}', 'App\Api\V1\Controllers\LabelController@create');
     
     //protected routes and throttled
-    $api->group(['middleware' => ['api']], function ($api) {
+    $api->group(['middleware' => $middleware], function ($api) {
         $api->get('orders/{status?}', 'App\Api\V1\Controllers\OrderController@index');
         $api->get('order/{order_no}', 'App\Api\V1\Controllers\OrderController@order');
         $api->get('order/details/{order_no}', 'App\Api\V1\Controllers\OrderController@orderdetails');
@@ -60,6 +66,6 @@ $api->version('v1', function ($api) {
     });
 
     // $api->get('reset_password/{token}',['as' => 'password.reset',function() {
-    // 	//do something here
+    //  //do something here
     // }]);
 });

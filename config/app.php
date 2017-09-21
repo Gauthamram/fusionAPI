@@ -164,7 +164,8 @@ return [
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Yajra\Oci8\Oci8ServiceProvider::class,
         anlutro\LaravelSettings\ServiceProvider::class,
-        Barryvdh\Cors\ServiceProvider::class
+        Barryvdh\Cors\ServiceProvider::class,
+        Laravel\Tinker\TinkerServiceProvider::class
     ],
 
     /*

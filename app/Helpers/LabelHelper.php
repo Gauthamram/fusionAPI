@@ -47,10 +47,10 @@ class LabelHelper extends Printer
             $cartonpacks = DB::select($cartonpack_query, [':order_no'=>$order_no,'item_number'=>$item_number]);
         }
         
-        if ($listing) {
+        if ($listing || (empty($cartonpacks))) {
             return $cartonpacks;
         } else {
-            $cartons = $this->CartonDetails($cartonloose);
+            $cartons = $this->CartonDetails($cartonpacks);
             return $cartons;
         }
     }
@@ -71,7 +71,7 @@ class LabelHelper extends Printer
             $cartonloose = DB::select($cartonloose_query, [':order_no'=>$order_no,'item_number'=>$item_number]);
         }
       
-        if ($listing) {
+        if ($listing || (empty($cartonloose))) {
             return $cartonloose;
         } else {
             $cartons = $this->CartonDetails($cartonloose);
