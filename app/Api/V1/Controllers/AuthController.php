@@ -53,6 +53,8 @@ class AuthController extends ApiController
             return $this->response->error('could_not_create_token', 500);
         }
 
+        Log::info('User logged in : '.$request->email);
+
         return response()->json(compact('token'));
     }
 
@@ -98,6 +100,8 @@ class AuthController extends ApiController
                 return $this->login($request);
             }
             
+            Log::info('New user created by Admin: '.$this->user->email);
+
             return $this->response->created();
         } else {
             return $this->respondForbidden('Forbidden from performing this action');
@@ -120,6 +124,7 @@ class AuthController extends ApiController
 
         switch ($response) {
             case Password::RESET_LINK_SENT:
+                Log::info('User password recovery email sent to : '.$request->email);
                 return $this->response->noContent();
             case Password::INVALID_USER:
                 return $this->response->errorNotFound();
@@ -146,11 +151,13 @@ class AuthController extends ApiController
             if ($validator->fails()) {
                 throw new ValidationHttpException($validator->errors()->all());
             }
-            
+
             $response = Password::reset($credentials, function ($user, $password) {
                 $user->password = $password;
                 $user->save();
             });
+
+            Log::info('User password reset by : '.$request->email);
 
             switch ($response) {
                 case Password::PASSWORD_RESET:

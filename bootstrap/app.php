@@ -44,8 +44,8 @@ $app->singleton(
 );
 
 $app->configureMonologUsing(function ($monolog) {
-    $monolog->pushHandler(new StreamHandler(storage_path('logs/laravel_info.log'), Logger::INFO));
-    $monolog->pushHandler(new StreamHandler(storage_path('logs/laravel_warning.log'), Logger::WARNING));
+    $monolog->pushHandler(new RotatingFileHandler(storage_path('logs/laravel_info.log'), 7, Logger::INFO));
+    $monolog->pushHandler(new RotatingFileHandler(storage_path('logs/laravel_warning.log'), 7, Logger::WARNING));
 });
 /*
 |--------------------------------------------------------------------------
