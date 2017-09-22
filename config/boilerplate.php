@@ -13,7 +13,7 @@ return [
     |
     */
     'signup_fields' => [
-        'name', 'email', 'password','roles','role_id'
+        'name', 'email', 'password','role','role_id'
     ],
 
     /*
@@ -29,8 +29,23 @@ return [
         'name' => 'required',
         'email' => 'required|email|unique:cgl_api_users',
         'password' => 'required|min:6',
-        'roles' => 'required|min:3',
+        'role' => 'required|min:5',
         'role_id' => 'required|numeric'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Roles Rules
+    |--------------------------------------------------------------------------
+    |
+    | Here you can put the roles you want to use for the user instance
+    | in the signup method.
+    |
+    */
+    'user_roles' => [
+        'admin' => 'administrator',
+        'warehouse' => 'warehouse',
+        'supplier' => 'supplier'
     ],
 
     /*

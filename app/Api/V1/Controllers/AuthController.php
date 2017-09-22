@@ -5,6 +5,7 @@ namespace App\Api\V1\Controllers;
 use JWTAuth;
 use Validator;
 use Config;
+use Log;
 use App\User;
 use App\Role;
 use App\ApiSetting;
@@ -55,9 +56,11 @@ class AuthController extends ApiController
         return response()->json(compact('token'));
     }
 
-    public function signup(Request $request, userSetting $userSetting)
+    public function signup(Request $request)
     {
-        if ($userSetting->isAdmin()) {
+        $this->user = JWTAuth::parseToken()->authenticate();
+
+        if ($this->user->isAdmin()) {
             $signupFields = Config::get('boilerplate.signup_fields');
             $hasToReleaseToken = Config::get('boilerplate.signup_token_release');
 
@@ -69,6 +72,12 @@ class AuthController extends ApiController
                 throw new ValidationHttpException($validator->errors()->all());
             }
 
+            //role is Admin set role id to 0
+            if ($request->role == Config::get('boilerplate.user_roles.admin')) {
+                $role_id = 0;
+            } else {
+                $role_id = $request->role_id;
+            }
             User::unguard();
 
             $user = new User;
@@ -76,32 +85,13 @@ class AuthController extends ApiController
             $user->password = $request->password;
             $user->remember_token = '1';
             $user->email = $request->email;
+            $user->roles = $request->role;
+            $user->role_id = $role_id;
             $user->save();
             User::reguard();
 
-
-            if (!$request->has('supplier')) {
-                $request->merge(['supplier' => 0]);
-            }
-
             if (!$user->id) {
                 return $this->response->error('could_not_create_user', 500);
-            } else {
-                $keys = Config::get("'user.setting_keys.".$request->role."'");
-
-                foreach ($keys as $value) {
-                    if ($request->has($value)) {
-                        $apisetting = ApiSetting::create(['keys' => $value, 'val'=>$request->input($value),'user_id'=>$user->id]);
-                    }
-                }
-
-                $role = Role::where('name', '=', $request->input('role'))->first();
-                //$user->attachRole($request->input('role'));
-                $user->roles()->attach($role->id);
-            }
-
-            if (!$apisetting->user_id) {
-                return $this->response->error('could not setup setting for the user', 500);
             }
 
             if ($hasToReleaseToken) {

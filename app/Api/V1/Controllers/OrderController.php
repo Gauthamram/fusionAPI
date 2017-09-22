@@ -3,19 +3,19 @@
 namespace App\Api\V1\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use JWTAuth;
+use Cache;
+use Config;
+use Log;
+use Carbon\Carbon;
+use App\Http\Requests;
 use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Cache;
-use Carbon\Carbon;
 use App\Helpers\labelHelper;
 use App\Helpers\OrderHelper;
 use App\Fusion\Transformers\OrderTransformer;
 use App\Fusion\Transformers\OrderDetailTransformer;
-use Config;
 
 class OrderController extends ApiController
 {
@@ -57,7 +57,7 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
-                $orders = $this->labelHelper->OrderDetails($order_no, 'orderdetails');
+                $orders = $this->labelHelper->orderDetails($order_no, 'orderdetails');
                 $data = $this->orderdetailTransformer->transformCollection($orders);
                 return $this->respond(['data' => $data]);
             } else {
@@ -65,26 +65,6 @@ class OrderController extends ApiController
             }
         } else {
             return $this->respondNotFound('Order Not Found');
-        }
-    }
-
-    /**
-     *
-     * [supplier details]
-     * @param  [integer] $supplier [description]
-     * @return [type]           [description]
-     */
-    public function supplier($supplier, $type = 'Tickets')
-    {
-        if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
-            if ($this->labelHelper->supplierCheck($supplier)) {
-                $response = $this->labelHelper->OrderSupplier($supplier, $type);
-                return $this->respond(['data' => $response]);
-            } else {
-                return $this->respondNotFound('Supplier Not Found');
-            }
-        } else {
-            return $this->respondForbidden('Forbidden from performing this action');
         }
     }
 
@@ -104,8 +84,8 @@ class OrderController extends ApiController
 
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                if ($this->labelHelper->EDICheck($order_no)) {
-                    $response = $this->labelHelper->OrderCartonpack($order_no, $item_number, $listing);
+                if ($this->labelHelper->ediCheck($order_no)) {
+                    $response = $this->labelHelper->orderCartonpack($order_no, $item_number, $listing);
                     return $this->respond(['data' => $response]);
                 } else {
                     return $this->respondPreConditionFailed('EDI Order check failed');
@@ -134,8 +114,8 @@ class OrderController extends ApiController
 
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                if ($this->labelHelper->EDICheck($order_no)) {
-                    $response = $this->labelHelper->OrderCartonloose($order_no, $item_number, $listing);
+                if ($this->labelHelper->ediCheck($order_no)) {
+                    $response = $this->labelHelper->orderCartonloose($order_no, $item_number, $listing);
                     return $this->respond(['data' => $response]);
                 } else {
                     return $this->respondPreConditionFailed('EDI Order check failed');
@@ -157,7 +137,7 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                $response = $this->labelHelper->OrderSticky($order_no, 'RatioPack');
+                $response = $this->labelHelper->orderSticky($order_no, 'RatioPack');
                 return $this->respond(['data' => $response]);
             } else {
                 return $this->respondForbidden('Forbidden from performing this action');
@@ -176,7 +156,7 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                $response = $this->labelHelper->OrderSticky($order_no, 'LooseItem');
+                $response = $this->labelHelper->orderSticky($order_no, 'LooseItem');
                 return $this->respond(['data' => $response]);
             } else {
                 return $this->respondForbidden('Forbidden from performing this action');
@@ -195,7 +175,7 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
-                $response = $this->labelHelper->OrderSticky($order_no, 'SimplePack');
+                $response = $this->labelHelper->orderSticky($order_no, 'SimplePack');
                 return $this->respond(['data' => $response]);
             } else {
                 return $this->respondForbidden('Forbidden from performing this action');
@@ -214,7 +194,7 @@ class OrderController extends ApiController
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
             if (($this->user->isAdmin()) || ($this->user->isWarehouse())) {
-                $response = $this->labelHelper->OrderSticky($order_no, 'sticky');
+                $response = $this->labelHelper->orderSticky($order_no, 'sticky');
                 return $this->respond(['data' => $response]);
             } else {
                 return $this->respondForbidden('Forbidden from performing this action');

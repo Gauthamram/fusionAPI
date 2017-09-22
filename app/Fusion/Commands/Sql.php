@@ -86,7 +86,7 @@ class Sql
               "' inner join country on addr.country_id = country.country_id";
         
         //If not admin restrict by supplier orders
-        if (!$admin) {
+        if (!$this->user->isAdmin()) {
             $sql .= " where sups.supplier = :supplier";
         }
 

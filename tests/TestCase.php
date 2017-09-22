@@ -14,7 +14,7 @@ class TestCase extends BaseTestCase
 
     public function setToken()
     {
-        $response = $this->Json('POST', 'api/auth/login', ['email' => 'gthm.ram@gmail.com', 'password' => '123456789']);
+        $response = $this->Json('POST', '/api/auth/login', ['email' => 'gthm.ram@gmail.com', 'password' => '123456789']);
         
         $content = json_decode($response->getContent());
         
