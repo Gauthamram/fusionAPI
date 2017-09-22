@@ -1,4 +1,6 @@
 <?php
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,10 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->configureMonologUsing(function ($monolog) {
+    $monolog->pushHandler(new StreamHandler(storage_path('logs/laravel_info.log'), Logger::INFO));
+    $monolog->pushHandler(new StreamHandler(storage_path('logs/laravel_warning.log'), Logger::WARNING));
+});
 /*
 |--------------------------------------------------------------------------
 | Return The Application
