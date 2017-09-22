@@ -26,7 +26,7 @@ class Printer
      * Returns boolean based on order existence
      * @param int order number
      */
-    public function OrderCheck($order_no)
+    public function orderCheck(int $order_no)
     {
         if ($cache_order = Cache::get("'".$order_no."-order'", false)) {
             return $cache_order;
@@ -43,10 +43,30 @@ class Printer
     }
 
     /**
+     * Returns boolean based on supplier existence
+     * @param int order number
+     */
+    public function supplierCheck(int $supplier)
+    {
+        if ($cache_supplier = Cache::get("'".$supplier."-supplier'", false)) {
+            return $cache_supplier;
+        } else {
+            $supplier = Supplier::find($supplier);
+            if ($supplier) {
+                Cache::put("'".$supplier."-supplier", $supplier, 60);
+                return $supplier;
+            } else {
+                Cache::put("'".$supplier."-supplier", false, 60);
+                return false;
+            }
+        }
+    }
+
+    /**
    * Returns boolean based on CheckPackIndicator
    * @param object ticket object
    */
-    public function CheckPackIndicator($ticket)
+    public function checkPackIndicator($ticket)
     {
         $packindicator = 'none';
 
@@ -66,7 +86,7 @@ class Printer
      * Returns carton details as an array
      * @param objectcollection carton objects from the collections
      */
-    public function CartonDetails($cartons)
+    public function cartonDetails($cartons)
     {
         $cartondetails = array();
         $cartons = Carton::hydrate($cartons);
@@ -86,7 +106,7 @@ class Printer
      * Returns StickyDetails of the order
      * @param objectcollection sticky objects from the collection
      */
-    public function StickyDetails($stickies)
+    public function stickyDetails($stickies)
     {
         $stickydetails = array();
         $stickies = Sticky::hydrate($stickies);
@@ -103,7 +123,7 @@ class Printer
      * Returns boolean based on checkEDI
      * @param  int order number
      */
-    public function EDICheck($order_no)
+    public function ediCheck($order_no)
     {
         if ($cache_value = Cache::get("'".$order_no."-isEDI", false)) {
             return $cache_value;

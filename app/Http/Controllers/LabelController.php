@@ -165,9 +165,6 @@ class LabelController extends Controller
             //         ),
             //     ),
             //   );
-    
-            // $pdf = PDF::loadView('labels.template',['data' => $data,'format' => 'carton'])->setPaper('a6');
-            // return $pdf->download('invoice.pdf');
             return view('labels.template', ['data' => $data,'format' => 'carton'])->withTitle('label_carton');
         } catch (InternalHttpException $e) {
             $error = json_decode($e->getResponse()->getContent(), true);
@@ -261,8 +258,6 @@ class LabelController extends Controller
                     'barcode'       => '400001561726',
                     'barcodetype' => 'ean13'
                     );
-            // $pdf = PDF::loadView('labels.template',['data' => $data,'format' => 'sticky']);
-            // return $pdf->download('invoice.pdf');
             return view('labels.template', ['data' => $data,'format' => 'sticky'])->withTitle('label_carton');
         } catch (InternalHttpException $e) {
             $error = json_decode($e->getResponse()->getContent(), true);
@@ -339,9 +334,6 @@ class LabelController extends Controller
             //     ),
             //   );
             return view('labels.template', ['data' => $data,'format' => 'carton'])->withTitle('label_carton');
-            // $pdf = PDF::loadView('labels.template',['data' => $data,'format' => 'carton'])->setPaper('a6');
-                  // return $pdf->download('invoice.pdf');
-                // return view('labels.template',['data' => $data,'format' => 'carton'])->withTitle('label_carton');
         } catch (Exception $e) {
             $error = json_decode($e->getResponse()->getContent(), true);
             $errors = [$error['data']['message']];

@@ -86,7 +86,7 @@ class Sql
               "' inner join country on addr.country_id = country.country_id";
         
         //If not admin restrict by supplier orders
-        if (!$admin) {
+        if (!$this->user->isAdmin()) {
             $sql .= " where sups.supplier = :supplier";
         }
 
@@ -157,7 +157,7 @@ class Sql
         $sql = "SELECT item_master.item_parent AS Style, ColourSEQ.Display_Seq AS Colour_SEQ, SizeSEQ.Display_Seq AS Size_SEQ, 'RatioPack' AS TYPE, ordhead.order_no as order_number
               ,ordloc.item AS Order_Item,item_master.item AS Item,Pack.item_desc AS Pack_Description,item_master.short_desc AS description,Barcodes.Item AS barcode
               ,Barcodes.Item_Number_Type AS barcode_type,ColourDiff.Diff_Desc AS colour,SizeDiff.DIFF_DESC AS item_size,coalesce(stockroomlocator.UDA_TEXT, '0000') AS
-              stockroomlocator, division.div_name as division_name, coalesce(AUD.UNIT_RETAIL, -1) AS AUD, coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered as quantity, Packitem.Pack_Quantity
+              stockroomlocator, division.div_name as division_name, coalesce(AUD.UNIT_RETAIL, -1) AS AUD, coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered as quantity, Packitem.PACK_QTY as Pack_Quantity
               , ordsku.earliest_ship_date, coalesce(sup_attributes.Pre_Ticket_Ind, 'N') AS Pre_Ticket_Ind,0 AS SimplePackItemTicketsReq,AUStore.Channel_Id
             FROM ordhead
             LEFT JOIN sup_attributes ON ordhead.supplier = sup_attributes.supplier
@@ -183,7 +183,7 @@ class Sql
                     AND AUD.item = item_master.item
             LEFT JOIN item_zone_price NZD ON NZD.ZONE_GROUP_ID = 1 AND NZD.zone_id = 4 AND NZD.ITEM = item_master.item
           WHERE ordhead.order_no = :order_no AND ordloc.qty_ordered > 0
-          ORDER BY Style, ColourSEQ, SizeSEQ ";
+          ORDER BY Style, Colour_SEQ, Size_SEQ ";
             break;
 
         //External Ticket - Loose Items Sql
@@ -216,7 +216,7 @@ class Sql
                     AND AUD.item = item_master.item
             LEFT JOIN item_zone_price NZD ON NZD.ZONE_GROUP_ID = 1 AND NZD.zone_id = 4 AND NZD.ITEM = item_master.item
           WHERE ordhead.order_no = :order_no AND ordloc.qty_ordered > 0
-          ORDER BY Style, ColourSEQ, SizeSEQ";
+          ORDER BY Style, Colour_SEQ, Size_SEQ";
         break;
 
         //External Ticket - Simple Packs
@@ -255,7 +255,7 @@ class Sql
                     AND AUD.item = item_master.item
             LEFT JOIN item_zone_price NZD ON NZD.ZONE_GROUP_ID = 1 AND NZD.zone_id = 4 AND NZD.ITEM = item_master.item
           WHERE ordhead.order_no = :order_no
-          ORDER BY Style, ColourSEQ, SizeSEQ ";
+          ORDER BY Style, Colour_SEQ, Size_SEQ ";
         break;
         
         //Warehouse Ticket - Orderdetails

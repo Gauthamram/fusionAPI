@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1.9",
         "laravel/framework": "5.4.*",
 	    "tymon/jwt-auth": "0.5.*",
         "dingo/api": "1.0.*@dev",
@@ -13,7 +13,8 @@
         "yajra/laravel-oci8": "5.4.*",
         "anlutro/l4-settings": "^0.4.9",
         "nesbot/carbon": "^1.22",
-        "guzzlehttp/guzzle": "~6.2"
+        "guzzlehttp/guzzle": "~6.2",
+        "laravel/tinker": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -32,7 +33,8 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
+            "tests/TestCase.php",
+            "tests/ApiTestCase.php"
         ]
     },
     "scripts": {

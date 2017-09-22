@@ -2,13 +2,20 @@
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function ($api) {
+//include middleware only if it is not test
+$middleware = [];
+
+if (!App::runningUnitTests()) {
+    $middleware[] = 'api';
+}
+
+$api->version('v1', function ($api) use ($middleware) {
     $api->post('auth/login', 'App\Api\V1\Controllers\AuthController@login');
     $api->post('auth/reset', 'App\Api\V1\Controllers\AuthController@reset');
     // $api->get('label/order/{orderno}', 'App\Api\V1\Controllers\LabelController@create');
     
     //protected routes and throttled
-    $api->group(['middleware' => ['api']], function ($api) {
+    $api->group(['middleware' => $middleware], function ($api) {
         $api->get('orders/{status?}', 'App\Api\V1\Controllers\OrderController@index');
         $api->get('order/{order_no}', 'App\Api\V1\Controllers\OrderController@order');
         $api->get('order/details/{order_no}', 'App\Api\V1\Controllers\OrderController@orderdetails');
@@ -17,13 +24,10 @@ $api->version('v1', function ($api) {
         $api->get('order/{order_no}/ratiopack', 'App\Api\V1\Controllers\OrderController@ratiopack');
         $api->get('order/{order_no}/simplepack', 'App\Api\V1\Controllers\OrderController@simplepack');
         $api->get('order/{order_no}/looseitem', 'App\Api\V1\Controllers\OrderController@looseitem');
-        // $api->get('order/{order_no}/sticky', 'App\Api\V1\Controllers\OrderController@sticky');
-
+        
         //this is only to get listing of carton details for the order - it will return all the list from the databse - not label data
         $api->post('order/cartonpack', 'App\Api\V1\Controllers\OrderController@cartonpack');
         $api->post('order/cartonloose', 'App\Api\V1\Controllers\OrderController@cartonloose');
-        
-        $api->get('supplier/{supplier}', 'App\Api\V1\Controllers\OrderController@supplier');
 
         $api->post('ticket/create/tips/request', 'App\Api\V1\Controllers\TicketController@create');
         $api->get('tickets', 'App\Api\V1\Controllers\TicketController@index');
@@ -38,28 +42,25 @@ $api->version('v1', function ($api) {
         //Password reset and recovery
         //recover using email first before reset
         $api->post('auth/recovery', 'App\Api\V1\Controllers\AuthController@recovery');
-        // $api->post('recover_password','App\Api\V1\Controllers\AuthController@recovery');
-        // $api->post('reset_password','App\Api\V1\Controllers\AuthController@reset');
         $api->get('auth/user', 'App\Api\V1\Controllers\AuthController@user');
+        $api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
 
         $api->get('suppliers', 'App\Api\V1\Controllers\SupplierController@index');
-        $api->post('supplier/edit/{supplier}/{type?}', 'App\Api\V1\Controllers\SupplierController@edit');
+        $api->get('supplier/{supplier}', 'App\Api\V1\Controllers\SupplierController@supplier');
         $api->get('supplier/search/{term}', 'App\Api\V1\Controllers\SupplierController@search');
-
-        $api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
     });
 
     // example of protected route
-    $api->get('protected', ['middleware' => ['api.auth'], function () {
-        return \App\User::all();
-    }]);
+    // $api->get('protected', ['middleware' => ['api.auth'], function () {
+    //     return \App\User::all();
+    // }]);
 
     // example of free route
-    $api->get('free', function () {
-        return \App\User::all();
-    });
+    // $api->get('free', function () {
+    //     return \App\User::all();
+    // });
 
     // $api->get('reset_password/{token}',['as' => 'password.reset',function() {
-    // 	//do something here
+    //  //do something here
     // }]);
 });

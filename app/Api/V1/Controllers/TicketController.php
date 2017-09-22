@@ -171,6 +171,8 @@ class TicketController extends ApiController
         $insert = $ticket->save();
         TicketRequest::reguard();
         
+        Log::info('Ticket Request created by user  : '.$this->user->email);
+
         if ($insert) {
             return $this->respondSuccess('Update Successfull');
         } else {
@@ -185,7 +187,7 @@ class TicketController extends ApiController
         $data = $this->ticketHelper->TipsTicketData($order_no, $item_number);
 
         //tips ticket printed creation
-        
+        Log::info('Tickets Data retrieved by user : '.$this->user->email);
         return $this->respond(['data' => $data]);
     }
 }

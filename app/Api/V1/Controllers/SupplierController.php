@@ -23,10 +23,11 @@ class SupplierController extends ApiController
     /**
      * [__constructor]
      */
-    public function __construct(supplierTransformer $supplierTransformer)    {
+    public function __construct(supplierTransformer $supplierTransformer)
+    {
         $this->supplierTransformer = $supplierTransformer;
         $this->user = JWTAuth::parseToken()->authenticate();
-        $array = array('name' => 'text');
+        $this->labelHelper = new LabelHelper();
     }
 
     public function index()
@@ -41,7 +42,33 @@ class SupplierController extends ApiController
         }
         // dd(DB::getQueryLog());
         $data = $this->supplierTransformer->transformCollection($suppliers);
+
+        Log::info('Supplier list retrieved by user  : '.$this->user->email);
+
         return  $this->respond(['data' => $data]);
+    }
+
+    /**
+     *
+     * [supplier details]
+     * @param  [integer] $supplier [description]
+     * @return [type]           [description]
+     */
+    public function supplier($supplier, $type = 'Tickets')
+    {
+        if (($supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
+            if ($this->labelHelper->supplierCheck($supplier)) {
+                $response = $this->labelHelper->OrderSupplier($supplier, $type);
+
+                Log::info('Supplier retrieved by user  : '.$this->user->email);
+
+                return $this->respond(['data' => $response]);
+            } else {
+                return $this->respondNotFound('Supplier Not Found');
+            }
+        } else {
+            return $this->respondForbidden('Forbidden from performing this action');
+        }
     }
 
     public function search($term)
@@ -61,6 +88,9 @@ class SupplierController extends ApiController
                         );
                 }
             }
+
+            Log::info('supplier search by user  : '.$this->user->email);
+
             return  $this->respond(['data' => $data]);
         } else {
             return $this->respondForbidden('Forbidden from performing this action');

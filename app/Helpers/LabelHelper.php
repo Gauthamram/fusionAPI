@@ -16,9 +16,9 @@ class LabelHelper extends Printer
      * @param int supplierid
      * @param string process type
      */
-    public function OrderSupplier($supplierid, $type)
+    public function orderSupplier($supplierid, $type)
     {
-        $supplier = Cache::remember("'".$this->user->getRoleId."-ordersupplier", Carbon::now()->addMinutes(60), function () use ($type) {
+        $supplier = Cache::remember("'".$this->user->getRoleId()."-ordersupplier", Carbon::now()->addMinutes(60), function () use ($type) {
             $supplier_query = $this->sql->GetSql('Supplier', '', $type);
         
             if ($this->user->isAdmin() || $this->user->isWarehouse()) {
@@ -37,7 +37,7 @@ class LabelHelper extends Printer
      * @param int  item number
      * @param boolean  to get list of db results
      */
-    public function OrderCartonpack($order_no, $item_number, $listing)
+    public function orderCartonpack($order_no, $item_number, $listing)
     {
         $cartonpack_query = $this->sql->GetSql('CartonPack', '', $item_number);
         // dd($cartonpack_query);
@@ -47,10 +47,10 @@ class LabelHelper extends Printer
             $cartonpacks = DB::select($cartonpack_query, [':order_no'=>$order_no,'item_number'=>$item_number]);
         }
         
-        if ($listing) {
+        if ($listing || (empty($cartonpacks))) {
             return $cartonpacks;
         } else {
-            $cartons = $this->CartonDetails($cartonloose);
+            $cartons = $this->cartonDetails($cartonpacks);
             return $cartons;
         }
     }
@@ -61,7 +61,7 @@ class LabelHelper extends Printer
      * @param int  item number
      * @param boolean to get list of db results
      */
-    public function OrderCartonLoose($order_no, $item_number, $listing)
+    public function orderCartonLoose($order_no, $item_number, $listing)
     {
         $cartonloose_query = $this->sql->GetSql('CartonLoose', '', $item_number);
         
@@ -71,10 +71,10 @@ class LabelHelper extends Printer
             $cartonloose = DB::select($cartonloose_query, [':order_no'=>$order_no,'item_number'=>$item_number]);
         }
       
-        if ($listing) {
+        if ($listing || (empty($cartonloose))) {
             return $cartonloose;
         } else {
-            $cartons = $this->CartonDetails($cartonloose);
+            $cartons = $this->cartonDetails($cartonloose);
             return $cartons;
         }
     }
@@ -84,13 +84,13 @@ class LabelHelper extends Printer
      * @param int id of the order
      * @param string type of label required "simplepack,looseitems,ratiopack"
      */
-    public function OrderSticky($order_no, $type)
+    public function orderSticky($order_no, $type)
     {
         $stickies_query = $this->sql->GetSql($type, '', '');
 
         $stickies = DB::select($stickies_query, [':order_no'=>$order_no]);
 
-        $stickydetails = $this->StickyDetails($stickies);
+        $stickydetails = $this->stickyDetails($stickies);
       
         return $stickydetails;
     }
@@ -136,7 +136,7 @@ class LabelHelper extends Printer
      * @param int  order number
      * @param type process type
      */
-    public function OrderDetails($order_no, $type)
+    public function orderDetails($order_no, $type)
     {
         $orderdetails_query = $this->sql->GetSql($type, '', '');
 
