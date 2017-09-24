@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 // use Zizaco\Entrust\Traits\EntrustUserTrait;
-use App\Fusion\Interfaces\UserInterface;
+use App\Fusion\Contracts\UserInterface;
 
 class User extends Authenticatable implements UserInterface
 {

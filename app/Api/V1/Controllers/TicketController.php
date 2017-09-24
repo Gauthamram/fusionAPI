@@ -2,6 +2,7 @@
 
 namespace App\Api\V1\Controllers;
 
+use Log;
 use Cache;
 use Config;
 use JWTAuth;
@@ -26,9 +27,8 @@ class TicketController extends ApiController
 
     /**
      * [__construct]
-     * @param ticketTransformer        $ticketTransformer        [instance of tickettransformer]
-     * @param userSetting              $userSetting              [instance of usersetting]
-     * @param ticketPrintedTransformer $ticketPrintedTransformer [instance of ticketprintedtransformer]
+     * @param ticketTransformer
+     * @param ticketPrintedTransformer
      */
     public function __construct(ticketTransformer $ticketTransformer, ticketPrintedTransformer $ticketPrintedTransformer)
     {
@@ -40,8 +40,8 @@ class TicketController extends ApiController
 
     /**
      * [list all ticket request]
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * @param  Request
+     * @return
      */
     public function index(Request $request)
     {
@@ -51,10 +51,10 @@ class TicketController extends ApiController
     }
 
     /**
-     * [printed - tickets printed base don user chnage the tables]
+     * [printed - tickets printed based on user, change the tables]
      * warehouse user - cgl_tickets_printed
      * other users - cgl_tickets_tips_printed
-     * @return [type] [list of printed tickets]
+     * @return
      */
     public function printed()
     {
@@ -68,14 +68,14 @@ class TicketController extends ApiController
         
 
         if ($this->user->isAdmin() || $this->user->isWarehouse()) {
-            // $tickets = $ticket->printedlastmonth()->get()->toArray();
             $tickets = $ticket->take(10)->get()->toArray();
-            // dd(DB::getQueryLog());
         } else {
             $tickets = Cache::remember("'".$this->supplierid."-tickets", Carbon::now()->addMinutes(60), function () {
                 return Supplier::findOrFail($this->supplierid)->tickets()->OrderBy('createdate', 'asc')->take(10)->get()->toArray();
             });
         }
+
+        Log::info('Ticket Printed data retrieved by user  : '.$this->user->email);
         
         $data = $this->ticketPrintedTransformer->transformCollection($tickets);
         return $this->respond(['data' => $data]);
@@ -83,8 +83,8 @@ class TicketController extends ApiController
 
     /**
      * [create ticket printed]
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * @param  Request
+     * @return
      */
     // public function create_tickets_printed($data)
     // {
@@ -127,8 +127,8 @@ class TicketController extends ApiController
 
     /**
      * [create ticketrequest]
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * @param  Request
+     * @return ticket object
      */
     public function create(Request $request)
     {
@@ -148,11 +148,11 @@ class TicketController extends ApiController
             dd($validator->errors()->all());
             throw new ValidationHttpException($validator->errors()->all());
         }
-
+        
         TicketRequest::unguard();
         // $id = TicketRequest::max('ticketrequestid');
         $ticket = new TicketRequest();
-        $ticket->ticket_type_id = Config::get("ticket.request_default.".$request->ticket_type);
+        $ticket->ticket_type_id = Config::get("ticket.type.".$request->ticket_type);
         $ticket->item = $request->item;
         $ticket->qty = $request->qty + $request->over_print_qty;
         $ticket->loc_type = $request->location_type;
@@ -174,7 +174,7 @@ class TicketController extends ApiController
         Log::info('Ticket Request created by user  : '.$this->user->email);
 
         if ($insert) {
-            return $this->respondSuccess('Update Successfull');
+            return $this->respond(['data' => $ticket]);
         } else {
             return $this->repondWithError('Ticket could not be create at this moment. Please try again later.');
         }

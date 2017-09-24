@@ -1,6 +1,7 @@
 <?php
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Handler\RotatingFileHandler;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,7 @@ $app->singleton(
 );
 
 $app->configureMonologUsing(function ($monolog) {
-    $monolog->pushHandler(new RotatingFileHandler(storage_path('logs/laravel_info.log'), 7, Logger::INFO));
+    $monolog->pushHandler(new RotatingfileHandler(storage_path('logs/laravel_info.log'), 7, Logger::INFO));
     $monolog->pushHandler(new RotatingFileHandler(storage_path('logs/laravel_warning.log'), 7, Logger::WARNING));
 });
 /*

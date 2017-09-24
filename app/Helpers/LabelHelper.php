@@ -8,6 +8,15 @@ use Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\TipsTicketPrinted;
+use App\Fusion\Queries\Label\PrintOrder;
+use App\Fusion\Queries\Label\SearchOrder;
+use App\Fusion\Queries\Label\OrderDetail;
+use App\Fusion\Queries\Label\SupplierDetail;
+use App\Fusion\Queries\Label\CartonPackOrder;
+use App\Fusion\Queries\Label\CartonLooseOrder;
+use App\Fusion\Queries\Label\LooseItemOrder;
+use App\Fusion\Queries\Label\RatioPackOrder;
+use App\Fusion\Queries\Label\SimplePackOrder;
 
 class LabelHelper extends Printer
 {
@@ -16,15 +25,17 @@ class LabelHelper extends Printer
      * @param int supplierid
      * @param string process type
      */
-    public function orderSupplier($supplierid, $type)
+    public function orderSupplier($supplierid, $type = 'Tickets')
     {
-        $supplier = Cache::remember("'".$this->user->getRoleId()."-ordersupplier", Carbon::now()->addMinutes(60), function () use ($type) {
-            $supplier_query = $this->sql->GetSql('Supplier', '', $type);
+        $supplier_detail = new SupplierOrder();
+        
+        $supplier = Cache::remember("'".$this->user->getRoleId()."-ordersupplier", Carbon::now()->addMinutes(60), function () use ($supplier_detail, $type) {
+            $supplier_query = $supplier_detail->query()->filter()->getSql();
         
             if ($this->user->isAdmin() || $this->user->isWarehouse()) {
-                $supplier = DB::select($supplier_query);
+                $supplier = DB::select($supplier_query, [':type'=>$type]);
             } else {
-                $supplier = DB::select($supplier_query, [':supplier'=>$this->user->getRoleId()]);
+                $supplier = DB::select($supplier_query, [':supplier'=>$this->user->getRoleId(),':type'=>$type]);
             }
             return $supplier[0];
         });
@@ -39,12 +50,14 @@ class LabelHelper extends Printer
      */
     public function orderCartonpack($order_no, $item_number, $listing)
     {
-        $cartonpack_query = $this->sql->GetSql('CartonPack', '', $item_number);
-        // dd($cartonpack_query);
+        $cartonpack_order = new CartonPackOrder();
+
         if (!$item_number) {
+            $cartonpack_query = $cartonpack_order->query()->getSql();
             $cartonpacks = DB::select($cartonpack_query, [':order_no'=>$order_no]);
         } else {
-            $cartonpacks = DB::select($cartonpack_query, [':order_no'=>$order_no,'item_number'=>$item_number]);
+            $cartonpack_query = $cartonpack_order->query()->filter($item_number)->getSql();
+            $cartonpacks = DB::select($cartonpack_query, [':order_no'=>$order_no,':item_number'=>$item_number]);
         }
         
         if ($listing || (empty($cartonpacks))) {
@@ -63,12 +76,15 @@ class LabelHelper extends Printer
      */
     public function orderCartonLoose($order_no, $item_number, $listing)
     {
-        $cartonloose_query = $this->sql->GetSql('CartonLoose', '', $item_number);
-        
+        $cartonloose_order = new CartonLooseOrder();
+
         if (!$item_number) {
+            $cartonloose_query = $cartonloose_order->query()->union()->getSql();
             $cartonloose = DB::select($cartonloose_query, [':order_no'=>$order_no]);
         } else {
-            $cartonloose = DB::select($cartonloose_query, [':order_no'=>$order_no,'item_number'=>$item_number]);
+            $cartonloose_query = $cartonloose_order->query()->filter($item_number)->union()->filter($item_number)
+                                    ->getSql();
+            $cartonloose = DB::select($cartonloose_query, [':order_no'=>$order_no,':item_number'=>$item_number]);
         }
       
         if ($listing || (empty($cartonloose))) {
@@ -86,7 +102,21 @@ class LabelHelper extends Printer
      */
     public function orderSticky($order_no, $type)
     {
-        $stickies_query = $this->sql->GetSql($type, '', '');
+        switch (strtolower($type)) {
+            case 'simplepack':
+                $sticky_order = new SimplePackOrder();
+                break;
+            
+            case 'ratiopack':
+                $sticky_order = new RatioPackOrder();
+                break;
+
+            default:
+                $sticky_order = new LooseItemOrder();
+                break;
+        }
+
+        $stickies_query = $sticky_order->query()->getSql();
 
         $stickies = DB::select($stickies_query, [':order_no'=>$order_no]);
 
@@ -101,16 +131,24 @@ class LabelHelper extends Printer
     */
     public function allOrders($status)
     {
-        $orders = Cache::remember("'".$this->user->getRoleId()."-orders", Carbon::now()->addMinutes(60), function () use ($status) {
-            $order_query = $this->sql->GetSql('AllOrders', $status);
-        
+        $print_order = new PrintOrder();
+
+        $orders = Cache::remember("'".$this->user->getRoleId()."-orders", Carbon::now()->addMinutes(60), function () use ($print_order,$status) {
             if ($this->user->isAdmin() || $this->user->isWarehouse()) {
-                $supplierorders = DB::select($order_query);
+                $order_query = $print_order->query()->filter($status)->getSql();
+                $supplierorders = DB::select($order_query, [
+                                    ':supplier_trait'=> Config::get('ticket.supplier_trait')
+                                ]);
             } else {
-                $supplierorders = DB::select($order_query, [':supplier'=>$this->user->getRoleId()]);
+                $order_query = $print_order->query()->forSupplier()->filter()->getSql();
+                $supplierorders = DB::select($order_query, [
+                                    ':supplier'=>$this->user->getRoleId(),
+                                    ':supplier_trait'=> Config::get('ticket.supplier_trait')
+                                ]);
             }
             return $supplierorders;
         });
+
         return $orders;
     }
 
@@ -121,13 +159,19 @@ class LabelHelper extends Printer
      */
     public function searchOrders($order_no)
     {
-        $search_query = $this->sql->getSql('SearchOrders', '', '');
+        $search_order = new SearchOrder();
+
         if ($this->user->isAdmin() || $this->user->isWarehouse()) {
+            $search_query = $search_order->query()->filter()->getSql();
             $searchorders = DB::select($search_query, [':order_no' => $order_no]);
         } else {
-            $searchorders = DB::select($search_query, [':order_no' => $order_no,':supplier' => $this->getRoleId()]);
+            $search_query = $search_order->query()->forSupplier()->filter()->getSql();
+            $searchorders = DB::select($search_query, [
+                                ':order_no' => $order_no,
+                                ':supplier' => $this->getRoleId(),
+                                ':supplier_trait' => Config::get('ticket.supplier_trait')
+                            ]);
         }
-        $searchorders = DB::select($search_query, [':order_no' => $order_no]);
         return $searchorders;
     }
 
@@ -138,7 +182,8 @@ class LabelHelper extends Printer
      */
     public function orderDetails($order_no, $type)
     {
-        $orderdetails_query = $this->sql->GetSql($type, '', '');
+        $order_detail = new OrderDetail();
+        $orderdetails_query = $order_detail->query()->getSql();
 
         $orderdetails = DB::select($orderdetails_query, [':order_no'=>$order_no]);
 
