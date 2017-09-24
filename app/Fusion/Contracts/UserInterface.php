@@ -1,5 +1,5 @@
 <?php
-namespace App\Fusion\Interfaces;
+namespace App\Fusion\Contracts;
 
 interface UserInterface
 {

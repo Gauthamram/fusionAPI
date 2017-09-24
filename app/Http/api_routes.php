@@ -56,9 +56,9 @@ $api->version('v1', function ($api) use ($middleware) {
     // }]);
 
     // example of free route
-    // $api->get('free', function () {
-    //     return \App\User::all();
-    // });
+    $api->get('free', function () {
+        return \App\User::all();
+    });
 
     // $api->get('reset_password/{token}',['as' => 'password.reset',function() {
     //  //do something here

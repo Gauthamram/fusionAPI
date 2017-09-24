@@ -21,60 +21,60 @@ class Sql
     public function GetSql($string, $status, $type = 'Tickets')
     {
         switch ($string) {
-        case 'AllOrders':
-          $sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, ordhead.ORIG_APPROVAL_DATE as approved_date,cgl_tickets_printed.reprint_required, ordhead.status
-              from ordhead
-                  left join cgl_tickets_printed on ordhead.order_no = cgl_tickets_printed.order_no
-                  inner join ordloc on ordhead.order_no = ordloc.order_no and ordhead.status = 'A'
-                  inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
-                  inner join item_master on item_master.item = ordloc.item
-                  inner join deps on item_master.dept = deps.dept
-                  inner join groups on deps.group_no = groups.group_no
-                  inner join cgl_tickets_leadtime on Groups.Division = cgl_tickets_leadtime.Division
-                  inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')."
-                  inner join sups on sups.supplier = ordhead.supplier";
+        // case 'AllOrders':
+        //   $sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, ordhead.ORIG_APPROVAL_DATE as approved_date,cgl_tickets_printed.reprint_required, ordhead.status
+        //       from ordhead
+        //           left join cgl_tickets_printed on ordhead.order_no = cgl_tickets_printed.order_no
+        //           inner join ordloc on ordhead.order_no = ordloc.order_no and ordhead.status = 'A'
+        //           inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
+        //           inner join item_master on item_master.item = ordloc.item
+        //           inner join deps on item_master.dept = deps.dept
+        //           inner join groups on deps.group_no = groups.group_no
+        //           inner join cgl_tickets_leadtime on Groups.Division = cgl_tickets_leadtime.Division
+        //           inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')."
+        //           inner join sups on sups.supplier = ordhead.supplier";
 
-          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())) {
-              $sql .= " and ordhead.supplier = :supplier";
-          }
+        //   if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())) {
+        //       $sql .= " and ordhead.supplier = :supplier";
+        //   }
 
-          $sql .= " where ordloc.QTY_Ordered > 0 and (cgl_tickets_printed.reprint_required = 'Y'";
+        //   $sql .= " where ordloc.QTY_Ordered > 0 and (cgl_tickets_printed.reprint_required = 'Y'";
 
-          if (!$status) {
-              $sql .= " or cgl_tickets_printed.reprint_required = 'N')";
-          } else {
-              $sql .= ")";
-          }
+        //   if (!$status) {
+        //       $sql .= " or cgl_tickets_printed.reprint_required = 'N')";
+        //   } else {
+        //       $sql .= ")";
+        //   }
 
-          $sql .= " or (cgl_tickets_printed.order_no is null and ordhead.app_datetime is null )
-              AND (ordhead.otb_eow_date between sysdate AND sysdate + cgl_tickets_leadtime.leaddays ) 
-              order by ordhead.order_no";
+        //   $sql .= " or (cgl_tickets_printed.order_no is null and ordhead.app_datetime is null )
+        //       AND (ordhead.otb_eow_date between sysdate AND sysdate + cgl_tickets_leadtime.leaddays )
+        //       order by ordhead.order_no";
 
 
-          break;
+        //   break;
 
-        case 'SearchOrders':
-          $sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, ordhead.ORIG_APPROVAL_DATE as approved_date, ordhead.status
-              from ordhead
-                  inner join ordloc on ordhead.order_no = ordloc.order_no 
-                  inner join sups on sups.supplier = ordhead.supplier ";
+        // case 'SearchOrders':
+        //   $sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, ordhead.ORIG_APPROVAL_DATE as approved_date, ordhead.status
+        //       from ordhead
+        //           inner join ordloc on ordhead.order_no = ordloc.order_no
+        //           inner join sups on sups.supplier = ordhead.supplier ";
 
-          //if admin or warehouse no restriction on supplier else apply user supplier number to restrict what they can see
-          if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())) {
-              $sql .= "inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')." and ordhead.supplier = :supplier";
-          }
+        //   //if admin or warehouse no restriction on supplier else apply user supplier number to restrict what they can see
+        //   if ((!$this->user->isAdmin()) && (!$this->user->isWarehouse())) {
+        //       $sql .= "inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier and sup_traits_matrix.sup_trait = ".Config::get('ticket.supplier_trait')." and ordhead.supplier = :supplier";
+        //   }
 
-          $sql .= " where ordloc.QTY_Ordered > 0 ";
+        //   $sql .= " where  ";
 
-          if (($this->user->isAdmin()) || ($this->user->isWarehouse())) {
-              $sql .= " and (ordhead.status = 'A' or ordhead.status = 'C')";
-          } else {
-              $sql .= " and (ordhead.status = 'A')";
-          }
+        //   if (($this->user->isAdmin()) || ($this->user->isWarehouse())) {
+        //       $sql .= " and (ordhead.status = 'A' or ordhead.status = 'C')";
+        //   } else {
+        //       $sql .= " and (ordhead.status = 'A')";
+        //   }
 
-          $sql .= " and ordhead.order_no = :order_no";
+        //   $sql .= " and ordloc.QTY_Ordered > 0 and ordhead.order_no = :order_no";
              
-          break;
+        //   break;
 
         //External Ticket - Supplier Details Sql
         case 'Supplier':
@@ -259,15 +259,15 @@ class Sql
         break;
         
         //Warehouse Ticket - Orderdetails
-        case 'orderdetails':
-          $sql = "SELECT  ordhead.order_No , item_master.item_parent, ordsku.item, ordloc.location, ordloc.loc_type, ordloc.qty_Ordered, ordsku.origin_country_id,
-                  ordloc.unit_retail, item_master.pack_ind, item_master.simple_pack_ind
-          from ordhead
-          inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
-          inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
-          inner join item_master on item_master.item = ordloc.item
-          where ordhead.order_no = :order_no ";
-          break;
+        // case 'orderdetails':
+        //   $sql = "SELECT  ordhead.order_No , item_master.item_parent, ordsku.item, ordloc.location, ordloc.loc_type, ordloc.qty_Ordered, ordsku.origin_country_id,
+        //           ordloc.unit_retail, item_master.pack_ind, item_master.simple_pack_ind
+        //   from ordhead
+        //   inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
+        //   inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
+        //   inner join item_master on item_master.item = ordloc.item
+        //   where ordhead.order_no = :order_no ";
+        //   break;
         
         case 'ticketrequests':
           $sql = "SELECT  tr.Order_No, tr.Ticket_Type_ID, tr.Sort_Order_Type, tr.Printer_Type, tr.Qty As Quantity, 

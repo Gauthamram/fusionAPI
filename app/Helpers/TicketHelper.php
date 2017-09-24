@@ -8,50 +8,54 @@ use Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\TipsTicketPrinted;
+use App\Fusion\Queries\Ticket\CartonLooseTicket;
+use App\Fusion\Queries\Ticket\CartonPackTicket;
+use App\Fusion\Queries\Ticket\DeleteLooseCarton;
+use App\Fusion\Queries\Ticket\ItemTicket;
+use App\Fusion\Queries\Ticket\PackTicket;
+use App\Fusion\Queries\Ticket\RequestTicket;
+use App\Fusion\Queries\Ticket\SimplePackTicket;
 
 class TicketHelper extends Printer
 {
-    /**
-     * [$setting_name - restrict retrieval of only named settings instead of everything]
-     * @var string
-     */
-    protected $setting_name = 'ticket%';
-
     /**
      * [OrderTipsTicketData create tips ticket for the order]
      * @param [type] $order_no    [number of the order]
      * @param [type] $item_number [item number]
      */
-    public function TipsTicketData($order_no, $item_number)
+    public function tipsTicketData($order_no, $item_number)
     {
         //get ticket request
-        $ticketrequest_query = $this->sql->GetSql('ticketrequests', '', '');
-        $ticketrequests = DB::select($ticketrequest_query, [':order_no' => $order_no,':item_number' => $item_number]);
+        $ticket_request = new RequestTicket();
+        $ticketrequest_query = $ticket_request->query()->getSql();
+        $ticketrequests = DB::select($ticketrequest_query, [
+                            ':order_no' => $order_no,
+                            ':item_number' => $item_number
+                        ]);
 
-      
         //delete all bad requests for the loosecartons
-        $deleteloosecarton = $this->DeleteLooseCarton();
+        $deleteloosecarton = $this->deleteLooseCarton();
 
         foreach ($ticketrequests as $ticketrequest) {
             if ($ticketrequest->ticket_type_id == config::get('ticket.type.carton')) {
-                $data['carton']['pack'] = $cartonpackdata = $this->TicketRequestCartonPack($ticketrequest);
-                $data['carton']['loose'] = $cartonloosedata = $this->TicketRequestCartonPack($ticketrequest);
+                $data['carton']['pack'] = $cartonpackdata = $this->ticketRequestCartonPack($ticketrequest);
+                $data['carton']['loose'] = $cartonloosedata = $this->ticketRequestCartonPack($ticketrequest);
 
                 //get quantity
                 $quantity['Carton_Pack'] = $quantity['Carton_Pack'] + $cartonpackdata['quantity'];
                 $quantity['Carton_Loose'] = $quantity['Carton_Loose'] + $cartonloosedata['quantity'];
             } else {
-                $thePackIndicator = $this->CheckPackIndicator($ticketrequest);
+                $thePackIndicator = $this->checkPackIndicator($ticketrequest);
           
                 switch ($thePackIndicator) {
             case 'none':
-              $data['sticky'][] = $stickydata = $this->TicketRequestItem($ticketrequest);
+              $data['sticky'][] = $stickydata = $this->ticketRequestItem($ticketrequest);
               break;
             case 'simple':
-              $data['sticky'][] = $stickydata = $this->TicketRequestSimplePack($ticketrequest);
+              $data['sticky'][] = $stickydata = $this->ticketRequestSimplePack($ticketrequest);
               break;
             case 'transport':
-              $data['sticky'][] = $stickydata = $this->TicketRequestPack($ticketrequest);
+              $data['sticky'][] = $stickydata = $this->ticketRequestPack($ticketrequest);
               break;
             default:
               $data['sticky'];
@@ -78,10 +82,10 @@ class TicketHelper extends Printer
      * [TicketRequestCartonLoose - Cartonloose data]
      * @param [type] $ticket [ticketrequest]
      */
-    public function TicketRequestCartonLoose($ticket)
+    public function ticketRequestCartonLoose($ticket)
     {
-        //get item
-        $cartonloose_query = $this->sql->GetSql('ticketcartonloose', '', '');
+        $cartonloose_ticket = new CartonLooseTicket();
+        $cartonloose_query = $cartonloose_ticket->query()->getSql();
         $cartonloose = DB::select($cartonloose_query, [':order_no' => $ticket->order_no]);
       
         $cartonloosedetails = array_map([$this,"CartonDetails"], $cartonloose);
@@ -93,10 +97,10 @@ class TicketHelper extends Printer
      * [TicketRequestCartonPack Cartonpack data]
      * @param [type] $ticket [ticketrequest]
      */
-    public function TicketRequestCartonPack($ticket)
+    public function ticketRequestCartonPack($ticket)
     {
-        //get item
-        $cartonpack_query = $this->sql->GetSql('ticketcartonpack', '', '');
+        $cartonpack_ticket = new CartonPackTicket();
+        $cartonpack_query = $cartonpack_ticket->query()->getSql();
         $cartonpacks = DB::select($cartonpack_query, [':order_no' => $ticket->order_no]);
       
         $cartonpackdetails = array_map([$this,"CartonDetails"], $cartonpacks);
@@ -108,10 +112,10 @@ class TicketHelper extends Printer
      * [TicketRequestItem Item data]
      * @param [type] $ticket [ticketrequest]
      */
-    public function TicketRequestItem($ticket)
+    public function ticketRequestItem($ticket)
     {
-        //get item
-        $orderitem_query = $this->sql->GetSql('ticketitem', '', '');
+        $item_ticket = new ItemTicket();
+        $orderitem_query = $item_ticket->query()->getSql();
         $orderitems = DB::select($orderitem_query, [':order_no' => $ticket->order_no,':item_number' => $ticket->item_number]);
 
         foreach ($orderitems as $orderitem) {
@@ -136,12 +140,14 @@ class TicketHelper extends Printer
      * [TicketRequestSimplePack SimplePack data]
      * @param [type] $ticket [ticketrequest]
      */
-    public function TicketRequestSimplePack($ticket)
+    public function ticketRequestSimplePack($ticket)
     {
+        $simplepack_ticket = new SimplePackTicket();
         $prev_item = '';
         $i =1;
+
         //get simple pack items
-        $ordersimplepack_query = $this->sql->GetSql('ticketsimplepack', '', '');
+        $ordersimplepack_query = $simplepack_ticket->query()->getSql();
         $ordersimplepacks = DB::select($ordersimplepack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->itemnumber,':location1' => $ticket->location,':location2' => $ticket->location,':location3' => $ticket->location]);
 
         if ($ticket->sort_order_type == config::get('ticket.sort_type.packandloose')) {
@@ -180,12 +186,14 @@ class TicketHelper extends Printer
      * [TicketRequestPack Pack data]
      * @param [type] $ticket [ticketrequest]
      */
-    public function TicketRequestPack($ticket)
+    public function ticketRequestPack($ticket)
     {
         $prev_item = '';
         $i =1;
+
+        $pack_ticket = new PackTicket();
         //get pack items
-        $orderpack_query = $this->sql->GetSql('ticketpack', '', '');
+        $orderpack_query = $pack_ticket->query()->getSql();
         $orderpacks = DB::select($orderpack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->itemnumber,':location1' => $ticket->location,
         ':location2' => $ticket->location,':location3' => $ticket->location]);
 
@@ -223,9 +231,10 @@ class TicketHelper extends Printer
      * [DeleteLooseCarton - Delete any request that is loose and qty is 0]
      * @param [type] $ticket [ticketrequest object]
      */
-    public function DeleteLooseCarton($ticket)
+    public function deleteLooseCarton($ticket)
     {
-        $loosecarton_query = $this->sql->GetSql('deleteloosecartons', '', '');
+        $delete_loosecarton = new DeleteLooseCarton();
+        $loosecarton_query = $delete_loosecarton->query()->getSql();
         return DB::select($cartonloose_query, [':order_no' => $ticket->order_no]);
     }
 }
