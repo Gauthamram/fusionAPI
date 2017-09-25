@@ -55,117 +55,19 @@ class LabelController extends Controller
     public function printcartons(Request $request, int $order_no)
     {
         try {
-            // $token = $request->session()->get('token');
-            // $data = array();
-            // $response = $this->api->raw()->get('order/'.$order_no.'/cartonpack',['token' => $token]);
-            //     if($response->getstatusCode() == 200){
-            //         $result = json_decode($response->getContent(),true);
-            //         $data['cartonpack'] = $result['data'];
-            //     }
+            $token = $request->session()->get('token');
+            $data = array();
+            $response = $this->api->raw()->get('order/'.$order_no.'/cartonpack', ['token' => $token]);
+            if ($response->getstatusCode() == 200) {
+                $result = json_decode($response->getContent(), true);
+                $data['cartonpack'] = $result['data'];
+            }
 
-            // $response =  $this->api->raw()->get('order/'.$order_no.'/cartonloose',['token' => $token]);
-            //     if($response->getstatusCode() == 200){
-            //         $result = json_decode($response->getContent(),true);
-            //         $data['cartonloose'] = $result['data'];
-            //     }
-            $data['cartonpack'][0] = array(
-                    'ordernumber' => '1087717',
-                    'printquantity' => '1',
-                    'style' => '112379490',
-                    'description' => 'wts:KYLIEBAG2:8pk:multi',
-                    'productindicator' => '(00) 193327670001155097',
-                    'productindicatorbarcode' => '00193327670001155097',
-                    'packnumber' => '113245741',
-                    'packtype'=> 'A',
-                    'group'=> 'Accessories',
-                    'dept' =>'Accessories',
-                    'class' =>'Bags',
-                    'subclass'=> 'Casual',
-                    'carton' => array(
-                        array(
-                        'number' => '(400) 1087717 (02) 113245741 (30) 1',
-                        'barcode' => str_replace(array(')','(',' '), "", '(400) 1087717 (02) 113245741 (30) 1'),
-                        ),
-                    ),
-                  );
-            // $data['cartonpack'][1] = array(
-            //     'ordernumber' => '1087717',
-            //     'printquantity' => '1',
-            //     'style' => '112379490',
-            //     'description' => 'wts:KYLIEBAG2:8pk:multi',
-            //     'productindicator' => '(00) 193327670001155097',
-            //     'productindicatorbarcode' => '00193327670001155097',
-            //     'packnumber' => '113245741',
-            //     'packtype'=> 'A',
-            //     'group'=> 'Accessories',
-            //     'dept' =>'Accessories',
-            //     'class' =>'Bags',
-            //     'subclass'=> 'Casual',
-            //     'carton' => array(
-            //         array(
-            //         'number' => '(400) 1087717 (02) 113245741 (30) 1',
-            //         'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
-            //         ),
-            //     ),
-            //   );
-            // $data['cartonpack'][2] = array(
-            //     'ordernumber' => '1087717',
-            //     'printquantity' => '1',
-            //     'style' => '112379490',
-            //     'description' => 'wts:KYLIEBAG2:8pk:multi',
-            //     'productindicator' => '(00) 193327670001155097',
-            //     'productindicatorbarcode' => '00193327670001155097',
-            //     'packnumber' => '113245741',
-            //     'packtype'=> 'A',
-            //     'group'=> 'Accessories',
-            //     'dept' =>'Accessories',
-            //     'class' =>'Bags',
-            //     'subclass'=> 'Casual',
-            //     'carton' => array(
-            //         array(
-            //         'number' => '(400) 1087717 (02) 113245741 (30) 1',
-            //         'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
-            //         ),
-            //     ),
-            //   );
-            // $data['cartonpack'][3] = array(
-            //     'ordernumber' => '1087717',
-            //     'printquantity' => '1',
-            //     'style' => '112379490',
-            //     'description' => 'wts:KYLIEBAG2:8pk:multi',
-            //     'productindicator' => '(00) 193327670001155097',
-            //     'productindicatorbarcode' => '00193327670001155097',
-            //     'packnumber' => '113245741',
-            //     'packtype'=> 'A',
-            //     'group'=> 'Accessories',
-            //     'dept' =>'Accessories',
-            //     'class' =>'Bags',
-            //     'subclass'=> 'Casual',
-            //     'carton' => array(
-            //         array(
-            //         'number' => '(400) 1087717 (02) 113245741 (30) 1',
-            //         'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
-            //         ),
-            //     ),
-            //   );
-            // $data['cartonloose'][] = array(
-            //     'ordernumber' => '1087717',
-            //     'cartonquantity' => '6',
-            //     'style' => '112379490',
-            //     'description' => 'wts:KYLIEBAG2:8pk:multi',
-            //     'productindicator' => '(00) 193327670001155097',
-            //     'productindicatorbarcode' => '00193327670001155097',
-            //     'itemnumber' => '113245741',
-            //     'size'=> '1SIZ',
-            //     'colour'=> 'BLK~Black',
-            //     'carton' => array(
-            //         array(
-            //         'number' => '(400) 1087717 (02) 113245741 (30) 1',
-            //         'barcode' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
-            //         ),
-            //     ),
-            //   );
-            return view('labels.template', ['data' => $data,'format' => 'carton'])->withTitle('label_carton');
+            $response =  $this->api->raw()->get('order/'.$order_no.'/cartonloose', ['token' => $token]);
+            if ($response->getstatusCode() == 200) {
+                $result = json_decode($response->getContent(), true);
+                $data['cartonloose'] = $result['data'];
+            }
         } catch (InternalHttpException $e) {
             $error = json_decode($e->getResponse()->getContent(), true);
             $errors = [$error['data']['message']];
@@ -177,88 +79,24 @@ class LabelController extends Controller
     public function printstickies(Request $request, int $order_no)
     {
         try {
-            // $token = $request->session()->get('token');
-            // $data = array();
+            $token = $request->session()->get('token');
+            $data = array();
             
-            // $response =  $this->api->raw()->get('order/'.$order_no.'/ratiopack',['token' => $token]);
-            //     if($response->getstatusCode() == 200){
-            //         $result = json_decode($response->getContent(),true);
-            //         $data['ratiopack'] = $result['data'];
-            //     }
-            // $response =  $this->api->raw()->get('order/'.$order_no.'/simplepack',['token' => $token]);
-            //     if($response->getstatusCode() == 200){
-            //         $result = json_decode($response->getContent(),true);
-            //         $data['simplepack'] = $result['data'];
-            //     }
-            // $response =  $this->api->raw()->get('order/'.$order_no.'/looseitem',['token' => $token]);
-            //     if($response->getstatusCode() == 200){
-            //         $result = json_decode($response->getContent(),true);
-            //         $data['looseitem'] = $result['data'];
-            //     }
-            $data['ratiopack'][] = array(
-                    'itemnumber'    => '112805541',
-                    'description1'  => '0103LV34919',
-                    'description2'  => 'GRN~Sierre XL',
-                    'size'          => 'XL',
-                    'stockroomlocator' => '347015',
-                    'barcode'       => '400001561726',
-                    'barcodetype' => 'ean13'
-                    );
-            $data['simplepack'][] = array(
-                    'itemnumber'    => '112805541',
-                    'description1'  => '0103LV34919',
-                    'description2'  => 'GRN~Sierre XL',
-                    'size'          => 'XL',
-                    'stockroomlocator' => 'PACK 6',
-                    'barcode'       => '400001561726',
-                    'barcodetype' => 'ean13'
-                    );
-            $data['looseitem'][] = array(
-                    'itemnumber'    => '112805541',
-                    'description1'  => '0103LV34919',
-                    'description2'  => 'GRN~Sierre XL',
-                    'size'          => 'XL',
-                    'stockroomlocator' => '347015',
-                    'barcode'       => '400001561726',
-                    'barcodetype' => 'ean13'
-                    );
-            $data['simplepack'][] = array(
-                    'itemnumber'    => '112805541',
-                    'description1'  => '0103LV34919',
-                    'description2'  => 'GRN~Sierre XL',
-                    'size'          => 'XL',
-                    'stockroomlocator' => 'PACK 6',
-                    'barcode'       => '400001561726',
-                    'barcodetype' => 'ean13'
-                    );
-            $data['looseitem'][] = array(
-                    'itemnumber'    => '112805541',
-                    'description1'  => '0103LV34919',
-                    'description2'  => 'GRN~Sierre XL',
-                    'size'          => 'XL',
-                    'stockroomlocator' => '347015',
-                    'barcode'       => '400001561726',
-                    'barcodetype' => 'ean13'
-                    );
-            $data['simplepack'][] = array(
-                    'itemnumber'    => '112805541',
-                    'description1'  => '0103LV34919',
-                    'description2'  => 'GRN~Sierre XL',
-                    'size'          => 'XL',
-                    'stockroomlocator' => 'PACK 6',
-                    'barcode'       => '400001561726',
-                    'barcodetype' => 'ean13'
-                    );
-            $data['looseitem'][] = array(
-                    'itemnumber'    => '112805541',
-                    'description1'  => '0103LV34919',
-                    'description2'  => 'GRN~Sierre XL',
-                    'size'          => 'XL',
-                    'stockroomlocator' => '347015',
-                    'barcode'       => '400001561726',
-                    'barcodetype' => 'ean13'
-                    );
-            return view('labels.template', ['data' => $data,'format' => 'sticky'])->withTitle('label_carton');
+            $response =  $this->api->raw()->get('order/'.$order_no.'/ratiopack', ['token' => $token]);
+            if ($response->getstatusCode() == 200) {
+                $result = json_decode($response->getContent(), true);
+                $data['ratiopack'] = $result['data'];
+            }
+            $response =  $this->api->raw()->get('order/'.$order_no.'/simplepack', ['token' => $token]);
+            if ($response->getstatusCode() == 200) {
+                $result = json_decode($response->getContent(), true);
+                $data['simplepack'] = $result['data'];
+            }
+            $response =  $this->api->raw()->get('order/'.$order_no.'/looseitem', ['token' => $token]);
+            if ($response->getstatusCode() == 200) {
+                $result = json_decode($response->getContent(), true);
+                $data['looseitem'] = $result['data'];
+            }
         } catch (InternalHttpException $e) {
             $error = json_decode($e->getResponse()->getContent(), true);
             $errors = [$error['data']['message']];
@@ -271,7 +109,8 @@ class LabelController extends Controller
     {
         try {
             $token = $request->session()->get('token');
-            $response = $this->api->raw()->get('ticket/tips/printed', ['token' => $token]);
+            $page = $request->page ? $request->page : 1;
+            $response = $this->api->raw()->get('ticket/tips/printed', ['token' => $token, 'page' => $page]);
             if ($response->getstatusCode() == 200) {
                 $result = json_decode($response->getContent(), true);
             }
@@ -315,24 +154,6 @@ class LabelController extends Controller
                 $result = json_decode($response->getContent(), true);
                 $data[$cartontype] = $result['data'];
             }
-            // dd($data);
-            // $data['cartonloose'][] = array(
-            //     'ordernumber' => '1087717',
-            //     'cartonquantity' => '6',
-            //     'style' => '112379490',
-            //     'description' => 'wts:KYLIEBAG2:8pk:multi',
-            //     'productindicatorbarcode' => '(00) 193327670001155097',
-            //     'productindicator' => '00193327670001155097',
-            //     'itemnumber' => '113245741',
-            //     'size'=> '1SIZ',
-            //     'colour'=> 'BLK~Black',
-            //     'carton' => array(
-            //         array(
-            //         'barcode' => '(400) 1087717 (02) 113245741 (30) 1',
-            //         'number' => str_replace(array(')','(',' '),"",'(400) 1087717 (02) 113245741 (30) 1'),
-            //         ),
-            //     ),
-            //   );
             return view('labels.template', ['data' => $data,'format' => 'carton'])->withTitle('label_carton');
         } catch (Exception $e) {
             $error = json_decode($e->getResponse()->getContent(), true);

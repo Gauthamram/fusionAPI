@@ -41,7 +41,6 @@ class OrderController extends ApiController
      */
     public function index($status = '')
     {
-        $this->pagination = true;
         $orders = $this->labelHelper->allOrders($status);
         $data = $this->orderTransformer->transformCollection($orders, $this->pagination);
         return $this->respond(['data' => $data]);
@@ -54,7 +53,6 @@ class OrderController extends ApiController
      */
     public function order($order_no)
     {
-        $this->pagination = true;
         $orders = $this->labelHelper->searchOrders($order_no);
         $data = $this->orderTransformer->transformCollection($orders, $this->pagination);
         return  $this->respond(['data' => $data]);

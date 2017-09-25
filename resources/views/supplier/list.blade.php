@@ -19,7 +19,7 @@
                 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                 <div class="form-group">
                     <label>Name/ID</label>
-                    <input name="term" class="form-control" type="text" value="{{ Input::old('name') }}" >
+                    <input name="term" class="form-control" type="text" value="" >
                 </div>
                 <!-- <div class="form-group">    
                     <label>Email Address</label>
@@ -34,11 +34,26 @@
     <!--supplier List-->                
     <div class="col-md-10 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                Suppliers 
-            </div>
-
             <div class="panel-body">
+            	<nav aria-label="Page navigation" class="pagination-nav">
+				  <h4>Page {{$suppliers['current_page']}} of {{$suppliers['last_page']}}</h4>
+				  	<ul class="pagination">
+				  		@if($suppliers['current_page'] > 1)	
+					    	<li>
+					      		<a href="{{url()->current()}}/?page={{$suppliers['current_page'] - 1}}" aria-label="Previous">
+					        		<span aria-hidden="true">&laquo;</span>
+					      		</a>
+					    	</li>
+					    @endif
+				    	@if($suppliers['current_page'] < $suppliers['last_page'])
+					    	<li>
+					      		<a href="{{url()->current()}}/?page={{$suppliers['current_page'] + 1}}" aria-label="Next">
+					        		<span aria-hidden="true">&raquo;</span>
+					      		</a>
+					    	</li>
+				    	@endif
+				  	</ul>
+				</nav>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover">
                         <thead>
@@ -51,7 +66,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($suppliers as $supplier)
+                            @foreach ($suppliers['data'] as $supplier)
                                 <tr>
                                     <td>{{$supplier['name']}}</td>
                                     <td>

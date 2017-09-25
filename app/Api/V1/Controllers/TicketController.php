@@ -68,16 +68,16 @@ class TicketController extends ApiController
         
 
         if ($this->user->isAdmin() || $this->user->isWarehouse()) {
-            $tickets = $ticket->take(10)->get()->toArray();
+            $tickets = $ticket->take(50)->latest('createdate')->paginate(10)->toArray();
         } else {
             $tickets = Cache::remember("'".$this->supplierid."-tickets", Carbon::now()->addMinutes(60), function () {
-                return Supplier::findOrFail($this->supplierid)->tickets()->OrderBy('createdate', 'asc')->take(10)->get()->toArray();
+                return Supplier::findOrFail($this->supplierid)->take(50)->tickets()->latest('createdate')->paginate(10)->toArray();
             });
         }
 
         Log::info('Ticket Printed data retrieved by user  : '.$this->user->email);
         
-        $data = $this->ticketPrintedTransformer->transformCollection($tickets);
+        $data = $this->ticketPrintedTransformer->transformCollection($tickets, true);
         return $this->respond(['data' => $data]);
     }
 

@@ -428,9 +428,26 @@ line-height: 1.428571429;
     }
 
    .navbar {
- border-radius: 0px; 
-}
+ 		border-radius: 0px; 
+	}
+
+	.pagination-nav {
+		display:inline-block;
+		float:right;
+		margin:10px 0px;
+	}
    
+	.pagination-nav h4 {
+		display:inline;
+		float: left;
+		margin: 0px 4px;
+	}   
+
+	.pagination-nav .pagination {
+		display: inline;
+		float: left;
+		margin: 0px 4px;
+	}
 }
 
 
