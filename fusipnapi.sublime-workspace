@@ -1,0 +1,1397 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"roel",
+				"role_id"
+			],
+			[
+				"conf",
+				"Config"
+			],
+			[
+				"role",
+				"role_id"
+			],
+			[
+				"stick",
+				"stickies_query"
+			],
+			[
+				"cart",
+				"cartonloose"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"order",
+				"order_number"
+			],
+			[
+				"Test",
+				"TestCase"
+			],
+			[
+				"Tes",
+				"TestCase"
+			],
+			[
+				"sticky",
+				"stickydetails"
+			],
+			[
+				"add",
+				"addCarton"
+			],
+			[
+				"supplier",
+				"supplier_name"
+			],
+			[
+				"carton",
+				"cartonsequence"
+			],
+			[
+				"ca",
+				"cartonsequence"
+			],
+			[
+				"AUTH",
+				"authuser"
+			],
+			[
+				"pro",
+				"productIndicator"
+			],
+			[
+				"gene",
+				"GenerateProductBarcode"
+			],
+			[
+				"Car",
+				"Carton"
+			],
+			[
+				"prod",
+				"productIndicators"
+			],
+			[
+				"product",
+				"productIndicatorBarcode"
+			],
+			[
+				"pu",
+				"public"
+			],
+			[
+				"Entity",
+				"EntityManagerInterface"
+			],
+			[
+				"Enti",
+				"EntityManagerInterface"
+			],
+			[
+				"array",
+				"array"
+			],
+			[
+				"uns",
+				"unset"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"user",
+				"user_record"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"mail",
+				"mailSent"
+			],
+			[
+				"ra",
+				"rand"
+			],
+			[
+				"apat",
+				"apartment"
+			],
+			[
+				"apart",
+				"apartment"
+			],
+			[
+				"apartment",
+				"apartmentRepository"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"User",
+				"UserSetting"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"p",
+				"p\tTag"
+			],
+			[
+				"col-md-",
+				"col-md-3"
+			],
+			[
+				"ticket",
+				"ticketprinted"
+			],
+			[
+				"cartonpack",
+				"cartonpackdata"
+			],
+			[
+				"pack",
+				"packquantity"
+			],
+			[
+				"ticketrequ",
+				"ticket_request"
+			],
+			[
+				"cartonpa",
+				"cartonpacks"
+			],
+			[
+				"sql",
+				"sqlHelper"
+			],
+			[
+				"ticketre",
+				"ticketrequest"
+			],
+			[
+				"labelhe",
+				"labelhelper"
+			],
+			[
+				"request",
+				"requestquantity"
+			],
+			[
+				"while",
+				"while\twhile …"
+			],
+			[
+				"orderite",
+				"orderitem"
+			],
+			[
+				"Ticke",
+				"TicketRequestItem"
+			],
+			[
+				"orderde",
+				"Orderdetails"
+			],
+			[
+				"sear",
+				"searchorders"
+			],
+			[
+				"search",
+				"search_query"
+			],
+			[
+				"pmet",
+				"pmet\tpmet"
+			],
+			[
+				"label",
+				"labelhelper"
+			],
+			[
+				"data",
+				"datalist"
+			],
+			[
+				"json",
+				"jsonOptions"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"strto",
+				"strtoupper"
+			],
+			[
+				"pass",
+				"password_confirmation"
+			],
+			[
+				"re",
+				"request"
+			],
+			[
+				"panel-",
+				"panel-heading"
+			],
+			[
+				"item",
+				"item_number"
+			],
+			[
+				"ite",
+				"item_number"
+			],
+			[
+				"background",
+				"background-color"
+			],
+			[
+				"auth",
+				"authHelper"
+			],
+			[
+				"current",
+				"currentuser"
+			],
+			[
+				"response",
+				"responseBodyAsString"
+			],
+			[
+				"pme",
+				"pmet\tpmet"
+			],
+			[
+				"in",
+				"input\tTag"
+			],
+			[
+				"reprint",
+				"reprint_required"
+			],
+			[
+				"pos",
+				"post"
+			],
+			[
+				"addres",
+				"addressType"
+			],
+			[
+				"userse",
+				"usersetting"
+			],
+			[
+				"Order",
+				"OrderTransformer"
+			],
+			[
+				"setting",
+				"Setting"
+			],
+			[
+				"cache",
+				"cache_supplier_check"
+			],
+			[
+				"usersett",
+				"usersettings"
+			],
+			[
+				"curren",
+				"currentuser"
+			],
+			[
+				"Api",
+				"ApiSetting"
+			],
+			[
+				"chan",
+				"channel_id"
+			],
+			[
+				"div",
+				"div_name"
+			],
+			[
+				"sim",
+				"simplepack"
+			],
+			[
+				"barc",
+				"barcodetype"
+			],
+			[
+				"Get",
+				"GetSql"
+			],
+			[
+				"sqlhel",
+				"sqlhelper"
+			],
+			[
+				"orderq",
+				"orderqty"
+			],
+			[
+				"return",
+				"return_value"
+			],
+			[
+				"cartonloose",
+				"cartonloosedetails"
+			],
+			[
+				"pick",
+				"pickup_no"
+			],
+			[
+				"car",
+				"cartonpacks"
+			],
+			[
+				"Ca",
+				"CartonDetails"
+			],
+			[
+				"cartonpac",
+				"cartonpackdetails"
+			],
+			[
+				"repon",
+				"responseNotFound"
+			],
+			[
+				"suppl",
+				"supplierexist"
+			],
+			[
+				"suplier",
+				"supplierexist"
+			],
+			[
+				"respond",
+				"respondWithError"
+			],
+			[
+				"se",
+				"settings"
+			],
+			[
+				"field",
+				"field_value"
+			],
+			[
+				"query",
+				"queryConstraint"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/wamp64/www/myNextProject/index.php",
+			"settings":
+			{
+				"buffer_size": 36,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Context",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Watch",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Stack",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "=> C:\\wamp64\\www\\fusionapi\\app\\Http\\Controllers\\AuthenticateController.php\n\t|+| 23\n",
+			"settings":
+			{
+				"buffer_size": 83,
+				"line_ending": "Windows",
+				"name": "Xdebug Breakpoint",
+				"read_only": true,
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 183.0,
+		"last_filter": "Package Control: insta",
+		"selected_items":
+		[
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"PHP Code Sniffer: ",
+				"PHP Code Sniffer: Clear sniffer marks"
+			],
+			[
+				"Package Control: install package",
+				"Package Control: Install Package"
+			],
+			[
+				"phpgetr",
+				"PHP: Generate Getters and Setters"
+			],
+			[
+				"php",
+				"PHP: Generate Setters"
+			],
+			[
+				"Snippet: pm",
+				"Snippet: pmet"
+			],
+			[
+				"PHP: Generate",
+				"PHP: Generate Getters and Setters"
+			],
+			[
+				"",
+				"Package Control: List Packages"
+			],
+			[
+				"Material Theme: Activate theme",
+				"Material Theme: Activate theme"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"gett",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 340.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"Material Theme: Activate theme",
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": true,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/wamp64/www/myNextProject"
+	],
+	"file_history":
+	[
+		"/C/wamp64/www/fusionapi/app/Http/api_routes.php",
+		"/C/wamp64/www/fusionapi/fusipnapi.sublime-project",
+		"/C/wamp64/www/fusionapi/app/Api/V1/Controllers/AuthController.php",
+		"/C/wamp64/www/fusionapi/bootstrap/app.php",
+		"/C/wamp64/www/fusionapi/public/index.php",
+		"/C/wamp64/www/fusionapi/app/Http/routes.php",
+		"/C/wamp64/www/fusionapi/app/Http/Controllers/AuthenticateController.php",
+		"/C/wamp64/www/fusionapi/app/Api/V1/Controllers/OrderController.php",
+		"/C/wamp64/www/fusionapi/app/Api/V1/Controllers/SupplierController.php",
+		"/C/wamp64/www/fusionapi/app/Api/V1/Controllers/TicketController.php",
+		"/C/wamp64/www/fusionapi/app/Api/V1/Controllers/UserSettingController.php",
+		"/C/wamp64/www/fusionapi/app/Helpers/LabelHelper.php",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/Xdebug Client/Xdebug.sublime-settings",
+		"/C/wamp64/www/fusionapi/storage/logs/laravel_warning.log",
+		"/C/wamp64/www/fusionapi/storage/logs/laravel_info.log",
+		"/C/wamp64/www/fusionapi/tests/TestCase.php",
+		"/C/wamp64/www/fusionapi/storage/logs/laravel-2017-09-21.log",
+		"/C/wamp64/www/fusionapi/tests/Feature/AuthRoutesTest.php",
+		"/C/wamp64/www/fusionapi/app/Helpers/Printer.php",
+		"/C/wamp64/www/fusionapi/tests/Feature/SupplierRoutesTest.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Commands/Sql.php",
+		"/C/wamp64/www/fusionapi/app/Sticky.php",
+		"/C/wamp64/www/fusionapi/tests/Feature/OrderRoutesTest.php",
+		"/C/wamp64/www/fusionapi/config/boilerplate.php",
+		"/C/wamp64/www/fusionapi/app/Http/Kernel.php",
+		"/C/wamp64/www/fusionapi/storage/logs/laravel.log",
+		"/C/wamp64/www/fusionapi/resources/views/partials/_list.blade.php",
+		"/C/wamp64/www/fusionapi/vendor/dingo/api/src/Http/Response/Format/Json.php",
+		"/C/wamp64/www/fusionapi/vendor/laravel/framework/src/Illuminate/Foundation/Testing/TestCase.php",
+		"/C/wamp64/www/fusionapi/tests/ApiTestCase.php",
+		"/C/wamp64/www/fusionapi/config/api.php",
+		"/C/wamp64/www/fusionapi/app/Http/Controllers/OrderController.php",
+		"/C/wamp64/www/fusionapi/vendor/psy/psysh/src/Psy/Util/Json.php",
+		"/C/wamp64/www/fusionapi/vendor/laravel/framework/src/Illuminate/Foundation/Application.php",
+		"/C/wamp64/www/fusionapi/.env",
+		"/C/wamp64/www/fusionapi/vendor/tymon/jwt-auth/src/Middleware/GetUserFromToken.php",
+		"/C/wamp64/www/fusionapi/phpunit.xml",
+		"/C/wamp64/www/fusionapi/app/User.php",
+		"/C/wamp64/www/fusionapi/tests/Feature/ExampleTest.php",
+		"/C/wamp64/www/fusionapi/app/Address.php",
+		"/C/wamp64/www/fusionapi/app/Http/Controllers/LabelController.php",
+		"/C/wamp64/www/fusionapi/resources/views/partials/_history.blade.php",
+		"/C/wamp64/www/fusionapi/config/app.php",
+		"/C/wamp64/www/fusionapi/composer.json",
+		"/C/wamp64/www/fusionapi/app/Helpers/TicketHelper.php",
+		"/C/wamp64/www/fusionapi/resources/views/partials/_simplepack.blade.php",
+		"/C/wamp64/www/fusionapi/resources/views/partials/_ratiopack.blade.php",
+		"/C/wamp64/www/fusionapi/resources/views/partials/_looseitem.blade.php",
+		"/C/wamp64/www/frontend/app/Http/Controllers/UserController.php",
+		"/C/wamp64/www/frontend/app/Http/Controllers/SupplierController.php",
+		"/C/wamp64/www/frontend/config/database.php",
+		"/C/wamp64/www/frontend/.env",
+		"/C/wamp64/www/frontend/app/Http/Controllers/AuthenticateController.php",
+		"/C/wamp64/www/frontend/app/Http/Controllers/OrderController.php",
+		"/C/wamp64/www/frontend/app/Http/Controllers/LabelController.php",
+		"/C/wamp64/www/frontend/app/Http/Middleware/ApiAuthenticate.php",
+		"/C/wamp64/www/frontend/app/Http/Controllers/HomeController.php",
+		"/C/wamp64/www/frontend/config/services.php",
+		"/C/wamp64/www/frontend/resources/views/includes/footer.blade.php",
+		"/C/wamp64/www/frontend/resources/views/includes/head.blade.php",
+		"/C/wamp64/www/frontend/composer.json",
+		"/C/wamp64/www/frontend/app/Http/Kernel.php",
+		"/C/wamp64/www/frontend/routes/web.php",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/User/SublimePhpCsFixer.sublime-settings",
+		"/C/wamp64/www/fusionapi/app/Warehouse.php",
+		"/C/wamp64/www/fusionapi/app/TipsTicketPrinted.php",
+		"/C/wamp64/www/fusionapi/app/TicketTypeDefault.php",
+		"/C/wamp64/www/fusionapi/app/TicketRequest.php",
+		"/C/wamp64/www/fusionapi/app/TicketPrinted.php",
+		"/C/wamp64/www/fusionapi/app/Supplier.php",
+		"/C/wamp64/www/fusionapi/app/Role.php",
+		"/C/wamp64/www/fusionapi/app/Order.php",
+		"/C/wamp64/www/fusionapi/app/Label.php",
+		"/C/wamp64/www/fusionapi/app/Carton.php",
+		"/C/wamp64/www/fusionapi/app/ApiSetting.php",
+		"/C/wamp64/www/fusionapi/app/Http/Middleware/ApiAuthenticate.php",
+		"/C/wamp64/www/fusionapi/app/Http/Controllers/UserController.php",
+		"/C/wamp64/www/fusionapi/app/Http/Controllers/SupplierController.php",
+		"/C/wamp64/www/fusionapi/app/Http/Controllers/HomeController.php",
+		"/C/wamp64/www/fusionapi/app/Http/Controllers/Controller.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Transformers/Transformer.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Transformers/TicketTransformer.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Transformers/TicketPrintedTransformer.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Transformers/SupplierTransformer.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Transformers/OrderTransformer.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Transformers/OrderDetailTransformer.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Transformers/CartonPackTransformer.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Interfaces/UserInterface.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Traits/UserSettingTrait.php",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/User/phpcs.sublime-settings",
+		"/C/wamp64/www/fusionapi/app/Api/V1/Controllers/ApiController.php",
+		"/C/wamp64/www/fusionapi/app/Api/V1/Controllers/RolePermissionController.php",
+		"/C/Users/Ram/.phpcsfixer",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/PHP Getters and Setters/php-getters-setters.sublime-settings",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/User/PHP Companion.sublime-settings",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/PHP Companion/PHP Companion.sublime-settings",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/SublimePhpCsFixer/SublimePhpCsFixer.sublime-settings",
+		"/C/Users/Ram/AppData/Roaming/Sublime Text 3/Packages/Phpcs/phpcs.sublime-settings",
+		"/C/Users/Ram/AppData/Local/Temp/phpmd.phar",
+		"/C/wamp64/www/fusionapi/resources/views/labels/supplier_tab.blade.php",
+		"/C/wamp64/www/fusionapi/config/ticket.php",
+		"/C/wamp64/www/fusionapi/resources/views/dashboard.blade.php",
+		"/C/wamp64/www/fusionapi/storage/framework/views/471baa635df7e0d2870ae510b97b7b3a62eadbcb.php",
+		"/C/wamp64/www/fusionapi/resources/views/labels/list.blade.php",
+		"/C/wamp64/www/fusionapi/resources/views/labels/carton_tab.blade.php",
+		"/C/wamp64/www/fusionapi/resources/views/labels/sticky_tab.blade.php",
+		"/C/wamp64/www/fusionapi/config/user.php",
+		"/C/wamp64/www/fusionapi/config/label.php",
+		"/C/wamp64/www/fusionapi/resources/views/user/edit.blade.php",
+		"/C/wamp64/www/fusionapi/resources/views/labels/options.blade.php",
+		"/C/wamp64/www/fusionapi/resources/views/includes/sidenav.blade.php",
+		"/C/wamp64/www/fusionapi/config/portal.php",
+		"/C/wamp64/www/fusionapi/vendor/zizaco/entrust/src/Entrust/Traits/EntrustUserTrait.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/UserSetting.php",
+		"/C/wamp64/www/fusionapi/config/auth.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Interfaces/iUserSetting.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Carton.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/CartonPack.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/CartonLoose.php",
+		"/C/wamp64/www/fusionapi/app/Fusion/Interfaces/CartonLooseInterface.php",
+		"/C/wamp64/www/fusionapi/resources/views/partials/_cartonpack.blade.php",
+		"/C/wamp64/www/fusionapi/resources/views/partials/_cartonloose.blade.php",
+		"/C/wamp64/www/fusionapi/public/css/label.css",
+		"/C/wamp64/www/fusionapi/public/css/print.css",
+		"/C/wamp64/www/fusionapi/resources/views/labels/template.blade.php",
+		"/C/wamp64/www/animus/api/src/AppBundle/Security/ApiKeyAuthenticator.php",
+		"/C/wamp64/www/animus/api/src/AppBundle/Entity/User.php",
+		"/C/wamp64/www/fusionapi/vendor/tymon/jwt-auth/src/Providers/User/UserInterface.php"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 158.0,
+		"where_history":
+		[
+			"C:\\wamp64\\www\\frontend"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"order",
+			"Order",
+			"order",
+			"password",
+			"']);\n\"\n            \"",
+			"']);\n",
+			"config::get"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"','"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/wamp64/www/myNextProject/index.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 36,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 83,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								83,
+								83
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 63.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.7,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.xdebug":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "fusipnapi.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"larave",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"api",
+				"app\\Http\\api_routes.php"
+			],
+			[
+				"apiauthe",
+				"app\\Http\\Middleware\\ApiAuthenticate.php"
+			],
+			[
+				"lara",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"471baa635df7e0d2870ae510b97b7b3a62eadbcb",
+				"storage\\framework\\views\\471baa635df7e0d2870ae510b97b7b3a62eadbcb.php"
+			],
+			[
+				"larav",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"user",
+				"app\\User.php"
+			],
+			[
+				"app",
+				"config\\app.php"
+			],
+			[
+				"labe",
+				"app\\Http\\Controllers\\LabelController.php"
+			],
+			[
+				"appkernel",
+				"app\\AppKernel.php"
+			],
+			[
+				"labelcontr",
+				"app\\Http\\Controllers\\LabelController.php"
+			],
+			[
+				"dns1d",
+				"vendor\\milon\\barcode\\src\\Milon\\Barcode\\DNS1D.php"
+			],
+			[
+				"label",
+				"public\\css\\label.css"
+			],
+			[
+				"log",
+				"vendor\\psr\\log\\Psr\\Log\\LoggerTrait.php"
+			],
+			[
+				"cache",
+				"vendor\\laravel\\framework\\src\\Illuminate\\Cache\\CacheManager.php"
+			],
+			[
+				"laraev",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"labelcon",
+				"app\\Http\\Controllers\\LabelController.php"
+			],
+			[
+				"routes",
+				"app\\Http\\routes.php"
+			],
+			[
+				"",
+				"resources\\views\\partials\\_cartonloose.blade.php"
+			],
+			[
+				"apihelp",
+				"app\\Helpers\\ApiHelper.php"
+			],
+			[
+				"apihelper",
+				"app\\Helpers\\ApiHelper.php"
+			],
+			[
+				"ticketc",
+				"app\\Api\\V1\\Controllers\\TicketController.php"
+			],
+			[
+				"new",
+				"resources\\views\\labels\\new.blade.php"
+			],
+			[
+				"sqlh",
+				"app\\Helpers\\SqlHelper.php"
+			],
+			[
+				"sqlhelper",
+				"app\\Helpers\\SqlHelper.php"
+			],
+			[
+				"f5bd6f1967de0a96ca83a105a271a1e49ea897f9",
+				"storage\\framework\\views\\f5bd6f1967de0a96ca83a105a271a1e49ea897f9.php"
+			],
+			[
+				"f5bd6f1967de0a96ca83a105a271a1e49ea897f9.php",
+				"storage\\framework\\views\\f5bd6f1967de0a96ca83a105a271a1e49ea897f9.php"
+			],
+			[
+				"labelhelper",
+				"app\\Helpers\\LabelHelper.php"
+			],
+			[
+				"labelcontrller",
+				"app\\Http\\Controllers\\LabelController.php"
+			],
+			[
+				"sql",
+				"app\\Helpers\\SqlHelper.php"
+			],
+			[
+				"labelcontroll",
+				"app\\Http\\Controllers\\LabelController.php"
+			],
+			[
+				"laravel.log",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"lar",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"ticket",
+				"config\\ticket.php"
+			],
+			[
+				"api_",
+				"app\\Http\\api_routes.php"
+			],
+			[
+				"ddf59d5e64d93f25d61c34700dc23a288ccfa1ca",
+				"storage\\framework\\views\\ddf59d5e64d93f25d61c34700dc23a288ccfa1ca.php"
+			],
+			[
+				"options",
+				"resources\\views\\labels\\options.blade.php"
+			],
+			[
+				"api_routes",
+				"app\\Http\\api_routes.php"
+			],
+			[
+				"labelsearch",
+				"resources\\views\\labels\\search.blade.php"
+			],
+			[
+				"d1783d038b98de93b43b01aac59d0607caf7ae52",
+				"storage\\framework\\views\\d1783d038b98de93b43b01aac59d0607caf7ae52.php"
+			],
+			[
+				"d1783d038b98de93b43b01aac59d0607caf7ae52.php",
+				"storage\\framework\\views\\d1783d038b98de93b43b01aac59d0607caf7ae52.php"
+			],
+			[
+				"userse",
+				"app\\Fusion\\UserSetting.php"
+			],
+			[
+				"orders",
+				"resources\\views\\includes\\order_search_form.blade.php"
+			],
+			[
+				"laravel",
+				"storage\\logs\\laravel.log"
+			],
+			[
+				"user/ed",
+				"resources\\views\\user\\edit.blade.php"
+			],
+			[
+				"boilerplate",
+				"config\\boilerplate.php"
+			],
+			[
+				"labelhelpr",
+				"app\\Helpers\\LabelHelper.php"
+			],
+			[
+				"edit.blade",
+				"resources\\views\\user\\edit.blade.php"
+			],
+			[
+				"bootstra",
+				"public\\css\\bootstrap.css"
+			],
+			[
+				"bootsra",
+				"public\\css\\bootstrap.css"
+			],
+			[
+				"custom",
+				"public\\css\\custom-styles.css"
+			],
+			[
+				"890aebd3ae661a126632773516d39cd90bd50d30.php",
+				"storage\\framework\\views\\890aebd3ae661a126632773516d39cd90bd50d30.php"
+			],
+			[
+				"supplier",
+				"app\\Fusion\\Transformers\\SupplierTransformer.php"
+			],
+			[
+				"tokenentru",
+				"app\\Http\\Middleware\\TokenEntrustAbility.php"
+			],
+			[
+				"suppliercontr",
+				"app\\Http\\Controllers\\SupplierController.php"
+			],
+			[
+				"sidenav",
+				"resources\\views\\includes\\sidenav.blade.php"
+			],
+			[
+				"entrustserviceprovider",
+				"vendor\\zizaco\\entrust\\src\\Entrust\\EntrustServiceProvider.php"
+			],
+			[
+				"375975e14fe77a28dabf69cf17e675a0940eff62",
+				"storage\\framework\\views\\375975e14fe77a28dabf69cf17e675a0940eff62.php"
+			],
+			[
+				"config/auth",
+				"config\\auth.php"
+			],
+			[
+				"config/app",
+				"config\\app.php"
+			],
+			[
+				"routesapi",
+				"entrust\\routes\\api.php"
+			],
+			[
+				"kernel",
+				"entrust\\app\\Http\\Kernel.php"
+			],
+			[
+				"databse",
+				"database\\seeds\\DatabaseSeeder.php"
+			],
+			[
+				"app.php",
+				"fusionapi\\bootstrap\\app.php"
+			],
+			[
+				"ordercontroller",
+				"fusionapi\\app\\Api\\V1\\Controllers\\OrderController.php"
+			],
+			[
+				"route",
+				"fusionapi\\app\\Http\\routes.php"
+			],
+			[
+				"top",
+				"fusionapi\\resources\\views\\includes\\topnav.blade.php"
+			],
+			[
+				"routes.",
+				"fusionapi\\app\\Http\\routes.php"
+			],
+			[
+				"pop",
+				"fusionapi\\public\\js\\popup.js"
+			],
+			[
+				"head",
+				"fusionapi\\resources\\views\\includes\\head.blade.php"
+			],
+			[
+				"da8df695ff72c06719eae31182592db84316a69a",
+				"fusionapi\\storage\\framework\\views\\da8df695ff72c06719eae31182592db84316a69a.php"
+			],
+			[
+				"foot",
+				"fusionapi\\resources\\views\\includes\\footer.blade.php"
+			],
+			[
+				"customstyles",
+				"fusionapi\\public\\css\\custom-styles.css"
+			],
+			[
+				"08cbffbc653463c71c935bb877ca6d562f79c5ad",
+				"fusionapi\\storage\\framework\\views\\08cbffbc653463c71c935bb877ca6d562f79c5ad.php"
+			],
+			[
+				"password",
+				"fusionapi\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider.php"
+			],
+			[
+				"mailc",
+				"fusionapi\\vendor\\laravel\\framework\\src\\Illuminate\\Notifications\\Channels\\MailChannel.php"
+			],
+			[
+				"ce60f73115439b61dee768bc5c5937c217643d83",
+				"fusionapi\\storage\\framework\\views\\ce60f73115439b61dee768bc5c5937c217643d83.php"
+			],
+			[
+				"auth/pass",
+				"fusionapi\\vendor\\laravel\\framework\\src\\Illuminate\\Contracts\\Auth\\PasswordBroker.php"
+			],
+			[
+				"eventser",
+				"app\\Providers\\EventServiceProvider.php"
+			],
+			[
+				"order",
+				"app\\Order.php"
+			],
+			[
+				"apicontr",
+				"app\\Api\\V1\\Controllers\\ApiController.php"
+			],
+			[
+				"apicontroller/",
+				"app\\Api\\V1\\Controllers\\AuthController.php"
+			],
+			[
+				"databsestore",
+				"vendor\\anlutro\\l4-settings\\src\\DatabaseSettingStore.php"
+			],
+			[
+				"apicon",
+				"app\\Api\\V1\\Controllers\\ApiController.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false,
+			"restore_index":
+			{
+				"14":
+				{
+					"group": 0,
+					"index": 0
+				},
+				"15":
+				{
+					"group": 0,
+					"index": 1
+				},
+				"16":
+				{
+					"group": 0,
+					"index": 2
+				},
+				"17":
+				{
+					"group": 0,
+					"index": 5
+				},
+				"19":
+				{
+					"group": 0,
+					"index": 6
+				},
+				"20":
+				{
+					"group": 0,
+					"index": 7
+				},
+				"21":
+				{
+					"group": 0,
+					"index": 8
+				},
+				"22":
+				{
+					"group": 0,
+					"index": 9
+				},
+				"32":
+				{
+					"group": 0,
+					"index": 3
+				},
+				"33":
+				{
+					"group": 0,
+					"index": 4
+				}
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 250.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
