@@ -19,7 +19,6 @@ use App\Fusion\Transformers\SupplierTransformer;
 
 class SupplierController extends ApiController
 {
-    public $pagination = false;
     /**
      * [__constructor]
      */
@@ -38,15 +37,14 @@ class SupplierController extends ApiController
     {
         // DB::enableQueryLog();
         if ($this->user->isAdmin()) {
-            $suppliers = Supplier::Active()->paginate(15)->toArray();
-            $this->pagination = true;
+            $suppliers = Supplier::Active()->paginate(10)->toArray();
         } elseif ($this->user->getRoleId()) {
-            $suppliers = Supplier::Active()->Where('supplier', $this->user->getRoleId())->get()->toArray();
+            $suppliers = Supplier::Active()->paginate()->Where('supplier', $this->user->getRoleId())->get()->toArray();
         } else {
             return $this->respondNotFound('Supplier Not Found');
         }
         // dd(DB::getQueryLog());
-        $data = $this->supplierTransformer->transformCollection($suppliers, $this->pagination);
+        $data = $this->supplierTransformer->transformCollection($suppliers, true);
 
         Log::info('Supplier list retrieved by user  : '.$this->user->email);
 

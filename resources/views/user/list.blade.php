@@ -42,6 +42,25 @@
             </div>
              
             <div class="panel-body">
+            	<nav aria-label="Page navigation" class="pagination-nav">
+				  	<h4>Page {{$users['current_page']}} of {{$users['last_page']}}</h4>
+				  	<ul class="pagination">
+				  		@if($users['current_page'] > 1)	
+					    	<li>
+					      		<a href="{{url()->current()}}/?page={{$users['current_page'] - 1}}" aria-label="Previous">
+					        		<span aria-hidden="true">&laquo;</span>
+					      		</a>
+					    	</li>
+				    	@endif
+				    	@if($users['current_page'] < $users['last_page'])
+					    	<li>
+					      		<a href="{{url()->current()}}/?page={{$users['current_page'] + 1}}" aria-label="Next">
+					        		<span aria-hidden="true">&raquo;</span>
+					      		</a>
+					    	</li>
+				    	@endif
+				  	</ul>
+				</nav>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover">
                         <thead>
@@ -53,7 +72,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $_user)
+                            @foreach ($users['data'] as $_user)
                                 <tr>
                                     <td>{{$_user['name']}}</td>
                                     <td>{{$_user['email']}}</td>

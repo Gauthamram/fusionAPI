@@ -22,7 +22,8 @@ class SupplierController extends Controller
     {
         try {
             $token = $request->session()->get('token');
-            $response = $this->api->raw()->get('suppliers', ['token' => $token]);
+            $page = $request->page ? $request->page : 1;
+            $response = $this->api->raw()->get('suppliers', ['token' => $token,'page' => $page]);
                 
             if ($response->getstatusCode() == 200) {
                 $result = json_decode($response->getContent(), true);

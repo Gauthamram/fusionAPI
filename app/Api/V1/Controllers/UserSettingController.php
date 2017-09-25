@@ -15,8 +15,6 @@ use Dingo\Api\Exception\ValidationHttpException;
 
 class UserSettingController extends ApiController
 {
-    public $pagination = false;
-
     public function __construct(UserTransformer $userTransformer)
     {
         $this->currentuser = JWTAuth::parseToken()->authenticate();
@@ -27,15 +25,13 @@ class UserSettingController extends ApiController
     {
         if ($request->isMethod('post')) {
         } else {
-            $this->pagination = true;
             if (($this->currentuser->isAdmin()) && (!$id)) {
-                $this->pagination = true;
-                $users = User::paginate(15)->toArray();
-                $data = $this->userTransformer->transformCollection($users, $this->pagination);
+                $users = User::paginate(10)->toArray();
+                $data = $this->userTransformer->transformCollection($users, true);
             } elseif ((($this->currentuser->isAdmin()) && ($id)) || ($this->currentuser->id == $id)) {
                 $id = $this->currentuser->id;
                 $users = User::findOrFail($id)->get()->toArray();
-                $data = $this->userTransformer->transformCollection($users, $this->pagination);
+                $data = $this->userTransformer->transformCollection($users, true);
             } else {
                 return $this->respondForbidden('Forbidden from performing this action');
             }
