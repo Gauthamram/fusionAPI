@@ -33,11 +33,7 @@
     },
     "autoload-dev": {
         "classmap": [
-<<<<<<< HEAD
-            "tests/TestCase.php",
-=======
             "tests/TestCase.php"
->>>>>>> 8a89a8d63ac0f92fc21d74d5c62b1aa0b3c7d181
         ]
     },
     "scripts": {
