@@ -170,7 +170,7 @@ class LabelHelper extends Printer
                                 ':order_no' => $order_no,
                                 ':supplier' => $this->getRoleId(),
                                 ':supplier_trait' => Config::get('ticket.supplier_trait')
-                            ]);
+                            ])->paginate(15);
         }
         return $searchorders;
     }

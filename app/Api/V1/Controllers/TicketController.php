@@ -39,8 +39,8 @@ class TicketController extends ApiController
     }
 
     /**
-     * [list all ticket request]
-     * @param  Request
+     * list all ticket request
+     * @param  $request
      * @return
      */
     public function index(Request $request)
@@ -51,7 +51,7 @@ class TicketController extends ApiController
     }
 
     /**
-     * [printed - tickets printed based on user, change the tables]
+     * printed - tickets printed based on user, change the tables
      * warehouse user - cgl_tickets_printed
      * other users - cgl_tickets_tips_printed
      * @return
@@ -126,9 +126,9 @@ class TicketController extends ApiController
     // }
 
     /**
-     * [create ticketrequest]
-     * @param  Request
-     * @return ticket object
+     * create ticketrequest
+     * @param  $request
+     * @return
      */
     public function create(Request $request)
     {
