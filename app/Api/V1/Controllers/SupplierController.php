@@ -10,6 +10,7 @@ use Validator;
 use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;
 use Cache;
+use Log;
 use Carbon\Carbon;
 use App\Supplier;
 use App\Address;
