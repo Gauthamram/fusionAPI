@@ -2,24 +2,24 @@
 
 namespace App\Api\V1\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use JWTAuth;
 use Validator;
-use Dingo\Api\Routing\Helpers;
-use App\Http\Controllers\Controller;
 use Cache;
+use Log;
 use Carbon\Carbon;
 use App\Supplier;
 use App\Address;
+use Illuminate\Http\Request;
 use App\Helpers\LabelHelper;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Dingo\Api\Exception\ValidationHttpException;
 use App\Fusion\Transformers\SupplierTransformer;
 
 class SupplierController extends ApiController
 {
-    use Helpers;
+    public $pagination = false;
     /**
      * [__constructor]
      */
@@ -30,18 +30,23 @@ class SupplierController extends ApiController
         $this->labelHelper = new LabelHelper();
     }
 
+    /**
+     * Returns list of suppliers
+     * @return
+     */
     public function index()
     {
         // DB::enableQueryLog();
         if ($this->user->isAdmin()) {
-            $suppliers = Supplier::Active()->get()->toArray();
+            $suppliers = Supplier::Active()->paginate(15)->toArray();
+            $this->pagination = true;
         } elseif ($this->user->getRoleId()) {
             $suppliers = Supplier::Active()->Where('supplier', $this->user->getRoleId())->get()->toArray();
         } else {
             return $this->respondNotFound('Supplier Not Found');
         }
         // dd(DB::getQueryLog());
-        $data = $this->supplierTransformer->transformCollection($suppliers);
+        $data = $this->supplierTransformer->transformCollection($suppliers, $this->pagination);
 
         Log::info('Supplier list retrieved by user  : '.$this->user->email);
 
@@ -50,11 +55,11 @@ class SupplierController extends ApiController
 
     /**
      *
-     * [supplier details]
-     * @param  [integer] $supplier [description]
-     * @return [type]           [description]
+     * Returns supplier details
+     * @param $supplier
+     * @return
      */
-    public function supplier($supplier, $type = 'Tickets')
+    public function supplier(int $supplier, $type = 'Tickets')
     {
         if (($supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
             if ($this->labelHelper->supplierCheck($supplier)) {
@@ -71,6 +76,11 @@ class SupplierController extends ApiController
         }
     }
 
+    /**
+     * Returns suppier list based on search term
+     * @param  $term
+     * @return
+     */
     public function search($term)
     {
         if ($this->user->isAdmin()) {

@@ -22,6 +22,10 @@ class AuthController extends ApiController
 {
     use Helpers;
 
+    /**
+     * Returns authenticated user object
+     * @return
+     */
     public function user()
     {
         if ($currentuser = JWTAuth::parseToken()->authenticate()) {
@@ -32,6 +36,11 @@ class AuthController extends ApiController
         return response()->json(compact('authuser'));
     }
 
+    /**
+     * User Login and returns token
+     * @param  $request
+     * @return
+     */
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
@@ -58,6 +67,11 @@ class AuthController extends ApiController
         return response()->json(compact('token'));
     }
 
+    /**
+     * user registration
+     * @param  $request
+     * @return
+     */
     public function signup(Request $request)
     {
         $this->user = JWTAuth::parseToken()->authenticate();
@@ -108,6 +122,11 @@ class AuthController extends ApiController
         }
     }
 
+    /**
+     * User details Recovery
+     * @param  $request
+     * @return
+     */
     public function recovery(Request $request)
     {
         $validator = Validator::make($request->only('email'), [
@@ -131,6 +150,11 @@ class AuthController extends ApiController
         }
     }
 
+    /**
+     * Password reset
+     * @param  $request
+     * @return
+     */
     public function reset(Request $request)
     {
         if ($request->isMethod('post')) {

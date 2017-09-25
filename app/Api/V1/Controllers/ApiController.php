@@ -6,20 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Response;
+use Dingo\Api\Routing\Helpers;
 
 class ApiController extends Controller
 {
+    use Helpers;
+    
     protected $admin = false;
     
     /**
-     * [$statuscode description]
+     * statuscode
      * @var integer
      */
     protected $statuscode = 200;
 
     /**
-     * [getStatusCode description]
-     * @return [integer]
+     * getStatusCode
+     * @return
      */
     public function getStatusCode()
     {
@@ -27,10 +30,10 @@ class ApiController extends Controller
     }
 
     /**
-     * [setStatusCode description]
-     * @param [integer] $value
+     * setStatusCode
+     * @param $value
      */
-    public function setStatusCode($value)
+    public function setStatusCode(int $value)
     {
         $this->statuscode = $value;
 
@@ -38,29 +41,29 @@ class ApiController extends Controller
     }
 
     /**
-     * [responseNotFound Forbidden]
-     * @param  string $message
-     * @return [type]
+     * responseNotFound Forbidden
+     * @param  $message
+     * @return
      */
-    public function respondForbidden($message = 'Forbidden')
+    public function respondForbidden(string $message = 'Forbidden')
     {
         return $this->setStatusCode(403)->respondWithError($message);
     }
 
     /**
-     * [responseNotFound description]
-     * @param  string $message
-     * @return [type]
+     * responseNotFound
+     * @param  $message
+     * @return
      */
-    public function respondNotFound($message = 'Not found')
+    public function respondNotFound(string $message = 'Not found')
     {
         return $this->setStatusCode(404)->respondWithError($message);
     }
 
     /**
      * [responsePreConditionFailed description]
-     * @param  string $message
-     * @return [type]
+     * @param   $message
+     * @return
      */
     public function respondPreConditionFailed($message = 'Precondition failed')
     {
@@ -68,9 +71,9 @@ class ApiController extends Controller
     }
 
     /**
-     * @param  array
-     * @param  array
-     * @return json
+     * @param  $data
+     * @param  $headers
+     * @return
      */
     public function respond($data, $headers=[])
     {
@@ -78,10 +81,10 @@ class ApiController extends Controller
     }
 
     /**
-     * @param  string
-     * @return object
+     * @param  $message
+     * @return
      */
-    public function respondSuccess($message)
+    public function respondSuccess(string $message)
     {
         return $this->respond([
             'data' => [
@@ -92,10 +95,10 @@ class ApiController extends Controller
         ]);
     }
     /**
-     * @param  string
-     * @return object
+     * @param  $message
+     * @return
      */
-    public function respondWithError($message)
+    public function respondWithError(string $message)
     {
         return $this->respond([
             'data' => [

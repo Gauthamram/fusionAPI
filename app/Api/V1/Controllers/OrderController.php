@@ -9,7 +9,6 @@ use Config;
 use Log;
 use Carbon\Carbon;
 use App\Http\Requests;
-use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\labelHelper;
@@ -19,10 +18,14 @@ use App\Fusion\Transformers\OrderDetailTransformer;
 
 class OrderController extends ApiController
 {
-    use Helpers;
-
     protected $orderTransformer;
+    public $pagination = false;
 
+    /**
+     * __construct
+     * @param $orderTransformer
+     * @param $orderdetailTransformer
+     */
     public function __construct(orderTransformer $orderTransformer, orderdetailTransformer $orderdetailTransformer)
     {
         $this->labelHelper = new LabelHelper();
@@ -33,25 +36,34 @@ class OrderController extends ApiController
 
     /**
      * List all pending orders that needs to be listed for printing or printed orders from the supplier
+     * @param  $status
+     * @return
      */
     public function index($status = '')
     {
+        $this->pagination = true;
         $orders = $this->labelHelper->allOrders($status);
-        $data = $this->orderTransformer->transformCollection($orders);
+        $data = $this->orderTransformer->transformCollection($orders, $this->pagination);
         return $this->respond(['data' => $data]);
     }
 
+    /**
+     * Returns Order details for the order number
+     * @param  $order_no
+     * @return
+     */
     public function order($order_no)
     {
+        $this->pagination = true;
         $orders = $this->labelHelper->searchOrders($order_no);
-        $data = $this->orderTransformer->transformCollection($orders);
+        $data = $this->orderTransformer->transformCollection($orders, $this->pagination);
         return  $this->respond(['data' => $data]);
     }
 
     /**
-     * [Sticky Label Data ]
-     * @param  [type] $order_no [description]
-     * @return [type]           [description]
+     * Returns order details
+     * @param  $order_no
+     * @return
      */
     public function orderdetails($order_no)
     {
@@ -69,9 +81,9 @@ class OrderController extends ApiController
     }
 
     /**
-     * [cartonpack]
-     * @param  [int] $order_no
-     * @return [type]
+     * Returns cartonpack details
+     * @param  $order_no
+     * @return
      */
     public function cartonpack(Request $request, $order_no = '', $item_number = '', $listing = false)
     {
@@ -102,9 +114,9 @@ class OrderController extends ApiController
     }
 
     /**
-     * [cartonloose description]
-     * @param  [type] $order_no [description]
-     * @return [type]           [description]
+     * Returns cartonloose details
+     * @param  $order_no
+     * @return
      */
     public function cartonloose(Request $request, $order_no = '', $item_number = '', $listing = false)
     {
@@ -135,9 +147,9 @@ class OrderController extends ApiController
     }
 
     /**
-     * [looseitem description]
-     * @param  [type] $order_no [description]
-     * @return [type]           [description]
+     * Returns ratiopack detail
+     * @param  $order_no
+     * @return
      */
     public function ratiopack($order_no)
     {
@@ -157,9 +169,9 @@ class OrderController extends ApiController
     }
 
     /**
-     * [looseitem description]
-     * @param  [type] $order_no [description]
-     * @return [type]           [description]
+     * Returns looseitem details
+     * @param  $order_no
+     * @return
      */
     public function looseitem($order_no)
     {
@@ -179,9 +191,9 @@ class OrderController extends ApiController
     }
 
     /**
-     * [SimplePack description]
-     * @param  [type] $order_no [description]
-     * @return [type]           [description]
+     * Returns SimplePack details
+     * @param  $order_no
+     * @return
      */
     public function simplepack($order_no)
     {
@@ -201,9 +213,9 @@ class OrderController extends ApiController
     }
 
     /**
-     * [Sticky Label Data ]
-     * @param  [type] $order_no [description]
-     * @return [type]           [description]
+     * Return Sticky Label Data
+     * @param  $order_no
+     * @return
      */
     public function sticky($order_no)
     {
