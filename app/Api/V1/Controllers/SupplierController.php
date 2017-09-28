@@ -83,18 +83,12 @@ class SupplierController extends ApiController
     {
         if ($this->user->isAdmin()) {
             $supplier = new Supplier();
-            $suppliers = $supplier::Active()->Search($term)->get(['supplier', 'sup_name','contact_email','contact_name','contact_phone']);
-            $data = array();
+            $suppliers = $supplier::Active()->Search($term)->get(['supplier', 'sup_name','contact_email','contact_name','contact_phone'])->toArray();
+            
             if (count($suppliers) > 0) {
-                foreach ($suppliers as $supplier) {
-                    $data[] = array(
-                        'id' => $supplier->supplier,
-                        'name' => $supplier->sup_name,
-                        'email' => $supplier->contact_email,
-                        'contact' => $supplier->contact_name,
-                        'phone' => $supplier->contact_phone
-                        );
-                }
+                $data = $this->supplierTransformer->transformCollection($suppliers, false);
+            } else {
+                $data = ['data'];
             }
 
             Log::info('supplier search by user  : '.$this->user->email);

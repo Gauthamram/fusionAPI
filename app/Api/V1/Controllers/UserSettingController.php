@@ -23,19 +23,14 @@ class UserSettingController extends ApiController
 
     public function index(Request $request, $id='')
     {
-        if ($request->isMethod('post')) {
+        if (($id) || ($this->currentuser->id == $id)) {
+            $user = User::findOrFail($id)->toArray();
+            dd($user);
+            $data = $this->userTransformer->transformCollection($users, false);
         } else {
-            if (($this->currentuser->isAdmin()) && (!$id)) {
-                $users = User::paginate(10)->toArray();
-                $data = $this->userTransformer->transformCollection($users, true);
-            } elseif ((($this->currentuser->isAdmin()) && ($id)) || ($this->currentuser->id == $id)) {
-                $id = $this->currentuser->id;
-                $users = User::findOrFail($id)->get()->toArray();
-                $data = $this->userTransformer->transformCollection($users, true);
-            } else {
-                return $this->respondForbidden('Forbidden from performing this action');
-            }
+            return $this->respondForbidden('Forbidden from performing this action');
         }
+        
         return $this->respond(['data' => $data]);
     }
 }

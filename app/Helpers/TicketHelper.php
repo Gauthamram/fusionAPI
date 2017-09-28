@@ -108,7 +108,7 @@ class TicketHelper extends Printer
                 $prev_item = $orderitem->item_number;
 
                 $itemdata = array(
-                    'order_no' => $orderitem->order_no,
+                    'order_number' => $ticket->order_no,
                     'item' => $orderitem->item_number,
                     'stockroomlocator' => $orderitem->stockroom,
                     'description' => $orderitem->short_desc,
@@ -153,7 +153,7 @@ class TicketHelper extends Printer
                     $prev_item = $ordersimplepack->item_number;
 
                     $simplepackdata[$i][$key] = array(
-                      'order_no' => $orderpack->order_no,
+                      'order_number' => $ticket->order_no,
                       'item' => $orderpack->item_number,
                       'stockroomlocator' => $orderpack->stockroom,
                       'description' => $orderpack->short_desc,
@@ -199,7 +199,7 @@ class TicketHelper extends Printer
                     $prev_item = $orderpack->item_number;
 
                     $packdata[$i][$key] = array(
-                      'order_no' => $orderpack->order_no,
+                      'order_number' => $ticket->order_no,
                       'item' => $orderpack->item_number,
                       'stockroomlocator' => $orderpack->stockroom,
                       'description' => $orderpack->short_desc,
