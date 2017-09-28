@@ -42,8 +42,8 @@ class TicketHelper extends Printer
                 $data['cartonloose'][] = $cartonloosedata = $this->ticketRequestCartonPack($ticketrequest);
 
                 //get quantity
-                $quantity['Carton_Pack'] = $quantity['Carton_Pack'] + $cartonpackdata['quantity'];
-                $quantity['Carton_Loose'] = $quantity['Carton_Loose'] + $cartonloosedata['quantity'];
+                // $quantity['Carton_Pack'] = $quantity['Carton_Pack'] + $cartonpackdata['quantity'];
+                // $quantity['Carton_Loose'] = $quantity['Carton_Loose'] + $cartonloosedata['quantity'];
             } else {
                 $thePackIndicator = $this->checkPackIndicator($ticketrequest);
           
@@ -61,19 +61,19 @@ class TicketHelper extends Printer
                       $data['sticky'];
                       break;
                 }
-                $quantity['Sticky_Label'] = $quantity['Sticky_Label'] + $stickydata['quantity'];
+                // $quantity['Sticky_Label'] = $quantity['Sticky_Label'] + $stickydata['quantity'];
             }
         }
 
         //set ticket printed
-        foreach ($quantity as $name => $labelquantity) {
-            $ticketprinted = new TipsTicketPrinted();
-            $ticketprinted->order_no = $order_no;
-            $ticketprinted->createdate = Carbon::now();
-            $ticketprinted->filename = Config::get('ticket.filename');
-            $ticketprinted->tickettype = $name;
-            $ticketprinted->save();
-        }
+        // foreach ($quantity as $name => $labelquantity) {
+        //     $ticketprinted = new TipsTicketPrinted();
+        //     $ticketprinted->order_no = $order_no;
+        //     $ticketprinted->createdate = Carbon::now();
+        //     $ticketprinted->filename = Config::get('ticket.filename');
+        //     $ticketprinted->tickettype = $name;
+        //     $ticketprinted->save();
+        // }
 
         return $data;
     }
@@ -118,13 +118,13 @@ class TicketHelper extends Printer
         $orderitem_query = $item_ticket->query()->getSql();
         $orderitems = DB::select($orderitem_query, [':order_no' => $ticket->order_no,':item_number' => $ticket->item_number,':location1' => $ticket->location,
             ':location2' => $ticket->location, ':location3' => $ticket->location]);
-
+        $prev_item = '';
         foreach ($orderitems as $orderitem) {
-            if ($prev_item != $orderitem->itemnumber) {
-                $prev_item = $orderitem->itemnumber;
+            if ($prev_item != $orderitem->item_number) {
+                $prev_item = $orderitem->item_number;
 
                 $itemdata = array(
-            'item' => $orderitem->itemnumber,
+            'item' => $orderitem->item_number,
             'stockroomlocator' => $orderitem->stockroom,
             'description' => $orderitem->short_desc,
             'colour' => $orderitem->colour,
@@ -149,7 +149,7 @@ class TicketHelper extends Printer
 
         //get simple pack items
         $ordersimplepack_query = $simplepack_ticket->query()->getSql();
-        $ordersimplepacks = DB::select($ordersimplepack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->itemnumber,':location1' => $ticket->location,':location2' => $ticket->location,':location3' => $ticket->location]);
+        $ordersimplepacks = DB::select($ordersimplepack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->item_number,':location1' => $ticket->location,':location2' => $ticket->location,':location3' => $ticket->location]);
 
         if ($ticket->sort_order_type == config::get('ticket.sort_type.packandloose')) {
             $packquantity = $ticket->quantity;
@@ -164,11 +164,11 @@ class TicketHelper extends Printer
 
         while ($i <= $packquantity) {
             foreach ($ordersimplepacks as $key => $ordersimplepack) {
-                if ($prev_item != $ordersimplepack->itemnumber) {
-                    $prev_item = $ordersimplepack->itemnumber;
+                if ($prev_item != $ordersimplepack->item_number) {
+                    $prev_item = $ordersimplepack->item_number;
 
                     $simplepackdata[$i][$key] = array(
-              'item' => $orderpack->itemnumber,
+              'item' => $orderpack->item_number,
               'stockroomlocator' => $orderpack->stockroom,
               'description' => $orderpack->short_desc,
               'colour' => $orderpack->colour,
@@ -195,7 +195,7 @@ class TicketHelper extends Printer
         $pack_ticket = new PackTicket();
         //get pack items
         $orderpack_query = $pack_ticket->query()->getSql();
-        $orderpacks = DB::select($orderpack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->itemnumber,':location1' => $ticket->location,
+        $orderpacks = DB::select($orderpack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->item_number,':location1' => $ticket->location,
         ':location2' => $ticket->location,':location3' => $ticket->location]);
 
         if ($ticket->sort_order_type == config::get('ticket.sort_type.packandloose')) {
@@ -209,11 +209,11 @@ class TicketHelper extends Printer
 
         while ($i <= $packquantity) {
             foreach ($orderpacks as $key => $orderpack) {
-                if ($prev_item != $orderpack->itemnumber) {
-                    $prev_item = $orderpack->itemnumber;
+                if ($prev_item != $orderpack->item_number) {
+                    $prev_item = $orderpack->item_number;
 
                     $packdata[$i][$key] = array(
-              'item' => $orderpack->itemnumber,
+              'item' => $orderpack->item_number,
               'stockroomlocator' => $orderpack->stockroom,
               'description' => $orderpack->short_desc,
               'colour' => $orderpack->colour,
