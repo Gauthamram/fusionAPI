@@ -8,7 +8,7 @@ class PackTicket implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = "SELECT im.item as itemnumber, pk.item_parent AS productnumber, pk.pack_no, 
+        $this->sql = "SELECT im.item as item_number, pk.item_parent AS productnumber, pk.pack_no, 
         	im.short_desc, sz.diff_desc AS item_size, 
           	cl.diff_desc AS colour, pk.pack_qty AS quantity, srl.uda_text AS stockroom, v.uda_value_desc  AS brand, 
           	os.earliest_ship_date, 
