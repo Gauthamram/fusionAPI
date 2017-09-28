@@ -8,7 +8,7 @@ class SimplePackTicket implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = "SELECT pi.pack_no AS productnumber, im.item as itemnumber, im.short_desc, 
+        $this->sql = "SELECT pi.pack_no AS productnumber, im.item as item_number, im.short_desc, 
         	sz.diff_desc AS item_size, cl.diff_desc AS colour, 
             1 AS quantity, srl.uda_text as stockroom, v.uda_value_desc  AS brand, os.earliest_ship_date, 
             br.item AS barcode, 

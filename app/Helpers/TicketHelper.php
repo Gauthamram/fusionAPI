@@ -116,7 +116,8 @@ class TicketHelper extends Printer
     {
         $item_ticket = new ItemTicket();
         $orderitem_query = $item_ticket->query()->getSql();
-        $orderitems = DB::select($orderitem_query, [':order_no' => $ticket->order_no,':item_number' => $ticket->item_number]);
+        $orderitems = DB::select($orderitem_query, [':order_no' => $ticket->order_no,':item_number' => $ticket->item_number,':location1' => $ticket->location,
+            ':location2' => $ticket->location, ':location3' => $ticket->location]);
 
         foreach ($orderitems as $orderitem) {
             if ($prev_item != $orderitem->itemnumber) {
@@ -235,6 +236,6 @@ class TicketHelper extends Printer
     {
         $delete_loosecarton = new DeleteLooseCarton();
         $loosecarton_query = $delete_loosecarton->query()->getSql();
-        return DB::select($loosecarton_query, [':order_no' => $order_no]);
+        return DB::delete($loosecarton_query, [':order_no' => $order_no]);
     }
 }

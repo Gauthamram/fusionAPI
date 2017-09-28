@@ -8,7 +8,7 @@ class ItemTicket implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = "SELECT  im.item_parent AS productnumber, im.item as itemnumber, im.short_desc, 
+        $this->sql = "SELECT  im.item_parent AS productnumber, im.item as item_number, im.short_desc, 
         	sz.diff_desc AS item_size, cl.diff_desc AS colour, 
             1 AS quantity, srl.uda_text as stockroom, v.uda_value_desc  AS brand, os.earliest_ship_date, 
             br.item AS 	barcode, 99999 AS sortid, 
@@ -42,7 +42,7 @@ class ItemTicket implements RawSqlInterface
             INNER JOIN uda_values v ON uil.uda_id = v.uda_id AND uil.uda_value = v.uda_value AND v.uda_id = 8
             LEFT JOIN item_master br ON br.item_parent = im.item AND br.primary_ref_item_ind = 'Y'
             LEFT JOIN item_zone_price nz ON nz.item = im.item and nz.zone_id = 4
-            WHERE os.order_no = :ordernumber AND im.item = :item_number";
+            WHERE os.order_no = :order_no AND im.item = :item_number";
 
         return $this;
     }
