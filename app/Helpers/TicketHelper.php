@@ -34,12 +34,12 @@ class TicketHelper extends Printer
                         ]);
 
         //delete all bad requests for the loosecartons
-        $deleteloosecarton = $this->deleteLooseCarton();
+        $deleteloosecarton = $this->deleteLooseCarton($order_no);
 
         foreach ($ticketrequests as $ticketrequest) {
             if ($ticketrequest->ticket_type_id == config::get('ticket.type.carton')) {
-                $data['carton']['pack'] = $cartonpackdata = $this->ticketRequestCartonPack($ticketrequest);
-                $data['carton']['loose'] = $cartonloosedata = $this->ticketRequestCartonPack($ticketrequest);
+                $data['cartonpack'][] = $cartonpackdata = $this->ticketRequestCartonPack($ticketrequest);
+                $data['cartonloose'][] = $cartonloosedata = $this->ticketRequestCartonPack($ticketrequest);
 
                 //get quantity
                 $quantity['Carton_Pack'] = $quantity['Carton_Pack'] + $cartonpackdata['quantity'];
@@ -48,19 +48,19 @@ class TicketHelper extends Printer
                 $thePackIndicator = $this->checkPackIndicator($ticketrequest);
           
                 switch ($thePackIndicator) {
-            case 'none':
-              $data['sticky'][] = $stickydata = $this->ticketRequestItem($ticketrequest);
-              break;
-            case 'simple':
-              $data['sticky'][] = $stickydata = $this->ticketRequestSimplePack($ticketrequest);
-              break;
-            case 'transport':
-              $data['sticky'][] = $stickydata = $this->ticketRequestPack($ticketrequest);
-              break;
-            default:
-              $data['sticky'];
-              break;
-          }
+                    case 'none':
+                      $data['sticky'][] = $stickydata = $this->ticketRequestItem($ticketrequest);
+                      break;
+                    case 'simple':
+                      $data['sticky'][] = $stickydata = $this->ticketRequestSimplePack($ticketrequest);
+                      break;
+                    case 'transport':
+                      $data['sticky'][] = $stickydata = $this->ticketRequestPack($ticketrequest);
+                      break;
+                    default:
+                      $data['sticky'];
+                      break;
+                }
                 $quantity['Sticky_Label'] = $quantity['Sticky_Label'] + $stickydata['quantity'];
             }
         }
@@ -231,10 +231,10 @@ class TicketHelper extends Printer
      * [DeleteLooseCarton - Delete any request that is loose and qty is 0]
      * @param [type] $ticket [ticketrequest object]
      */
-    public function deleteLooseCarton($ticket)
+    public function deleteLooseCarton($order_no)
     {
         $delete_loosecarton = new DeleteLooseCarton();
         $loosecarton_query = $delete_loosecarton->query()->getSql();
-        return DB::select($cartonloose_query, [':order_no' => $ticket->order_no]);
+        return DB::select($loosecarton_query, [':order_no' => $order_no]);
     }
 }
