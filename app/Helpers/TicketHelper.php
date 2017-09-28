@@ -40,10 +40,6 @@ class TicketHelper extends Printer
             if ($ticketrequest->ticket_type_id == config::get('ticket.type.carton')) {
                 $data['cartonpack'][] = $cartonpackdata = $this->ticketRequestCartonPack($ticketrequest);
                 $data['cartonloose'][] = $cartonloosedata = $this->ticketRequestCartonPack($ticketrequest);
-
-                //get quantity
-                // $quantity['Carton_Pack'] = $quantity['Carton_Pack'] + $cartonpackdata['quantity'];
-                // $quantity['Carton_Loose'] = $quantity['Carton_Loose'] + $cartonloosedata['quantity'];
             } else {
                 $thePackIndicator = $this->checkPackIndicator($ticketrequest);
           
@@ -61,20 +57,8 @@ class TicketHelper extends Printer
                       $data['sticky'];
                       break;
                 }
-                // $quantity['Sticky_Label'] = $quantity['Sticky_Label'] + $stickydata['quantity'];
             }
         }
-
-        //set ticket printed
-        // foreach ($quantity as $name => $labelquantity) {
-        //     $ticketprinted = new TipsTicketPrinted();
-        //     $ticketprinted->order_no = $order_no;
-        //     $ticketprinted->createdate = Carbon::now();
-        //     $ticketprinted->filename = Config::get('ticket.filename');
-        //     $ticketprinted->tickettype = $name;
-        //     $ticketprinted->save();
-        // }
-
         return $data;
     }
 
@@ -88,7 +72,7 @@ class TicketHelper extends Printer
         $cartonloose_query = $cartonloose_ticket->query()->getSql();
         $cartonloose = DB::select($cartonloose_query, [':order_no' => $ticket->order_no]);
       
-        $cartonloosedetails = array_map([$this,"CartonDetails"], $cartonloose);
+        $cartonloosedetails = $this->cartonDetails($cartonloose);
 
         return $cartonloosedetails;
     }
@@ -103,7 +87,7 @@ class TicketHelper extends Printer
         $cartonpack_query = $cartonpack_ticket->query()->getSql();
         $cartonpacks = DB::select($cartonpack_query, [':order_no' => $ticket->order_no]);
       
-        $cartonpackdetails = array_map([$this,"CartonDetails"], $cartonpacks);
+        $cartonpackdetails = $this->cartonDetails($cartonpacks);
 
         return $cartonpackdetails;
     }
@@ -124,14 +108,14 @@ class TicketHelper extends Printer
                 $prev_item = $orderitem->item_number;
 
                 $itemdata = array(
-            'item' => $orderitem->item_number,
-            'stockroomlocator' => $orderitem->stockroom,
-            'description' => $orderitem->short_desc,
-            'colour' => $orderitem->colour,
-            'size' => $orderitem->item_size,
-            'quantity' => $ticket->quantity,
-            'barcode' => $orderitem->barcode
-          );
+                    'item' => $orderitem->item_number,
+                    'stockroomlocator' => $orderitem->stockroom,
+                    'description' => $orderitem->short_desc,
+                    'colour' => $orderitem->colour,
+                    'size' => $orderitem->item_size,
+                    'quantity' => $ticket->quantity,
+                    'barcode' => $orderitem->barcode
+                  );
             }
         }
         return $itemdata;
@@ -168,14 +152,14 @@ class TicketHelper extends Printer
                     $prev_item = $ordersimplepack->item_number;
 
                     $simplepackdata[$i][$key] = array(
-              'item' => $orderpack->item_number,
-              'stockroomlocator' => $orderpack->stockroom,
-              'description' => $orderpack->short_desc,
-              'colour' => $orderpack->colour,
-              'size' => $orderpack->item_size,
-              'quantity' => $orderpack->quantity * $requestquantity,
-              'barcode' => $orderpack->barcode
-            );
+                      'item' => $orderpack->item_number,
+                      'stockroomlocator' => $orderpack->stockroom,
+                      'description' => $orderpack->short_desc,
+                      'colour' => $orderpack->colour,
+                      'size' => $orderpack->item_size,
+                      'quantity' => $orderpack->quantity * $requestquantity,
+                      'barcode' => $orderpack->barcode
+                    );
                 }
             }
             $i++;
@@ -213,14 +197,14 @@ class TicketHelper extends Printer
                     $prev_item = $orderpack->item_number;
 
                     $packdata[$i][$key] = array(
-              'item' => $orderpack->item_number,
-              'stockroomlocator' => $orderpack->stockroom,
-              'description' => $orderpack->short_desc,
-              'colour' => $orderpack->colour,
-              'size' => $orderpack->item_size,
-              'quantity' => $orderpack->quantity * $requestquantity,
-              'barcode' => $orderpack->barcode
-            );
+                      'item' => $orderpack->item_number,
+                      'stockroomlocator' => $orderpack->stockroom,
+                      'description' => $orderpack->short_desc,
+                      'colour' => $orderpack->colour,
+                      'size' => $orderpack->item_size,
+                      'quantity' => $orderpack->quantity * $requestquantity,
+                      'barcode' => $orderpack->barcode
+                    );
                 }
             }
             $i++;
