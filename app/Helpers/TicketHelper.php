@@ -42,8 +42,8 @@ class TicketHelper extends Printer
                 $data['cartonloose'][] = $cartonloosedata = $this->ticketRequestCartonPack($ticketrequest);
 
                 //get quantity
-                $quantity['Carton_Pack'] = $quantity['Carton_Pack'] + $cartonpackdata['quantity'];
-                $quantity['Carton_Loose'] = $quantity['Carton_Loose'] + $cartonloosedata['quantity'];
+                // $quantity['Carton_Pack'] = $quantity['Carton_Pack'] + $cartonpackdata['quantity'];
+                // $quantity['Carton_Loose'] = $quantity['Carton_Loose'] + $cartonloosedata['quantity'];
             } else {
                 $thePackIndicator = $this->checkPackIndicator($ticketrequest);
           
@@ -61,19 +61,19 @@ class TicketHelper extends Printer
                       $data['sticky'];
                       break;
                 }
-                $quantity['Sticky_Label'] = $quantity['Sticky_Label'] + $stickydata['quantity'];
+                // $quantity['Sticky_Label'] = $quantity['Sticky_Label'] + $stickydata['quantity'];
             }
         }
 
         //set ticket printed
-        foreach ($quantity as $name => $labelquantity) {
-            $ticketprinted = new TipsTicketPrinted();
-            $ticketprinted->order_no = $order_no;
-            $ticketprinted->createdate = Carbon::now();
-            $ticketprinted->filename = Config::get('ticket.filename');
-            $ticketprinted->tickettype = $name;
-            $ticketprinted->save();
-        }
+        // foreach ($quantity as $name => $labelquantity) {
+        //     $ticketprinted = new TipsTicketPrinted();
+        //     $ticketprinted->order_no = $order_no;
+        //     $ticketprinted->createdate = Carbon::now();
+        //     $ticketprinted->filename = Config::get('ticket.filename');
+        //     $ticketprinted->tickettype = $name;
+        //     $ticketprinted->save();
+        // }
 
         return $data;
     }
@@ -118,7 +118,7 @@ class TicketHelper extends Printer
         $orderitem_query = $item_ticket->query()->getSql();
         $orderitems = DB::select($orderitem_query, [':order_no' => $ticket->order_no,':item_number' => $ticket->item_number,':location1' => $ticket->location,
             ':location2' => $ticket->location, ':location3' => $ticket->location]);
-
+        $prev_item = '';
         foreach ($orderitems as $orderitem) {
             if ($prev_item != $orderitem->item_number) {
                 $prev_item = $orderitem->item_number;
