@@ -27,7 +27,7 @@ class LabelHelper extends Printer
      */
     public function orderSupplier($supplierid, $type = 'Tickets')
     {
-        $supplier_detail = new SupplierOrder();
+        $supplier_detail = new SupplierDetail();
         
         $supplier = Cache::remember("'".$this->user->getRoleId()."-ordersupplier", Carbon::now()->addMinutes(60), function () use ($supplier_detail, $type) {
             $supplier_query = $supplier_detail->query()->filter()->getSql();

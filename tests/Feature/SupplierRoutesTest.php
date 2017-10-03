@@ -28,7 +28,7 @@ class SupplierTest extends TestCase
 
         $result = json_decode($response->getContent(), true);
 
-        $params =  ['supplier' => $result['data'][0]['id'], 'name' => $result['data'][0]['name']];
+        $params =  ['supplier' => $result['data']['data'][0]['id'], 'name' => $result['data']['data'][0]['name']];
 
         return $params;
     }

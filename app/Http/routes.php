@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return redirect('/portal/dashboard');
+    return view('welcome.blade.php');
 });
