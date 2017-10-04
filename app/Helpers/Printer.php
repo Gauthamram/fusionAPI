@@ -11,7 +11,6 @@ use App\Supplier;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use App\Fusion\Commands\Sql;
 use JWTAuth;
 
 class Printer
@@ -19,7 +18,6 @@ class Printer
     public function __construct()
     {
         $this->user = JWTAuth::parseToken()->authenticate();
-        $this->sql = new sql($this->user);
     }
 
     /**

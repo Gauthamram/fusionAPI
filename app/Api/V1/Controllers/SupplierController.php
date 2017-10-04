@@ -86,9 +86,9 @@ class SupplierController extends ApiController
             $suppliers = $supplier::Active()->Search($term)->get(['supplier', 'sup_name','contact_email','contact_name','contact_phone'])->toArray();
             
             if (count($suppliers) > 0) {
-                $data = $this->supplierTransformer->transformCollection($suppliers, false);
+                $data = $this->supplierTransformer->transformCollection($suppliers);
             } else {
-                $data = ['data'];
+                $data = [];
             }
 
             Log::info('supplier search by user  : '.$this->user->email);
