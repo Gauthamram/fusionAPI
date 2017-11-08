@@ -82,4 +82,23 @@ return [
     */
     'recovery_email_subject' => env('API_RECOVERY_EMAIL_SUBJECT', true),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Reset link to redirect to reset password
+    |--------------------------------------------------------------------------
+    |
+    | The link you want use to redirect to show the form to reset password.
+    |
+    */
+    'recovery_reset_link' => env('API_RECOVERY_RESET_LINK', ''),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reset link to redirect to login after successful password reset
+    |--------------------------------------------------------------------------
+    |
+    | The link you want use to redirect to show the login form of the website.
+    |
+    */
+    'login_link' => env('API_LOGIN_LINK', ''),
 ];
