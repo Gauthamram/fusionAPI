@@ -29,7 +29,7 @@ class UserSettingController extends ApiController
                 $users = User::paginate(10)->toArray();
                 $data = $this->userTransformer->transformCollection($users, true);
             } elseif ($this->currentuser->isAdmin() || (($id) && ($this->currentuser->id == $id))) {
-                $id = $this->currentuser->id;
+                //$id = $this->currentuser->id;
                 $users = User::findOrFail($id)->toArray();
                 $data = $this->userTransformer->transformCollection([$users], false);
             } else {
