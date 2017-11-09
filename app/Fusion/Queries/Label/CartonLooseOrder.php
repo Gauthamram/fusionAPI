@@ -33,7 +33,7 @@ class CartonLooseOrder implements RawSqlInterface
     {
         $this->sql .= " UNION 
 			select ordhead.Order_No , ordsku.item, item.item_parent as style, sizeDiff.Diff_Desc, 
-			colour.diff_desc  as Colour, ordloc.QTY_Ordered, ordsku.PickUP_LOC , pack.item_desc, 				ordhead.pickup_date, 
+			colour.diff_desc  as Colour, ordloc.QTY_Ordered, ordsku.PickUP_LOC , pack.item_desc, ordhead.pickup_date, 
 			ordhead.Supplier , 'SimplePack' as CartonType, ordhead.EDI_PO_IND
 			from ordhead 
 			inner join ordloc on ordhead.order_no = ordloc.order_no 

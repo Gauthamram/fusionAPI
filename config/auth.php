@@ -100,7 +100,7 @@ return [
         'users' => [
             'provider' => 'users',
             'email' => 'auth.emails.password',
-            'table' => 'cgl_password_resets',
+            'table' => 'cgl_api_password_resets',
             'expire' => 60,
         ],
     ],

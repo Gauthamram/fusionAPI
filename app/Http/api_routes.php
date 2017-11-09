@@ -60,7 +60,5 @@ $api->version('v1', function ($api) use ($middleware) {
         return \App\User::all();
     });
 
-    // $api->get('reset_password/{token}',['as' => 'password.reset',function() {
-    //  //do something here
-    // }]);
+    $api->get('reset_password/{token}',['as' => 'password.reset', 'uses' => 'App\Api\V1\Controllers\AuthController@reset']);
 });

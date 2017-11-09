@@ -7,8 +7,9 @@ use Validator;
 use Config;
 use Log;
 use App\User;
-use App\Role;
 use App\ApiSetting;
+use App\Events\UserSignUp;
+use App\Events\UserPasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Dingo\Api\Routing\Helpers;
@@ -94,8 +95,8 @@ class AuthController extends ApiController
             } else {
                 $role_id = $request->role_id;
             }
-            User::unguard();
 
+            User::unguard();
             $user = new User;
             $user->name = $request->name;
             $user->password = $request->password;
@@ -109,6 +110,9 @@ class AuthController extends ApiController
             if (!$user->id) {
                 return $this->response->error('could_not_create_user', 500);
             }
+
+            //call email notification event
+            event(new UserSignUp($user));
 
             if ($hasToReleaseToken) {
                 return $this->login($request);
@@ -144,7 +148,7 @@ class AuthController extends ApiController
         switch ($response) {
             case Password::RESET_LINK_SENT:
                 Log::info('User password recovery email sent to : '.$request->email);
-                return $this->response->noContent();
+                return $this->respondSuccess('User password recovery email sent to : '.$request->email);
             case Password::INVALID_USER:
                 return $this->response->errorNotFound();
         }
@@ -155,7 +159,7 @@ class AuthController extends ApiController
      * @param  $request
      * @return
      */
-    public function reset(Request $request)
+    public function reset(Request $request, $token='')
     {
         if ($request->isMethod('post')) {
             $credentials = $request->only(
@@ -185,10 +189,16 @@ class AuthController extends ApiController
 
             switch ($response) {
                 case Password::PASSWORD_RESET:
-                    return $this->respondSuccess('Update Successfull');
+
+                    //call email notification event
+                    event(new UserPasswordReset($user));
+
+                    return $this->respondSuccess('Password reset successfull');
                 default:
-                    return $this->response->error('could_not_reset_password', 500);
+                    return $this->respondWithError('Please check - Invalid '. explode(".", $response)[1]);
             }
+        } else {
+            return redirect(Config::get('boilerplate.recovery_reset_link').$token);  
         }
     }
 }
