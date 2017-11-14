@@ -26,8 +26,8 @@ class UserSettingController extends ApiController
         if ($request->isMethod('post')) {
         } else {
             if (($this->currentuser->isAdmin()) && (!$id)) {
-                $users = User::paginate(10)->toArray();
-                $data = $this->userTransformer->transformCollection($users, true);
+                $users = User::all()->toArray();
+                $data = $this->userTransformer->transformCollection($users, false);
             } elseif ($this->currentuser->isAdmin() || (($id) && ($this->currentuser->id == $id))) {
                 //$id = $this->currentuser->id;
                 $users = User::findOrFail($id)->toArray();

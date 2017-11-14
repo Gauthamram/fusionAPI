@@ -46,7 +46,6 @@ $api->version('v1', function ($api) use ($middleware) {
         $api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
 
         $api->get('suppliers', 'App\Api\V1\Controllers\SupplierController@index');
-        $api->get('supplier/{supplier}', 'App\Api\V1\Controllers\SupplierController@supplier');
         $api->get('supplier/search/{term}', 'App\Api\V1\Controllers\SupplierController@search');
     });
 
@@ -56,9 +55,9 @@ $api->version('v1', function ($api) use ($middleware) {
     // }]);
 
     // example of free route
-    $api->get('free', function () {
-        return \App\User::all();
-    });
+    // $api->get('free', function () {
+    //     return \App\User::all();
+    // });
 
     $api->get('reset_password/{token}',['as' => 'password.reset', 'uses' => 'App\Api\V1\Controllers\AuthController@reset']);
 });
