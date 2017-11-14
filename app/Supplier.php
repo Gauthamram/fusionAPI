@@ -34,6 +34,11 @@ class Supplier extends Model
         return $this->hasMany('App\Address', 'key_value_1');
     }
 
+    public function traits()
+    {
+        return $this->hasMany('App\SupplierTrait', 'supplier');
+    }
+
     public function addressType($type)
     {
         return $this->hasOne('App\Address', 'key_value_1')->type($type);
