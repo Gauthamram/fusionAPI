@@ -74,8 +74,6 @@ class TicketController extends ApiController
                 return Supplier::findOrFail($this->supplierid)->take(50)->tickets()->latest('createdate')->paginate(10)->toArray();
             });
         }
-
-        Log::info('Ticket Printed data retrieved by user  : '.$this->user->email);
         
         $data = $this->ticketPrintedTransformer->transformCollection($tickets, true);
         return $this->respond(['data' => $data]);

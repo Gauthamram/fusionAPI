@@ -7,6 +7,7 @@ use JWTAuth;
 use Validator;
 use Cache;
 use Log;
+use Config;
 use Carbon\Carbon;
 use App\Supplier;
 use App\Address;
@@ -37,41 +38,23 @@ class SupplierController extends ApiController
     {
         // DB::enableQueryLog();
         if ($this->user->isAdmin()) {
-            $suppliers = Supplier::Active()->paginate(10)->toArray();
+            $suppliers = Supplier::Active()
+                        ->whereHas('traits', function ($query) {
+                                $query->where('sup_trait', '=', Config::get('ticket.supplier_trait'));
+                            })
+                        ->get()
+                        ->toArray();
         } elseif ($this->user->getRoleId()) {
-            $suppliers = Supplier::Active()->paginate()->Where('supplier', $this->user->getRoleId())->get()->toArray();
+            $suppliers = Supplier::Active()->Where('supplier', $this->user->getRoleId())->get()->toArray();
         } else {
             return $this->respondNotFound('Supplier Not Found');
         }
         // dd(DB::getQueryLog());
-        $data = $this->supplierTransformer->transformCollection($suppliers, true);
+        $data = $this->supplierTransformer->transformCollection($suppliers, false);
 
         Log::info('Supplier list retrieved by user  : '.$this->user->email);
 
         return  $this->respond(['data' => $data]);
-    }
-
-    /**
-     *
-     * Returns supplier details
-     * @param $supplier
-     * @return
-     */
-    public function supplier(int $supplier, $type = 'Tickets')
-    {
-        if (($supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
-            if ($this->labelHelper->supplierCheck($supplier)) {
-                $response = $this->labelHelper->OrderSupplier($supplier, $type);
-
-                Log::info('Supplier retrieved by user  : '.$this->user->email);
-
-                return $this->respond(['data' => $response]);
-            } else {
-                return $this->respondNotFound('Supplier Not Found');
-            }
-        } else {
-            return $this->respondForbidden('Forbidden from performing this action');
-        }
     }
 
     /**

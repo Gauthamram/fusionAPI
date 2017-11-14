@@ -20,27 +20,6 @@ use App\Fusion\Queries\Label\SimplePackOrder;
 
 class LabelHelper extends Printer
 {
-    /**
-     * Return details of the supplier
-     * @param int supplierid
-     * @param string process type
-     */
-    public function orderSupplier($supplierid, $type = 'Tickets')
-    {
-        $supplier_detail = new SupplierDetail();
-        
-        $supplier = Cache::remember("'".$this->user->getRoleId()."-ordersupplier", Carbon::now()->addMinutes(60), function () use ($supplier_detail, $type) {
-            $supplier_query = $supplier_detail->query()->filter()->getSql();
-        
-            if ($this->user->isAdmin() || $this->user->isWarehouse()) {
-                $supplier = DB::select($supplier_query, [':type'=>$type]);
-            } else {
-                $supplier = DB::select($supplier_query, [':supplier'=>$this->user->getRoleId(),':type'=>$type]);
-            }
-            return $supplier[0];
-        });
-        return $supplier;
-    }
 
     /**
      * Returns OrderCartonpack details of the order

@@ -2,6 +2,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -12,6 +13,14 @@ class AuthenticationTest extends TestCase
         parent::setUp();
         
         $this->refreshApplication();
+    }
+
+    //Todo delete after having a seperate testing database
+    public function deleteUser(){
+        
+        $user = User::where('name','name')->delete();
+
+        return $user;
     }
 
     public function test_auth_successfull()
@@ -64,6 +73,9 @@ class AuthenticationTest extends TestCase
         $response = $this->call('POST', '/api/auth/signup?token='.$token, ['name' => 'name', 'password' => 'passowrd', 'email' => 'email@email.com', 'role' => 'admin1', 'role_id' => '0']);
         
         $content = json_decode($response->getContent());
+
+        //remove after testing database creation
+        $this->deleteUser();
         
         $response->assertStatus(200);
     }
@@ -80,7 +92,5 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(422);
     }
 
-    /**
-     * TODO write tests for other routes
-     */
+    
 }
