@@ -26,13 +26,21 @@ class Carton extends Model
     /**
      * set carton barcode and number
      */
-    public function setCartonDetails()
+    public function setBarcodeNumberDetails()
     {
         $quantity = $this->calculateQuantityPerCarton();
         
         for ($i=1; $i <= $quantity; $i++) {
             $this->getCartonSequence();
-            $barcode = $this->generateCartonBarcodeNumber();
+
+            $quantity_check = ($this->quantity - ($i * $this->pick_location));
+            if(($quantity_check >= $this->pick_location) || ($quantity_check == 0)) {
+                $this->piquantity = $this->pick_location;
+            } else {
+                $this->piquantity = $quantity_check;
+            }
+
+            $barcode = ($this->generateCartonBarcodeNumber() + $this->generateProductBarcode());
             $details[] = $barcode;
         }
         
@@ -78,6 +86,7 @@ class Carton extends Model
         return $carton_barcodes;
     }
 
+
     /**
      * set product indicator barcode and number
      */
@@ -100,11 +109,11 @@ class Carton extends Model
      */
     public function generateProductBarcode()
     {
-        $number = config::get('ticket.productindicator.first')." ".$this->order_number." ".config::get('ticket.productindicator.second')." ".$this->item." ".config::get('ticket.productindicator.third')." ".$this->pick_location;
+        $number = config::get('ticket.productindicator.first')." ".$this->order_number." ".config::get('ticket.productindicator.second')." ".$this->item." ".config::get('ticket.productindicator.third')." ".$this->piquantity;
       
         $productindicator = [
-        'number' => $number,
-        'barcode' => str_replace(array(')','(',' '), "", $number),
+        'pinumber' => $number,
+        'pibarcode' => str_replace(array(')','(',' '), "", $number),
       ];
 
         return $productindicator;
