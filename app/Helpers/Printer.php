@@ -90,13 +90,11 @@ class Printer
         $cartons = Carton::hydrate($cartons);
       
         foreach ($cartons as $carton) {
-            $carton->getCartonSequence();
             $carton->setCartonDetails();
             $carton->setProductIndicator();
             $cartondetails[] = $carton;
         }
 
-        $carton->setCartonSequence();
         return $cartondetails;
     }
 
