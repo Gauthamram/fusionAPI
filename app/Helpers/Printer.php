@@ -90,8 +90,7 @@ class Printer
         $cartons = Carton::hydrate($cartons);
       
         foreach ($cartons as $carton) {
-            $carton->setCartonDetails();
-            $carton->setProductIndicator();
+            $carton->setBarcodeNumberDetails();
             $cartondetails[] = $carton;
         }
 
