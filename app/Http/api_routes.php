@@ -43,7 +43,7 @@ $api->version('v1', function ($api) use ($middleware) {
         //recover using email first before reset
         $api->post('auth/recovery', 'App\Api\V1\Controllers\AuthController@recovery');
         $api->get('auth/user', 'App\Api\V1\Controllers\AuthController@user');
-        $api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
+        // $api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
 
         $api->get('suppliers', 'App\Api\V1\Controllers\SupplierController@index');
         $api->get('supplier/search/{term}', 'App\Api\V1\Controllers\SupplierController@search');
@@ -53,11 +53,11 @@ $api->version('v1', function ($api) use ($middleware) {
     // $api->get('protected', ['middleware' => ['api.auth'], function () {
     //     return \App\User::all();
     // }]);
-
+$api->post('auth/signup', 'App\Api\V1\Controllers\AuthController@signup');
     // example of free route
-    // $api->get('free', function () {
-    //     return \App\User::all();
-    // });
+    	$api->get('free', function () {
+        	return \App\User::all();
+    	});
 
     $api->get('reset_password/{token}',['as' => 'password.reset', 'uses' => 'App\Api\V1\Controllers\AuthController@reset']);
 });

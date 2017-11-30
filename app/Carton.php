@@ -12,6 +12,8 @@ class Carton extends Model
         return $this->carton_sequence = Setting::get('cartonsequence');
     }
 
+   
+
     /**
      * store the sequence number in the database
      */
@@ -29,6 +31,7 @@ class Carton extends Model
         $quantity = $this->calculateQuantityPerCarton();
         
         for ($i=1; $i <= $quantity; $i++) {
+            $this->getCartonSequence();
             $barcode = $this->generateCartonBarcodeNumber();
             $details[] = $barcode;
         }
@@ -70,6 +73,8 @@ class Carton extends Model
           'number' => '('.substr($cs_barcode, 0, 2).') '.substr($cs_barcode, 2)
         ];
 
+        $this->setCartonSequence();
+
         return $carton_barcodes;
     }
 
@@ -95,7 +100,7 @@ class Carton extends Model
      */
     public function generateProductBarcode()
     {
-        $number = config::get('ticket.productindicator.first')." ".$this->order_number." ".config::get('ticket.productindicator.second')." ".$this->item." ".config::get('ticket.productindicator.third')." ".$this->quantity;
+        $number = config::get('ticket.productindicator.first')." ".$this->order_number." ".config::get('ticket.productindicator.second')." ".$this->item." ".config::get('ticket.productindicator.third')." ".$this->pick_location;
       
         $productindicator = [
         'number' => $number,

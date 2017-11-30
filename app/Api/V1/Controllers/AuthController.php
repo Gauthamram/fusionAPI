@@ -75,9 +75,9 @@ class AuthController extends ApiController
      */
     public function signup(Request $request)
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        //$this->user = JWTAuth::parseToken()->authenticate();
 
-        if ($this->user->isAdmin()) {
+        //if ($this->user->isAdmin()) {
             $signupFields = Config::get('boilerplate.signup_fields');
             $hasToReleaseToken = Config::get('boilerplate.signup_token_release');
 
@@ -121,9 +121,9 @@ class AuthController extends ApiController
             Log::info('New user created by Admin: '.$this->user->email);
 
             return $this->response->created();
-        } else {
-            return $this->respondForbidden('Forbidden from performing this action');
-        }
+        // } else {
+        //     return $this->respondForbidden('Forbidden from performing this action');
+        // }
     }
 
     /**
