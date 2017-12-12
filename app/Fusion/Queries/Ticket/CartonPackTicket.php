@@ -28,7 +28,7 @@ class CartonPackTicket implements RawSqlInterface
 			inner join groups on deps.group_no = groups.group_no 
 			inner join ( select pack_no, max(item_parent) as Style from packitem group by pack_no ) PackStyle on 	
 			ticket_request.item = PackStyle.pack_no 
-          	where ticket_request.ticket_type_ID = 'CTRN' AND ticket_request.order_no = :order_no
+          	where ticket_request.ticket_type_ID = 'CTRN' AND ticket_request.order_no = :order_no and ticket_request.item = :item_number
           	Order by  ticket_request.Order_No , item_master.Pack_Type, ticket_request.item";
 
         return $this;

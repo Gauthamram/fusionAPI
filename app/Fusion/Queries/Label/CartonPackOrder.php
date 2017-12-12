@@ -9,7 +9,7 @@ class CartonPackOrder implements RawSqlInterface
     public function query()
     {
         $this->sql = "SELECT ordloc.order_no as order_number, PackStyle.Style, ordsku.pickup_no as pack_type, 
-			ordloc.item,  ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location,
+			ordloc.item, ordloc.loc_type as location_type, ordloc.location, ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location,
 			item_master.item_desc as description, Groups.Group_Name, Deps.Dept_Name as department_name, 
 			Class.Class_Name, SubClass.Sub_Name as sub_class_name, ordhead.EDI_PO_IND as edi_po_index, 
 			'CartonPack' as carton_type

@@ -136,17 +136,16 @@ class TicketController extends ApiController
             'ticket_type' => 'required',
             'location_type' => 'required',
             'location' => 'required',
-            'order_no' => 'required|integer',
-            'retail' => 'required|regex:/^\d*(\.\d{1,2})?$/'
+            'order_no' => 'required|integer'
         ]);
-
         $currentuser = JWTAuth::parseToken()->authenticate();
 
         if ($validator->fails()) {
-            dd($validator->errors()->all());
+            log::info($validator->errors()->all());
             throw new ValidationHttpException($validator->errors()->all());
         }
-        
+
+
         TicketRequest::unguard();
         // $id = TicketRequest::max('ticketrequestid');
         $ticket = new TicketRequest();
@@ -157,12 +156,12 @@ class TicketController extends ApiController
         $ticket->location = $request->location;
         $ticket->multi_units = Config::get('ticket.request_default.multi_units');
         $ticket->multi_unit_retail = Config::get('ticket.request_default.multi_unit_retail');
-        $ticket->unit_retail = $request->retail;
+        $ticket->unit_retail = $request->retail ? $request->retail : '';
         $ticket->country_of_origin = $request->country ? $request->country : '';
         $ticket->order_no = $request->order_no;
         $ticket->create_datetime = Carbon::now();
         $ticket->last_update_datetime = Carbon::now();
-        $ticket->last_update_id = $currentuser['email'];
+        $ticket->last_update_id = $currentuser['name'];
         $ticket->sort_order_type = $request->sort_order_type;
         $ticket->printer_type = $request->printer;
         $ticket->print_online_ind = Config::get('ticket.request_default.print_online_ind');
