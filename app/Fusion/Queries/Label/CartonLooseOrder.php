@@ -8,7 +8,7 @@ class CartonLooseOrder implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = "SELECT  ordhead.order_no as order_number, ordsku.item, item_master.item_parent as style, sizeDiff.Diff_Desc as item_size, colour.diff_desc  as Colour, ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location, item_master.item_desc as description, ordhead.pickup_date, ordhead.Supplier, 'CartonLoose' as carton_type, ordhead.EDI_PO_IND as edi_po_index 
+        $this->sql = "SELECT  ordhead.order_no as order_number, ordsku.item, item_master.item_parent as style, sizeDiff.Diff_Desc as item_size, colour.diff_desc  as Colour, ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location, item_master.item_desc as description, ordhead.pickup_date, ordhead.Supplier, 'CartonLoose' as carton_type, ordhead.EDI_PO_IND as edi_po_index, ordloc.loc_type, ordloc.location as location_type 
 			from ordhead 
 			inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
 			inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item 
@@ -34,7 +34,7 @@ class CartonLooseOrder implements RawSqlInterface
         $this->sql .= " UNION 
 			select ordhead.Order_No , ordsku.item, item.item_parent as style, sizeDiff.Diff_Desc, 
 			colour.diff_desc  as Colour, ordloc.QTY_Ordered, ordsku.PickUP_LOC , pack.item_desc, ordhead.pickup_date, 
-			ordhead.Supplier , 'SimplePack' as CartonType, ordhead.EDI_PO_IND
+			ordhead.Supplier , 'SimplePack' as CartonType, ordhead.EDI_PO_IND, ordloc.loc_type, ordloc.location
 			from ordhead 
 			inner join ordloc on ordhead.order_no = ordloc.order_no 
 			inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item 
