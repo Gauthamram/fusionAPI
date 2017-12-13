@@ -10,7 +10,7 @@ class ItemTicket implements RawSqlInterface
     {
         $this->sql = "SELECT  im.item_parent AS productnumber, im.item as item_number, im.short_desc, 
         	sz.diff_desc AS item_size, cl.diff_desc AS colour, 
-            1 AS quantity, srl.uda_text as stockroom, v.uda_value_desc  AS brand, os.earliest_ship_date, 
+            1 AS quantity, srl.uda_text as stockroomlocator, v.uda_value_desc  AS brand, os.earliest_ship_date, 
             br.item AS 	barcode, 99999 AS sortid, 
             99999 AS sortnumid, NVL(os.pickup_no, 'ZZZ') AS packtype, 
             CASE WHEN EXISTS (SELECT wh FROM wh WHERE wh = :location1) 

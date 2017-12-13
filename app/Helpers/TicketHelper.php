@@ -37,6 +37,7 @@ class TicketHelper extends Printer
         //delete all bad requests for the loosecartons
         $deleteloosecarton = $this->deleteLooseCarton($order_no);
         $data = array();
+
         foreach ($ticketrequests as $ticketrequest) {
             if ($ticketrequest->ticket_type_id == config::get('ticket.type.carton')) {
                 $data['cartonpack'] = $cartonpackdata = $this->ticketRequestCartonPack($ticketrequest);
@@ -113,7 +114,7 @@ class TicketHelper extends Printer
                 $itemdata = array(
                     'order_number' => $ticket->order_no,
                     'item' => $orderitem->item_number,
-                    'stockroomlocator' => $orderitem->stockroom,
+                    'stockroomlocator' => $orderitem->stockroomlocator,
                     'description' => $orderitem->short_desc,
                     'colour' => $orderitem->colour,
                     'size' => $orderitem->item_size,
@@ -159,7 +160,7 @@ class TicketHelper extends Printer
 
                       'order_number' => $ticket->order_no,
                       'item' => $orderpack->item_number,
-                      'stockroomlocator' => $orderpack->stockroom,
+                      'stockroomlocator' => $orderpack->stockroomlocator,
                       'description' => $orderpack->short_desc,
                       'colour' => $orderpack->colour,
                       'size' => $orderpack->item_size,
@@ -205,7 +206,7 @@ class TicketHelper extends Printer
                     $packdata[$key] = array(
                       'order_number' => $ticket->order_no,
                       'item' => $orderpack->item_number,
-                      'stockroomlocator' => $orderpack->stockroom,
+                      'stockroomlocator' => $orderpack->stockroomlocator,
                       'description' => $orderpack->short_desc,
                       'colour' => $orderpack->colour,
                       'size' => $orderpack->item_size,

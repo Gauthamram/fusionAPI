@@ -11,7 +11,7 @@ class CartonPackTicket implements RawSqlInterface
         $this->sql = "select ticket_request.Create_DateTime, ticket_request.Ticket_Type_ID, 
         	ticket_request.Order_No as order_number, ticket_request.Printer_Type, 
           	PackStyle.Style, ordsku.pickup_no as pack_type, ticket_request.item, 
-          	ticket_request.QTY as 	overprint_quantity, ordloc.QTY_Ordered as quantity, 
+          	ticket_request.QTY quantity, 
           	ordsku.PickUP_LOC as pick_location, 
       		item_master.item_desc as description, Groups.Group_Name, Deps.Dept_Name as department_name, 
       		Class.Class_Name, SubClass.Sub_Name as sub_class_name, ordloc.loc_type as location_type, ordloc.location 
@@ -28,7 +28,7 @@ class CartonPackTicket implements RawSqlInterface
 			inner join groups on deps.group_no = groups.group_no 
 			inner join ( select pack_no, max(item_parent) as Style from packitem group by pack_no ) PackStyle on 	
 			ticket_request.item = PackStyle.pack_no 
-          	where ticket_request.ticket_type_ID = 'CTRN' AND ticket_request.order_no = :order_no and ticket_request.item = :item_number
+          	where ticket_request.ticket_type_ID = 'CTRN' and print_online_ind = 'Y' AND ticket_request.order_no = :order_no and ticket_request.item = :item_number
           	Order by  ticket_request.Order_No , item_master.Pack_Type, ticket_request.item";
 
         return $this;
