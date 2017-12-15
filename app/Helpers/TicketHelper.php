@@ -47,7 +47,7 @@ class TicketHelper extends Printer
           
                 switch ($thePackIndicator) {
                     case 'none':
-                      $data['sticky'][] = $stickydata = $this->ticketRequestItem($ticketrequest);
+                      $data['sticky'] = $stickydata = $this->ticketRequestItem($ticketrequest);
                       break;
                     case 'simple':
                       $data['sticky'] = $stickydata = $this->ticketRequestSimplePack($ticketrequest);

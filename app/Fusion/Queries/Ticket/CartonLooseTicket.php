@@ -23,7 +23,7 @@ class CartonLooseTicket implements RawSqlInterface
 				left join diff_ids colour on item_master.diff_1 = colour.diff_id and colour.diff_type = 'C' 
 				left join diff_ids sizeDiff on item_master.diff_2 = sizeDiff.diff_id and sizeDiff.diff_type = 'S' 
 				where ticket_request.ticket_type_ID = 'CTRN' 
-  				AND ( ticket_request.Order_No = :order_no OR :order_no is null ) 
+  				AND ( ticket_request.Order_No = :order_no OR :order_no is null ) AND ticket_request.item = :item_number 
                 UNION 
 				select ticket_request.Create_DateTime, ticket_request.Order_No , ticket_request.Ticket_Type_ID,   
 				ticket_request.Printer_Type, ticket_request.item, item.item_parent as style, 
@@ -41,7 +41,7 @@ class CartonLooseTicket implements RawSqlInterface
 				left join diff_ids colour on item.diff_1 = colour.diff_id and colour.diff_type = 'C' 
 				left join diff_ids sizeDiff on item.diff_2 = sizeDiff.diff_id and sizeDiff.diff_type = 'S' 
 				where ticket_request.ticket_type_ID = 'CTRN'  and print_online_ind = 'Y'
-			  	AND ( ticket_request.Order_No = :order_no OR :order_no is null AND ticket_request.item = :item_number)";
+			  	AND ( ticket_request.Order_No = :order_no OR :order_no is null ) AND ticket_request.item = :item_number ";
 
         return $this;
     }
