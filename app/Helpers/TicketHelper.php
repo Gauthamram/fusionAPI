@@ -111,7 +111,7 @@ class TicketHelper extends Printer
             if ($prev_item != $orderitem->item_number) {
                 $prev_item = $orderitem->item_number;
 
-                $itemdata = array(
+                $itemdata[] = array(
                     'order_number' => $ticket->order_no,
                     'item' => $orderitem->item_number,
                     'stockroomlocator' => $orderitem->stockroomlocator,
