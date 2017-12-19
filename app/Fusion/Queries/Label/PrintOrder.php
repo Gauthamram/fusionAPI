@@ -28,9 +28,9 @@ class PrintOrder implements RawSqlInterface
     public function filter($param = 'Y')
     {
         if (strtoupper($param) == 'N') {
-            $this->sql .= " and (cgl_tickets_printed.reprint_required = 'Y' or cgl_tickets_printed.reprint_required = 'N')";
+            $this->sql .= " where (cgl_tickets_printed.reprint_required = 'Y' or cgl_tickets_printed.reprint_required = 'N')";
         } else {
-            $this->sql .= " and (cgl_tickets_printed.reprint_required = 'Y')";
+            $this->sql .= " where (cgl_tickets_printed.reprint_required = 'Y')";
         }
 
         return $this;

@@ -34,8 +34,9 @@ class Carton extends Model
             $this->getCartonSequence();
 
             $quantity_check = ($this->quantity - ($i * $this->pick_location));
+
             if(($quantity_check >= $this->pick_location) || ($quantity_check == 0)) {
-                $this->piquantity = $this->pick_location;
+                $this->piquantity = $this->pick_location ? $this->pick_location : 1;
             } else {
                 $this->piquantity = $quantity_check;
             }
@@ -109,6 +110,7 @@ class Carton extends Model
      */
     public function generateProductBarcode()
     {
+
         $number = config::get('ticket.productindicator.first')." ".$this->order_number." ".config::get('ticket.productindicator.second')." ".$this->item." ".config::get('ticket.productindicator.third')." ".$this->piquantity;
       
         $productindicator = [

@@ -90,7 +90,7 @@ class AuthController extends ApiController
             }
 
             //role is Admin set role id to 0
-            if ($request->role == Config::get('boilerplate.user_roles.admin')) {
+            if (strtolower($request->role) == strtolower(Config::get('boilerplate.user_roles.admin'))) {
                 $role_id = 0;
             } else {
                 $role_id = $request->role_id;
@@ -183,16 +183,14 @@ class AuthController extends ApiController
             $response = Password::reset($credentials, function ($user, $password) {
                 $user->password = $password;
                 $user->save();
+                //call email notification event
+                event(new UserPasswordReset($user));
             });
 
             Log::info('User password reset by : '.$request->email);
 
             switch ($response) {
                 case Password::PASSWORD_RESET:
-
-                    //call email notification event
-                    event(new UserPasswordReset($user));
-
                     return $this->respondSuccess('Password reset successfull');
                 default:
                     return $this->respondWithError('Please check - Invalid '. explode(".", $response)[1]);

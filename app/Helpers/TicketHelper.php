@@ -47,7 +47,7 @@ class TicketHelper extends Printer
           
                 switch ($thePackIndicator) {
                     case 'none':
-                      $data['sticky'][] = $stickydata = $this->ticketRequestItem($ticketrequest);
+                      $data['sticky'] = $stickydata = $this->ticketRequestItem($ticketrequest);
                       break;
                     case 'simple':
                       $data['sticky'] = $stickydata = $this->ticketRequestSimplePack($ticketrequest);
@@ -111,7 +111,7 @@ class TicketHelper extends Printer
             if ($prev_item != $orderitem->item_number) {
                 $prev_item = $orderitem->item_number;
 
-                $itemdata = array(
+                $itemdata[] = array(
                     'order_number' => $ticket->order_no,
                     'item' => $orderitem->item_number,
                     'stockroomlocator' => $orderitem->stockroomlocator,
