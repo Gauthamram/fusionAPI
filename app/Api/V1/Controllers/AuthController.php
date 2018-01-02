@@ -101,7 +101,7 @@ class AuthController extends ApiController
             $user->name = $request->name;
             $user->password = $request->password;
             $user->remember_token = '1';
-            $user->email = $request->email;
+            $user->email = strtolower($request->email);
             $user->roles = $request->role;
             $user->role_id = $role_id;
             $user->save();
@@ -141,7 +141,9 @@ class AuthController extends ApiController
             throw new ValidationHttpException($validator->errors()->all());
         }
 
-        $response = Password::sendResetLink($request->only('email'), function (Message $message) {
+        $credentials['email'] = strtolower($request->email);
+        
+        $response = Password::sendResetLink($credentials, function (Message $message) {
             $message->subject(Config::get('boilerplate.recovery_email_subject'));
         });
 
@@ -163,11 +165,12 @@ class AuthController extends ApiController
     {
         if ($request->isMethod('post')) {
             $credentials = $request->only(
-            'email',
                 'password',
                 'password_confirmation',
                 'token'
             );
+
+            $credentials['email'] = strtolower($request->email);
 
             $validator = Validator::make($credentials, [
                 'token' => 'required',

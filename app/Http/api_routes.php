@@ -58,7 +58,7 @@ $api->version('v1', function ($api) use ($middleware) {
         	return \App\User::all();
     	});
 
-    $api->get('reset_password/{token}',['as' => 'password.reset', 'uses' => 'App\Api\V1\Controllers\AuthController@reset']);
+    // $api->get('reset_password/{token}',['as' => 'password.reset', 'uses' => 'App\Api\V1\Controllers\AuthController@reset']);
     //recover using email first before reset
     $api->post('auth/recovery', 'App\Api\V1\Controllers\AuthController@recovery');
 });

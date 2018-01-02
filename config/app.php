@@ -40,6 +40,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://devapi.fusionretailbrands.dev.au'),
+    'web_url' => env('WEB_URL', 'https://fusionretailbrands.azurewebsites.net/portal/'),
     'name' => env('APP_NAME', 'Fusion Web Portal'),
     'support_email' => env('SUPPORT_EMAIL', 'IS_Support_Developers@fusionretailbrands.com.au'),
     'support_phone' => env('SUPPORT_PHONE', '03 9420 8444'),
