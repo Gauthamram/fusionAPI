@@ -70,8 +70,8 @@ class TicketController extends ApiController
         if ($this->user->isAdmin() || $this->user->isWarehouse()) {
             $tickets = $ticket->take(50)->latest('createdate')->paginate(10)->toArray();
         } else {
-            $tickets = Cache::remember("'".$this->supplierid."-tickets", Carbon::now()->addMinutes(60), function () {
-                return Supplier::findOrFail($this->supplierid)->take(50)->tickets()->latest('createdate')->paginate(10)->toArray();
+            $tickets = Cache::remember("'".$this->user->getRoleId()."-tickets", Carbon::now()->addMinutes(60), function () {
+                return Supplier::findOrFail($this->user->getRoleId())->tickets()->latest('createdate')->paginate(10)->toArray();
             });
         }
         

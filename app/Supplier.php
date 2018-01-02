@@ -46,7 +46,7 @@ class Supplier extends Model
 
     public function tickets()
     {
-        return $this->hasManyThrough('App\TicketsPrinted', 'App\Order', 'supplier', 'order_no', 'supplier');
+        return $this->hasManyThrough('App\TicketPrinted', 'App\Order', 'supplier', 'order_no', 'supplier');
     }
     
     /**
