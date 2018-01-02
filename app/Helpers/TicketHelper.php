@@ -117,7 +117,7 @@ class TicketHelper extends Printer
                     'stockroomlocator' => $orderitem->stockroomlocator,
                     'description' => $orderitem->short_desc,
                     'colour' => $orderitem->colour,
-                    'size' => $orderitem->item_size,
+                    'item_size' => $orderitem->item_size,
                     'quantity' => $ticket->quantity,
                     'barcode' => $orderitem->barcode
                   );
@@ -163,7 +163,7 @@ class TicketHelper extends Printer
                       'stockroomlocator' => $orderpack->stockroomlocator,
                       'description' => $orderpack->short_desc,
                       'colour' => $orderpack->colour,
-                      'size' => $orderpack->item_size,
+                      'item_size' => $orderpack->item_size,
                       'quantity' => $orderpack->quantity * $ticket->quantity,
                       'barcode' => $orderpack->barcode
                     );
@@ -209,7 +209,7 @@ class TicketHelper extends Printer
                       'stockroomlocator' => $orderpack->stockroomlocator,
                       'description' => $orderpack->short_desc,
                       'colour' => $orderpack->colour,
-                      'size' => $orderpack->item_size,
+                      'item_size' => $orderpack->item_size,
                       'quantity' => $orderpack->quantity * $ticket->quantity,
                       'barcode' => $orderpack->barcode
                     );

@@ -38,16 +38,15 @@ class PrintOrder implements RawSqlInterface
 
     public function forSupplier()
     {
-        $this->sql .= " and ordhead.supplier = :supplier";
+        $this->sql .= " and ordhead.supplier = :supplier or (cgl_tickets_printed.order_no is null and ordhead.app_datetime is null )
+              AND (ordhead.otb_eow_date between sysdate AND sysdate + cgl_tickets_leadtime.leaddays )";
 
         return $this;
     }
 
     public function getSql()
     {
-        $this->sql .= " or (cgl_tickets_printed.order_no is null and ordhead.app_datetime is null )
-              AND (ordhead.otb_eow_date between sysdate AND sysdate + cgl_tickets_leadtime.leaddays ) 
-              order by ordhead.order_no";
+        $this->sql .= " order by ordhead.order_no";
 
         return $this->sql;
     }

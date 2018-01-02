@@ -147,9 +147,9 @@ class LabelHelper extends Printer
             $search_query = $search_order->query()->forSupplier()->filter()->getSql();
             $searchorders = DB::select($search_query, [
                                 ':order_no' => $order_no,
-                                ':supplier' => $this->getRoleId(),
+                                ':supplier' => $this->user->getRoleId(),
                                 ':supplier_trait' => Config::get('ticket.supplier_trait')
-                            ])->paginate(15);
+                            ]);
         }
         return $searchorders;
     }
