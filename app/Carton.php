@@ -38,7 +38,11 @@ class Carton extends Model
             if(($quantity_check >= $this->pick_location) || ($quantity_check == 0)) {
                 $this->piquantity = $this->pick_location ? $this->pick_location : 1;
             } else {
-                $this->piquantity = $quantity_check;
+                if($quantity_check < 0) {
+                    $this->piquantity = 0 - ($quantity_check);    
+                } else {
+                    $this->piquantity = $quantity_check;
+                } 
             }
 
             $barcode = ($this->generateCartonBarcodeNumber() + $this->generateProductBarcode());
