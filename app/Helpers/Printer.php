@@ -91,7 +91,7 @@ class Printer
       
         foreach ($cartons as $carton) {
             $carton->setBarcodeNumberDetails();
-            $cartondetails = $carton;
+            $cartondetails[] = $carton;
         }
 
         return $cartondetails;
