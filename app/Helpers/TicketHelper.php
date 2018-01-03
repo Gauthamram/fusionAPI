@@ -40,20 +40,32 @@ class TicketHelper extends Printer
 
         foreach ($ticketrequests as $ticketrequest) {
             if ($ticketrequest->ticket_type_id == config::get('ticket.type.carton')) {
-                $data['cartonpack'] = $cartonpackdata = $this->ticketRequestCartonPack($ticketrequest);
-                $data['cartonloose'] = $cartonloosedata = $this->ticketRequestCartonLoose($ticketrequest);
+                
+                if($cartonpackdata = $this->ticketRequestCartonPack($ticketrequest)) {
+                  $data['cartonpack'] = $cartonpackdata;
+                } 
+
+                if($cartonloosedata = $this->ticketRequestCartonLoose($ticketrequest)){
+                  $data['cartonloose'] = $cartonloosedata;
+                };
             } else {
                 $thePackIndicator = $this->checkPackIndicator($ticketrequest);
           
                 switch ($thePackIndicator) {
                     case 'none':
-                      $data['sticky'] = $stickydata = $this->ticketRequestItem($ticketrequest);
+                      if($stickydata = $this->ticketRequestItem($ticketrequest)) {
+                        $data['sticky'] = $stickydata;  
+                      }
                       break;
                     case 'simple':
-                      $data['sticky'] = $stickydata = $this->ticketRequestSimplePack($ticketrequest);
+                      if($stickydata = $this->ticketRequestSimplePack($ticketrequest)) {
+                        $data['sticky'] = $stickydata;  
+                      }
                       break;
                     case 'transport':
-                      $data['sticky'] = $stickydata = $this->ticketRequestPack($ticketrequest);
+                       if($stickydata = $this->ticketRequestPack($ticketrequest)) {
+                        $data['sticky'] = $stickydata;  
+                      }
                       break;
                     default:
                       $data['sticky'];
