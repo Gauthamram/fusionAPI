@@ -59,12 +59,12 @@ class TicketHelper extends Printer
                       break;
                     case 'simple':
                       if($stickydata = $this->ticketRequestSimplePack($ticketrequest)) {
-                        $data['sticky'] = $stickydata;  
+                        $data['simplepack'] = $stickydata;  
                       }
                       break;
                     case 'transport':
                        if($stickydata = $this->ticketRequestPack($ticketrequest)) {
-                        $data['sticky'] = $stickydata;  
+                        $data['pack'][] = $stickydata;  
                       }
                       break;
                     default:
@@ -146,43 +146,33 @@ class TicketHelper extends Printer
     {
         $simplepack_ticket = new SimplePackTicket();
         $prev_item = '';
-        $i =1;
 
         //get simple pack items
         $ordersimplepack_query = $simplepack_ticket->query()->getSql();
         $ordersimplepacks = DB::select($ordersimplepack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->item_number,':location1' => $ticket->location,':location2' => $ticket->location,':location3' => $ticket->location]);
 
-        // if ($ticket->sort_order_type == config::get('ticket.sort_type.packandloose')) {
-        //     $packquantity = $ticket->quantity;
-        //     $requestquantity = 1;
-        // } else {
-        //     //loose sort order - qty = simplepack quantity * requested quantity
-        //     $packquantity = 1;
-        //     $requestquantity = $ticket->quantity;
-        // }
+        $simplepackdata = array(
+          'order_number' => $ticket->order_no,
+          'quantity' => $ticket->quantity,
+          'pack_number' => $ticket->item_number
+        );
+        foreach ($ordersimplepacks as $key => $ordersimplepack) {
+            if ($prev_item != $ordersimplepack->item_number) {
+                $prev_item = $ordersimplepack->item_number;
 
-        // $i=1;
-
-        // while ($i <= $packquantity) {
-            foreach ($ordersimplepacks as $key => $ordersimplepack) {
-                if ($prev_item != $ordersimplepack->item_number) {
-                    $prev_item = $ordersimplepack->item_number;
-
-                    $simplepackdata[$key] = array(
-
-                      'order_number' => $ticket->order_no,
-                      'item' => $orderpack->item_number,
-                      'stockroomlocator' => $orderpack->stockroomlocator,
-                      'description' => $orderpack->short_desc,
-                      'colour' => $orderpack->colour,
-                      'item_size' => $orderpack->item_size,
-                      'quantity' => $orderpack->quantity * $ticket->quantity,
-                      'barcode' => $orderpack->barcode
-                    );
-                }
+                $data[$ordersimplepack->item_number] = array(
+                  'stockroomlocator' => $orderpack->stockroomlocator,
+                  'description' => $orderpack->short_desc,
+                  'colour' => $orderpack->colour,
+                  'item_size' => $orderpack->item_size,
+                  'quantity' => $orderpack->quantity,
+                  'barcode' => $orderpack->barcode
+                );
             }
-          //  $i++;
-        //}
+        }
+
+        $simplepackdata['pack_type'] = $ordersimplepack->packtype;
+        $simplepackdata['packs'] = $data;
         return $simplepackdata;
     }
 
@@ -193,42 +183,38 @@ class TicketHelper extends Printer
     public function ticketRequestPack($ticket)
     {
         $prev_item = '';
-        // $i =1;
 
+        $data = array();
         $pack_ticket = new PackTicket();
+
         //get pack items
         $orderpack_query = $pack_ticket->query()->getSql();
         $orderpacks = DB::select($orderpack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->item_number,':location1' => $ticket->location,
         ':location2' => $ticket->location,':location3' => $ticket->location]);
 
-        // if ($ticket->sort_order_type == config::get('ticket.sort_type.packandloose')) {
-        //     $packquantity = $ticket->quantity;
-        //     $requestquantity = 1;
-        // } else {
-        //     //loose sort order - qty = pack quantity * requested quantity
-        //     $packquantity = 1;
-        //     $requestquantity = $ticket->quantity;
-        // }
+        $packdata = array(
+          'order_number' => $ticket->order_no,
+          'quantity' => $ticket->quantity,
+          'pack_number' => $ticket->item_number  
+        );
 
-        //while ($i <= $packquantity) {
-            foreach ($orderpacks as $key => $orderpack) {
-                if ($prev_item != $orderpack->item_number) {
-                    $prev_item = $orderpack->item_number;
+        foreach ($orderpacks as $key => $orderpack) {
+            if ($prev_item != $orderpack->item_number) {
+                $prev_item = $orderpack->item_number;
 
-                    $packdata[$key] = array(
-                      'order_number' => $ticket->order_no,
-                      'item' => $orderpack->item_number,
-                      'stockroomlocator' => $orderpack->stockroomlocator,
-                      'description' => $orderpack->short_desc,
-                      'colour' => $orderpack->colour,
-                      'item_size' => $orderpack->item_size,
-                      'quantity' => $orderpack->quantity * $ticket->quantity,
-                      'barcode' => $orderpack->barcode
-                    );
-                }
+                $data[$orderpack->item_number] = array(
+                  'stockroomlocator' => $orderpack->stockroomlocator,
+                  'description' => $orderpack->short_desc,
+                  'colour' => $orderpack->colour,
+                  'item_size' => $orderpack->item_size,
+                  'quantity' => $orderpack->quantity,
+                  'barcode' => $orderpack->barcode
+                );
             }
-        //    $i++;
-        //}
+        }
+
+        $packdata['pack_type'] = $orderpack->packtype;
+        $packdata['packs'] = $data;
         return $packdata;
     }
 

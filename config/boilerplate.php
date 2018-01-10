@@ -26,10 +26,10 @@ return [
     |
     */
     'signup_fields_rules' => [
-        'name' => 'required',
-        'email' => 'required|email|unique:cgl_api_users',
+        'name' => 'required|max:24',
+        'email' => 'required|email|unique:cgl_api_users|max:50',
         'password' => 'required|min:6',
-        'role' => 'required|min:5',
+        'role' => 'required|min:5|max:20',
         'role_id' => 'required|numeric'
     ],
 
