@@ -80,50 +80,6 @@ class TicketController extends ApiController
     }
 
     /**
-     * [create ticket printed]
-     * @param  Request
-     * @return
-     */
-    // public function create_tickets_printed($data)
-    // {
-    //  $validator = Validator::make($request->all(), [
-    //         'orderno' => 'required|integer',
-    //         'sticky' => 'required|integer|nullable',
-    //         'swing' => 'required|integer|nullable',
-    //         'packcartons' => 'required|integer|nullable',
-    //         'loosesimplecartons' => 'required|integer|nullable',
-    //         'mixedcartons' => 'required|integer|nullable'
-    //     ]);
-
-    //     if($validator->fails()) {
-    //         throw new ValidationHttpException($validator->errors()->all());
-    //     }
-
-    //     TicketsPrinted::unguard();
-    //     $id = TicketsPrinted::max('ticketrequestid');
-    //     $ticket = New TicketsPrinted();
-    //     $ticket->ticketrequestid = $id + 1;
-    //     $ticket->order_no = $request->orderno;
-    //     $ticket->createdate = Carbon::now();
-    //     $ticket->filename = $request->has('filename') ? $request->filename : Config::get('ticket.filename');
-    //     $ticket->reprint_required = Config::get('ticket.reprint');
-    //     $ticket->sticky = $request->sticky;
-    //     $ticket->swing = $request->swing;
-    //     $ticket->packcartons = $request->packcartons;
-    //     $ticket->loosesimplecartons = $request->loosesimplecartons;
-    //     $ticket->mixedcartons = $request->mixedcartons;
-    //     $insert = $ticket->save();
-    //     $insertedId = $ticket->ticketrequestid;
-    //     TicketsPrinted::reguard();
-        
-    //     if ($insert){
-    //      return $this->respondSuccess('Update Successfull');
-    //     } else {
-    //      return $this->repondWithError('Ticket could not be create at this moment. Please try again later.');
-    //     }
-    // }
-
-    /**
      * create ticketrequest
      * @param  $request
      * @return
