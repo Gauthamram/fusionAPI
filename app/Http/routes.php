@@ -15,3 +15,4 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('reset_password/{token}',['as' => 'password.reset', 'uses' => 'App\Api\V1\Controllers\AuthController@reset']);
