@@ -18,7 +18,8 @@ class OrderDetailTransformer extends Transformer
             'country' => $order->origin_country_id,
             'retail' => $order->unit_retail,
             'pack' => $order->pack_ind,
-            'simple_pack_ind' => $order->simple_pack_ind
+            'simple_pack_ind' => $order->simple_pack_ind,
+            'description' => $order->description
         ];
     }
 }
