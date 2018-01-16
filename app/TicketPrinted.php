@@ -46,13 +46,13 @@ class TicketPrinted extends Model
      * @param  [querybuilder] $query
      * @return [type]        [description]
      */
-    public function scopePrintedLastMonth($query)
+    public function scopePrintedlastmonth($query)
     {
         $today = new Carbon();
-        $start = $today->subMonth()->startOfMonth()->format('m/d/Y');
+        $start = $today->subMonth()->startOfMonth()->format('Y-m-d');
         
-        $end = $today->addMonths(2)->format('m/d/Y');
-        return $query->where('createdate', '>=', $start)
-                     ->where('createdate', '<=', $end);
+        $end = $today->addMonths(2)->format('Y-m-d');
+        return $query->where('createdate', '>=', $start)->where('createdate', '<=', $end);
+        // return $query->where('createdate','>=',$start);
     }
 }
