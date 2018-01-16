@@ -58,7 +58,7 @@ class TicketController extends ApiController
      */
     public function printed()
     {
-        // DB::enableQueryLog();
+        DB::enableQueryLog();
         if ($this->user->isWarehouse()) {
             $ticket = new TipsTicketPrinted();
         } else {
@@ -68,10 +68,12 @@ class TicketController extends ApiController
         
 
         if ($this->user->isAdmin() || $this->user->isWarehouse()) {
-            $tickets = $ticket->take(50)->latest('createdate')->paginate(10)->toArray();
+            $tickets = $ticket::Printedlastmonth()->paginate(20)->toArray();
+            // dd(DB::getQueryLog());
+
         } else {
             $tickets = Cache::remember("'".$this->user->getRoleId()."-tickets", Carbon::now()->addMinutes(60), function () {
-                return Supplier::findOrFail($this->user->getRoleId())->tickets()->latest('createdate')->paginate(10)->toArray();
+                return Supplier::findOrFail($this->user->getRoleId())->tickets()->latest('createdate')->paginate(20)->toArray();
             });
         }
         
