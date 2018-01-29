@@ -1,4 +1,4 @@
-# fusionAPI
+# FusionAPI
 Fusion API for internal and external stakeholders
 ## Deployment as new instance:
 
