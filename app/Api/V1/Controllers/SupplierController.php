@@ -52,7 +52,7 @@ class SupplierController extends ApiController
         // dd(DB::getQueryLog());
         $data = $this->supplierTransformer->transformCollection($suppliers, false);
 
-        Log::info('Supplier list retrieved by user  : '.$this->user->email);
+        Log::info('Supplier list retrieved by user  : '. $this->user->email);
 
         return  $this->respond(['data' => $data]);
     }
@@ -74,7 +74,7 @@ class SupplierController extends ApiController
                 $data = [];
             }
 
-            Log::info('supplier search by user  : '.$this->user->email);
+            Log::info('supplier search by user  : '. $this->user->email);
 
             return  $this->respond(['data' => $data]);
         } else {
