@@ -60,6 +60,7 @@ class AuthController extends ApiController
                 return $this->response->errorUnauthorized();
             }
         } catch (JWTException $e) {
+            Log::error('Exception @ login - '. $e->getMessage());
             return $this->response->error('could_not_create_token', 500);
         }
 
@@ -75,9 +76,9 @@ class AuthController extends ApiController
      */
     public function signup(Request $request)
     {
-        //$this->user = JWTAuth::parseToken()->authenticate();
+        $this->user = JWTAuth::parseToken()->authenticate();
 
-        //if ($this->user->isAdmin()) {
+        if ($this->user->isAdmin()) {
             $signupFields = Config::get('boilerplate.signup_fields');
             $hasToReleaseToken = Config::get('boilerplate.signup_token_release');
 
@@ -121,9 +122,9 @@ class AuthController extends ApiController
             Log::info('New user created by Admin: '.$this->user->email);
 
             return $this->response->created();
-        // } else {
-        //     return $this->respondForbidden('Forbidden from performing this action');
-        // }
+        } else {
+            return $this->respondForbidden('Forbidden from performing this action');
+        }
     }
 
     /**
@@ -152,6 +153,7 @@ class AuthController extends ApiController
                 Log::info('User password recovery email sent to : '.$request->email);
                 return $this->respondSuccess('User password recovery email sent to : '.$request->email);
             case Password::INVALID_USER:
+                Log::error('User password recovery error : Invalid user');
                 return $this->response->errorNotFound();
         }
     }
@@ -190,12 +192,12 @@ class AuthController extends ApiController
                 event(new UserPasswordReset($user));
             });
 
-            Log::info('User password reset by : '.$request->email);
-
             switch ($response) {
                 case Password::PASSWORD_RESET:
+                    Log::info('User password reset by : '.$request->email);
                     return $this->respondSuccess('Password reset successfull');
                 default:
+                    Log::error('User password reset error - please check the logs');
                     return $this->respondWithError('Please check - Invalid '. explode(".", $response)[1]);
             }
         } else {

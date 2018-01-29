@@ -53,6 +53,5 @@ class TicketPrinted extends Model
         
         $end = $today->addMonths(2)->format('Y-m-d');
         return $query->where('createdate', '>=', $start)->where('createdate', '<=', $end);
-        // return $query->where('createdate','>=',$start);
     }
 }
