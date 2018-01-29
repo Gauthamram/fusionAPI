@@ -119,7 +119,8 @@ class TicketHelper extends Printer
         $orderitems = DB::select($orderitem_query, [':order_no' => $ticket->order_no,':item_number' => $ticket->item_number,':location1' => $ticket->location,
             ':location2' => $ticket->location, ':location3' => $ticket->location]);
         $prev_item = '';
-        foreach ($orderitems as $orderitem) {
+        if($orderitems) {
+          foreach ($orderitems as $orderitem) {
             if ($prev_item != $orderitem->item_number) {
                 $prev_item = $orderitem->item_number;
 
@@ -134,6 +135,9 @@ class TicketHelper extends Printer
                     'barcode' => $orderitem->barcode
                   );
             }
+          }
+        } else {
+          $itemdata = [];
         }
         return $itemdata;
     }
@@ -151,28 +155,32 @@ class TicketHelper extends Printer
         $ordersimplepack_query = $simplepack_ticket->query()->getSql();
         $ordersimplepacks = DB::select($ordersimplepack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->item_number,':location1' => $ticket->location,':location2' => $ticket->location,':location3' => $ticket->location]);
 
-        $simplepackdata = array(
-          'order_number' => $ticket->order_no,
-          'quantity' => $ticket->quantity,
-          'pack_number' => $ticket->item_number
-        );
-        foreach ($ordersimplepacks as $key => $ordersimplepack) {
-            if ($prev_item != $ordersimplepack->item_number) {
-                $prev_item = $ordersimplepack->item_number;
+        if($ordersimplepacks) { 
+          $simplepackdata = array(
+            'order_number' => $ticket->order_no,
+            'quantity' => $ticket->quantity,
+            'pack_number' => $ticket->item_number
+          );
+          foreach ($ordersimplepacks as $key => $ordersimplepack) {
+              if ($prev_item != $ordersimplepack->item_number) {
+                  $prev_item = $ordersimplepack->item_number;
 
-                $data[$ordersimplepack->item_number] = array(
-                  'stockroomlocator' => $orderpack->stockroomlocator,
-                  'description' => $orderpack->short_desc,
-                  'colour' => $orderpack->colour,
-                  'item_size' => $orderpack->item_size,
-                  'quantity' => $orderpack->quantity,
-                  'barcode' => $orderpack->barcode
-                );
-            }
+                  $data[$ordersimplepack->item_number] = array(
+                    'stockroomlocator' => $orderpack->stockroomlocator,
+                    'description' => $orderpack->short_desc,
+                    'colour' => $orderpack->colour,
+                    'item_size' => $orderpack->item_size,
+                    'quantity' => $orderpack->quantity,
+                    'barcode' => $orderpack->barcode
+                  );
+              }
+          }
+
+          $simplepackdata['pack_type'] = $ordersimplepack->packtype;
+          $simplepackdata['packs'] = $data;
+        } else {
+          $simplepackdata = [];
         }
-
-        $simplepackdata['pack_type'] = $ordersimplepack->packtype;
-        $simplepackdata['packs'] = $data;
         return $simplepackdata;
     }
 
@@ -192,29 +200,33 @@ class TicketHelper extends Printer
         $orderpacks = DB::select($orderpack_query, [':order_no' => $ticket->order_no,':packnumber' => $ticket->item_number,':location1' => $ticket->location,
         ':location2' => $ticket->location,':location3' => $ticket->location]);
 
-        $packdata = array(
-          'order_number' => $ticket->order_no,
-          'quantity' => $ticket->quantity,
-          'pack_number' => $ticket->item_number  
-        );
+        if($orderpacks) { 
+          $packdata = array(
+            'order_number' => $ticket->order_no,
+            'quantity' => $ticket->quantity,
+            'pack_number' => $ticket->item_number  
+          );
 
-        foreach ($orderpacks as $key => $orderpack) {
-            if ($prev_item != $orderpack->item_number) {
-                $prev_item = $orderpack->item_number;
+          foreach ($orderpacks as $key => $orderpack) {
+              if ($prev_item != $orderpack->item_number) {
+                  $prev_item = $orderpack->item_number;
 
-                $data[$orderpack->item_number] = array(
-                  'stockroomlocator' => $orderpack->stockroomlocator,
-                  'description' => $orderpack->short_desc,
-                  'colour' => $orderpack->colour,
-                  'item_size' => $orderpack->item_size,
-                  'quantity' => $orderpack->quantity,
-                  'barcode' => $orderpack->barcode
-                );
-            }
+                  $data[$orderpack->item_number] = array(
+                    'stockroomlocator' => $orderpack->stockroomlocator,
+                    'description' => $orderpack->short_desc,
+                    'colour' => $orderpack->colour,
+                    'item_size' => $orderpack->item_size,
+                    'quantity' => $orderpack->quantity,
+                    'barcode' => $orderpack->barcode
+                  );
+              }
+          }
+
+          $packdata['pack_type'] = $orderpack->packtype;
+          $packdata['packs'] = $data;
+        } else {
+          $packdata = [];
         }
-
-        $packdata['pack_type'] = $orderpack->packtype;
-        $packdata['packs'] = $data;
         return $packdata;
     }
 
