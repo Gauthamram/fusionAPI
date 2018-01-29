@@ -60,6 +60,12 @@ Fusion API for internal and external stakeholders
 	</thead>
 	<tbody>
 		<tr>
+			<td>api/auth/signup</td>
+			<td>POST</td>
+			<td>name, email, password,role,role_id</td>
+			<td>Returns list of orders that needs to be printed.</td>
+		</tr>
+		<tr>
 			<td>api/orders</td>
 			<td>GET</td>
 			<td></td>
