@@ -7,9 +7,11 @@ Fusion API for internal and external stakeholders
 - Add 
 	WEB_URL="The portal that is going to use the api"
 	API_LOGIN_LINK="The portal login url"
-- Make bootstrap/cache directory
-- Make storage/framework/cache, storage/framework/sessions, storage/framework/views
+- Make diretcory bootstrap/cache directory
+- Make directories storage/framework/cache, storage/framework/sessions, storage/framework/views and make sure they are writable
 - Run composer install/update
 - Run php artisan key:generate
 - Run  php artisan cache:clear
 - Run  php artisan view:clear
+
+## 
