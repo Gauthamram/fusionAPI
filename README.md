@@ -175,3 +175,13 @@ Fusion API for internal and external stakeholders
 		</tr>
 	</tbody>
 </table>
+
+## Testing EndPoints
+PHPUnit Tests are as for each module as Feature
+Run phpunit on teh following
+
+- tests/AuthRoutesTest.php
+- tests/OrderRoutesTest.php
+- tests/SupplierRoutesTest.php
+- tests/TicketRoutesTest.php
+
