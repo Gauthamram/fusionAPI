@@ -1,5 +1,6 @@
 # FusionAPI
 Fusion API for internal and external stakeholders
+
 ## Deployment as new instance:
 
 - Git clone the repository
@@ -16,7 +17,7 @@ Fusion API for internal and external stakeholders
 
 ## API ENDPOINTS
  
-## Non - Authenticated Endpoints
+### Non - Authenticated Endpoints
 <table>
 	<thead>
 		<tr>
@@ -48,7 +49,7 @@ Fusion API for internal and external stakeholders
 	</tbody>
 </table>
 
-## Authenticated Endpoints
+### Authenticated Endpoints
 <table>
 	<thead>
 		<tr>
@@ -176,7 +177,9 @@ Fusion API for internal and external stakeholders
 	</tbody>
 </table>
 
-## Testing EndPoints
+## Testing 
+
+### Route Endpoint 
 PHPUnit Tests are as for each module as Feature
 Run phpunit on teh following
 
