@@ -93,7 +93,7 @@ class OrderController extends ApiController
         }
 
         if ($order = $this->labelHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
                 if ($this->labelHelper->ediCheck($order_no)) {
                     $response = $this->labelHelper->orderCartonpack($order_no, $item_number, $listing);
                     
@@ -126,7 +126,7 @@ class OrderController extends ApiController
         }
 
         if ($order = $this->labelHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
                 if ($this->labelHelper->ediCheck($order_no)) {
                     $response = $this->labelHelper->orderCartonloose($order_no, $item_number, $listing);
                     
@@ -152,7 +152,7 @@ class OrderController extends ApiController
     public function ratiopack($order_no)
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
                 $response = $this->labelHelper->orderSticky($order_no, 'RatioPack');
 
                 Log::info('Order Ratiopack retrieved by user  : '.$this->user->email);
@@ -174,7 +174,7 @@ class OrderController extends ApiController
     public function looseitem($order_no)
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
                 $response = $this->labelHelper->orderSticky($order_no, 'LooseItem');
 
                 Log::info('Order looseitem retrieved by user  : '.$this->user->email);
@@ -196,7 +196,7 @@ class OrderController extends ApiController
     public function simplepack($order_no)
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
-            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin())) {
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
                 $response = $this->labelHelper->orderSticky($order_no, 'SimplePack');
 
                 Log::info('Order simplepack retrieved by user  : '.$this->user->email);
@@ -218,7 +218,7 @@ class OrderController extends ApiController
     public function sticky($order_no)
     {
         if ($order = $this->labelHelper->orderCheck($order_no)) {
-            if (($this->user->isAdmin()) || ($this->user->isWarehouse())) {
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
                 $response = $this->labelHelper->orderSticky($order_no, 'sticky');
 
                 Log::info('Order sticky retrieved by user  : '.$this->user->email);
