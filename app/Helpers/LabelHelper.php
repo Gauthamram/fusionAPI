@@ -114,12 +114,12 @@ class LabelHelper extends Printer
 
         $orders = Cache::remember("'".$this->user->getRoleId()."-orders", Carbon::now()->addMinutes(60), function () use ($print_order,$status) {
             if ($this->user->isAdmin() || $this->user->isWarehouse()) {
-                $order_query = $print_order->query()->filter($status)->getSql();
+                $order_query = $print_order->query()->forAdmin()->getSql();
                 $supplierorders = DB::select($order_query, [
                                     ':supplier_trait'=> Config::get('ticket.supplier_trait')
                                 ]);
             } else {
-                $order_query = $print_order->query()->forSupplier()->filter()->getSql();
+                $order_query = $print_order->query()->forSupplier()->getSql();
                 $supplierorders = DB::select($order_query, [
                                     ':supplier'=>$this->user->getRoleId(),
                                     ':supplier_trait'=> Config::get('ticket.supplier_trait')

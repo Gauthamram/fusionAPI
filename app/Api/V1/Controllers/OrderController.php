@@ -42,7 +42,7 @@ class OrderController extends ApiController
     public function index($status = '')
     {
         $orders = $this->labelHelper->allOrders($status);
-        $data = $this->orderTransformer->transformCollection($orders, $this->pagination);
+        $data = $this->orderTransformer->transformCollection($orders);
         return $this->respond(['data' => $data]);
     }
 
@@ -54,7 +54,7 @@ class OrderController extends ApiController
     public function order($order_no)
     {
         $orders = $this->labelHelper->searchOrders($order_no);
-        $data = $this->orderTransformer->transformCollection($orders, $this->pagination);
+        $data = $this->orderTransformer->transformCollection($orders);
         return  $this->respond(['data' => $data]);
     }
 
