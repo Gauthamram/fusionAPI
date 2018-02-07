@@ -24,7 +24,7 @@ class SearchOrder implements RawSqlInterface
         return $this;
     }
 
-    public function filter($param = 'A')
+    public function filter($param = 'C')
     {
         if (strtoupper($param) == 'C') {
             $this->sql .= " where ordloc.QTY_Ordered > 0 and (ordhead.status = 'A' or ordhead.status = 'C')";
