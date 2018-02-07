@@ -46,7 +46,4 @@ class SupplierTest extends TestCase
             'data'
         ]);
     }
-    /**
-     * TODO write tests for other routes
-     */
 }

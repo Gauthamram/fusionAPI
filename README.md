@@ -1,12 +1,13 @@
 # FusionAPI
 Fusion API for internal and external stakeholders
+
 ## Deployment as new instance:
 
 - Git clone the repository
 - Go into the folder and rename  file named .env.example to .env change the values 
 - Add 
-	WEB_URL="The portal that is going to use the api"
-	API_LOGIN_LINK="The portal login url"
+	- WEB_URL="The portal that is going to use the api"
+	- API_LOGIN_LINK="The portal login url"
 - Make diretcory bootstrap/cache directory
 - Make directories storage/framework/cache, storage/framework/sessions, storage/framework/views and make sure they are writable
 - Run composer install/update
@@ -16,7 +17,7 @@ Fusion API for internal and external stakeholders
 
 ## API ENDPOINTS
  
-## Non - Authenticated Endpoints
+### Non - Authenticated Endpoints
 <table>
 	<thead>
 		<tr>
@@ -48,7 +49,7 @@ Fusion API for internal and external stakeholders
 	</tbody>
 </table>
 
-## Authenticated Endpoints
+### Authenticated Endpoints
 <table>
 	<thead>
 		<tr>
@@ -175,3 +176,15 @@ Fusion API for internal and external stakeholders
 		</tr>
 	</tbody>
 </table>
+
+## Testing 
+
+### Route Endpoint 
+PHPUnit Tests are as for each module as Feature
+Run phpunit on teh following
+
+- tests/AuthRoutesTest.php
+- tests/OrderRoutesTest.php
+- tests/SupplierRoutesTest.php
+- tests/TicketRoutesTest.php
+

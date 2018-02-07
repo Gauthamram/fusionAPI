@@ -8,8 +8,8 @@ class PrintOrder implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name,
-        	ordhead.ORIG_APPROVAL_DATE as approved_date,cgl_tickets_printed.reprint_required, ordhead.status
+        $this->sql = "select rownum,order_number, supplier_name, approved_date, status, otb_eow_date from (select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name,
+        	ordhead.ORIG_APPROVAL_DATE as approved_date, ordhead.status, ordhead.otb_eow_date
 			from ordhead
 			left join cgl_tickets_printed on ordhead.order_no = cgl_tickets_printed.order_no
 			inner join ordloc on ordhead.order_no = ordloc.order_no and ordhead.status = 'A'
@@ -25,28 +25,27 @@ class PrintOrder implements RawSqlInterface
         return $this;
     }
 
-    public function filter($param = 'Y')
-    {
-        if (strtoupper($param) == 'N') {
-            $this->sql .= " where (cgl_tickets_printed.reprint_required = 'Y' or cgl_tickets_printed.reprint_required = 'N')";
-        } else {
-            $this->sql .= " where (cgl_tickets_printed.reprint_required = 'Y')";
-        }
+    public function forAdmin() {
+         $this->sql .= " where (ordhead.otb_eow_date between sysdate AND sysdate + 30 )";
 
         return $this;
     }
 
     public function forSupplier()
     {
-        $this->sql .= " and ordhead.supplier = :supplier or (cgl_tickets_printed.order_no is null and ordhead.app_datetime is null )
-              AND (ordhead.otb_eow_date between sysdate AND sysdate + cgl_tickets_leadtime.leaddays )";
+        $this->sql .= " where ordhead.supplier = :supplier AND (ordhead.otb_eow_date between sysdate AND sysdate + 30 )";
 
         return $this;
     }
 
+    public function filter($param = '') 
+    {
+
+    }
+
     public function getSql()
     {
-        $this->sql .= " order by ordhead.order_no";
+        $this->sql .= " order by approved_date desc) where rownum <= 10";
 
         return $this->sql;
     }

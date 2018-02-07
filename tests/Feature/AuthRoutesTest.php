@@ -18,14 +18,14 @@ class AuthenticationTest extends TestCase
     //Todo delete after having a seperate testing database
     public function deleteUser(){
         
-        $user = User::where('name','name')->delete();
+        $user = User::where('name','test')->delete();
 
         return $user;
     }
 
     public function test_auth_successfull()
     {
-        $response = $this->call('POST', '/api/auth/login', ['email' => 'gthm.ram@gmail.com', 'password' => '123456789']);
+        $response = $this->call('POST', '/api/auth/login', ['email' => 'ram.gopinath@fusionretailbrands.com.au', 'password' => 'Password6']);
         
         $result = json_decode($response->getContent());
         
@@ -70,7 +70,7 @@ class AuthenticationTest extends TestCase
      */
     public function test_auth_user_signup($token)
     {
-        $response = $this->call('POST', '/api/auth/signup?token='.$token, ['name' => 'name', 'password' => 'passowrd', 'email' => 'email@email.com', 'role' => 'admin1', 'role_id' => '0']);
+        $response = $this->call('POST', '/api/auth/signup?token='.$token, ['name' => 'test', 'password' => '123456789', 'email' => 'test@mail.com', 'role' => 'administrator', 'role_id' => '0']);
         
         $content = json_decode($response->getContent());
 
