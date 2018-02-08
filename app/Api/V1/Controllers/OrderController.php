@@ -19,7 +19,6 @@ use App\Fusion\Transformers\OrderDetailTransformer;
 class OrderController extends ApiController
 {
     protected $orderTransformer;
-    public $pagination = false;
 
     /**
      * __construct

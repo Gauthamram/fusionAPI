@@ -46,6 +46,9 @@ $api->version('v1', function ($api) use ($middleware) {
 
         $api->get('suppliers', 'App\Api\V1\Controllers\SupplierController@index');
         $api->get('supplier/search/{term}', 'App\Api\V1\Controllers\SupplierController@search');
+
+        $api->get('item/{item_no}', 'App\Api\V1\Controllers\ItemController@index');
+        $api->get('item/barcode/{barcode}', 'App\Api\V1\Controllers\ItemController@barcode');
     });
 
     // example of protected route
