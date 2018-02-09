@@ -28,32 +28,62 @@ class Carton extends Model
      */
     public function setBarcodeNumberDetails()
     {
-        $quantity = $this->calculateQuantityPerCarton();
-        
-        for ($i=1; $i <= $quantity; $i++) {
-            $this->getCartonSequence();
 
-            $quantity_check = ($this->quantity - ($i * $this->pick_location));
+        $quantity_to_print = $this->getOverPrintQuantity();
 
-            if(($quantity_check >= $this->pick_location) || ($quantity_check == 0)) {
-                $this->piquantity = $this->pick_location ? $this->pick_location : 1;
-            } else {
-                if($quantity_check < 0) {
-                    $this->piquantity = 0 - ($quantity_check);    
-                } else {
-                    $this->piquantity = $quantity_check;
-                } 
+        if ($quantity_to_print > 0) {
+            //calculate quantity per carton
+            $carton_quantity = $this->calculateQuantityPerCarton();
+
+            for ($i=1; $i <= $quantity_to_print; $i++) { 
+                for ($j=1; $j <= $carton_quantity; $j++) {
+                    $this->getCartonSequence();
+
+                    if($this->pick_location) {
+                        $quantity_check = ($this->qty_ordered - ($j * $this->pick_location));
+
+                        if (($quantity_check < $this->pick_location) and ($quantity_check >= 0)){
+                            $this->piquantity = $this->pick_location ? $this->pick_location : 1;    
+                        } else {
+                            $this->piquantity = 0 - ($quantity_check);
+                        }
+                    } else {
+                        $this->piquantity = 1;
+                    }
+
+                    $barcode = ($this->generateCartonBarcodeNumber() + $this->generateProductBarcode());
+                    $details[] = $barcode;
+                }
             }
-
-            $barcode = ($this->generateCartonBarcodeNumber() + $this->generateProductBarcode());
-            $details[] = $barcode;
-        }
+        } else {
+            $details = [];
+        }       
         
         $this->addCarton($details);
 
         return $this;
     }
 
+    /**
+     * get over print quantity based in carton pack or cartonloose label
+     * 
+     */ 
+    public function getOverPrintQuantity()
+    {
+        if (!empty($this->pick_location)) {
+            //calculate how many overprints
+            if (($this->pick_location <= 0) or ($this->quantity < $this->pick_location)){
+                $overprint_quantity = 0;
+            } else {
+                $overprint = ($this->quantity - $this->qty_ordered) / $this->qty_ordered;
+                $overprint_quantity = ceil(($this->quantity / $this->pick_location) * (1 + $overprint));
+            }
+        } else {
+            $overprint_quantity = 1;
+        }
+
+        return $overprint_quantity;
+    }
     /**
      * add carton barcode and number array
      * @param array array of carton number and barcode
@@ -136,7 +166,7 @@ class Carton extends Model
          * for loose and mixed carton details
          */
         if ($this->pick_location) {
-            return ceil(($this->quantity/$this->pick_location));
+            return ceil(($this->qty_ordered/$this->pick_location));
         } else {
             return $this->quantity;
         }

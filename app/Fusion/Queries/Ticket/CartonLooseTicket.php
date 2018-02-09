@@ -11,7 +11,7 @@ class CartonLooseTicket implements RawSqlInterface
         $this->sql = " select ticket_request.Create_DateTime, ticket_request.Order_No as order_number, 
         		ticket_request.Ticket_Type_ID,   ticket_request.Printer_Type, 
               	ticket_request.item, item_master.item_parent as style, sizeDiff.Diff_Desc as item_size, 
-              	colour.diff_desc  as Colour, ticket_request.QTY as quantity, 
+              	colour.diff_desc  as Colour, ticket_request.QTY as quantity, ordloc.qty_ordered, 
               	ordsku.PickUP_LOC as pick_location, 
               	item_master.item_desc as description, ordhead.pickup_date, ordhead.Supplier 
 				from ticket_request 
@@ -27,7 +27,7 @@ class CartonLooseTicket implements RawSqlInterface
                 UNION 
 				select ticket_request.Create_DateTime, ticket_request.Order_No , ticket_request.Ticket_Type_ID,   
 				ticket_request.Printer_Type, ticket_request.item, item.item_parent as style, 
-				sizeDiff.Diff_Desc as item_size, colour.diff_desc  as Colour, ticket_request.QTY as quantity, ordsku.PickUP_LOC , 
+				sizeDiff.Diff_Desc as item_size, colour.diff_desc  as Colour, ticket_request.QTY as quantity, ordloc.qty_ordered, ordsku.PickUP_LOC , 
 				pack.item_desc , ordhead.pickup_date, ordhead.Supplier 
 				from ticket_request 
 				inner join ordhead on ticket_request.order_no = ordhead.order_no 

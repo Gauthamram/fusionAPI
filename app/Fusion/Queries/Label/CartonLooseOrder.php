@@ -10,7 +10,7 @@ class CartonLooseOrder implements RawSqlInterface
     {
         $this->sql = "SELECT  ordhead.order_no as order_number, ordsku.item, item_master.item_parent as style, sizeDiff.Diff_Desc as item_size, colour.diff_desc  as Colour, ordloc.QTY_Ordered as quantity, ordsku.PickUP_LOC as pick_location, item_master.item_desc as description, ordhead.pickup_date, ordhead.Supplier, 'CartonLoose' as carton_type, ordhead.EDI_PO_IND as edi_po_index, ordloc.loc_type as location_type, ordloc.location as location
 			from ordhead 
-			inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
+			inner join ordloc on ordhead.order_no = ordloc.order_no
 			inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item 
 			inner join item_master on item_master.item = ordloc.item and  item_master.pack_ind = 'N' 
 			left join diff_ids colour on item_master.diff_1 = colour.diff_id and colour.diff_type = 'C' 
