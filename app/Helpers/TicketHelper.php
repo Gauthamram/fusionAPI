@@ -132,7 +132,8 @@ class TicketHelper extends Printer
                     'colour' => $orderitem->colour,
                     'item_size' => $orderitem->item_size,
                     'quantity' => $ticket->quantity,
-                    'barcode' => $orderitem->barcode
+                    'barcode' => $orderitem->barcode,
+                    'barcode_type' => Config::get('ticket.barcodetype.'.strlen($orderitem->barcode))
                   );
             }
           }
@@ -171,7 +172,8 @@ class TicketHelper extends Printer
                     'colour' => $orderpack->colour,
                     'item_size' => $orderpack->item_size,
                     'quantity' => $orderpack->quantity,
-                    'barcode' => $orderpack->barcode
+                    'barcode' => $orderpack->barcode,
+                    'barcode_type' => Config::get('ticket.barcodetype.'.strlen($orderitem->barcode))
                   );
               }
           }
@@ -217,7 +219,8 @@ class TicketHelper extends Printer
                     'colour' => $orderpack->colour,
                     'item_size' => $orderpack->item_size,
                     'quantity' => $orderpack->quantity,
-                    'barcode' => $orderpack->barcode
+                    'barcode' => $orderpack->barcode,
+                    'barcode_type' => Config::get('ticket.barcodetype.'.strlen($orderitem->barcode))
                   );
               }
           }

@@ -11,7 +11,7 @@ class CartonPackTicket implements RawSqlInterface
         $this->sql = "select ticket_request.Create_DateTime, ticket_request.Ticket_Type_ID, 
         	ticket_request.Order_No as order_number, ticket_request.Printer_Type, 
           	PackStyle.Style, ordsku.pickup_no as pack_type, ticket_request.item, 
-          	ticket_request.QTY quantity, 
+          	ticket_request.QTY quantity, ordloc.qty_ordered,
           	ordsku.PickUP_LOC as pick_location, 
       		item_master.item_desc as description, Groups.Group_Name, Deps.Dept_Name as department_name, 
       		Class.Class_Name, SubClass.Sub_Name as sub_class_name, ordloc.loc_type as location_type, ordloc.location 

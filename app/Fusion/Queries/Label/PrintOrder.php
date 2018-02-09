@@ -12,7 +12,7 @@ class PrintOrder implements RawSqlInterface
         	ordhead.ORIG_APPROVAL_DATE as approved_date, ordhead.status, ordhead.otb_eow_date
 			from ordhead
 			left join cgl_tickets_printed on ordhead.order_no = cgl_tickets_printed.order_no
-			inner join ordloc on ordhead.order_no = ordloc.order_no and ordhead.status = 'A'
+			inner join ordloc on ordhead.order_no = ordloc.order_no
 			inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
 			inner join item_master on item_master.item = ordloc.item
 			inner join deps on item_master.dept = deps.dept
