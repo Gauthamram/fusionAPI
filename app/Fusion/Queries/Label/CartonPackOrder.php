@@ -14,7 +14,7 @@ class CartonPackOrder implements RawSqlInterface
 			Class.Class_Name, SubClass.Sub_Name as sub_class_name, ordhead.EDI_PO_IND as edi_po_index, 
 			'CartonPack' as carton_type
 			from ordhead
-			inner join ordloc on ordhead.order_no = ordloc.order_no AND ordhead.status = 'A'
+			inner join ordloc on ordhead.order_no = ordloc.order_no 
 			inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
 			inner join item_master on item_master.item = ordloc.item and item_master.pack_ind = 'Y' 
 			and item_master.simple_pack_ind <> 'Y'

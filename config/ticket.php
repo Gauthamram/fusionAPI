@@ -1,8 +1,6 @@
 <?php
 
 return [
-	'filename' => 'Created By Portal',
-	'reprint' => 'N',
 	'supplier_trait' => '9006',
 	'request_default' => [
 		'print_online_ind' => 'Y',
@@ -13,17 +11,17 @@ return [
 		'sticky' => 'STCK',
 		'carton' => 'CTRN'
 	],
-	'sort_type' => [
-		'packandloose' => 'PL',
-		'loose' => 'L'
-	],
 	'packindicator' => [
 		'none' => '0',
 		'transport' => '1',
 		'simple' => '2'
 	],
 	'ssccompanyprefix' => '0049346297',
-	'barcodetype' => 'code128',
+	'barcodetype' => [
+		'12' => 'upca',
+		'13' => 'ean13',
+		'25' => 'code128'
+	],
 	'productindicator' => [
 		'first' => '(400)',
 		'second' => '(02)',

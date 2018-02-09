@@ -6,19 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Fusion\Queries\Item\Item;
 use App\Fusion\Queries\Item\ItemBarcode;
+use App\Fusion\Transformers\itemTransformer;
 use DB;
 
 class ItemController extends ApiController
 {
-   // /**
-   //   * __construct
-   //   * @param $orderTransformer
-   //   * @param $orderdetailTransformer
-   //   */
-   //  public function __construct()
-   //  {
-   //      $this->user = JWTAuth::parseToken()->authenticate();
-   //  }
+   /**
+     * __construct
+     * @param $orderTransformer
+     * @param $orderdetailTransformer
+     */
+    public function __construct(itemTransformer $itemTransformer)
+    {
+        $this->itemTransformer = $itemTransformer;
+    }
 
     /**
      * Returns item detail
@@ -30,8 +31,8 @@ class ItemController extends ApiController
     	$item = new Item();
         $item_query = $item->query()->getSql();
         $items = DB::select($item_query, [':item_number' => $item_no]);
-
-        return $this->respond(['data' => $items]);
+        $data = $this->itemTransformer->transformCollection($items);
+        return $this->respond(['data' => $data]);
     }
 
     /**
