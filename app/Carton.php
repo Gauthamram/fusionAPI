@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Config;
 use Setting;
+use Log;
 
 class Carton extends Model
 {
@@ -29,31 +30,32 @@ class Carton extends Model
     public function setBarcodeNumberDetails()
     {
 
-        $quantity_to_print = $this->getOverPrintQuantity();
+        $quantity_to_print = $this->getPrintQuantity();
+        Log::info('quantity to print - '. $quantity_to_print);
 
         if ($quantity_to_print > 0) {
             //calculate quantity per carton
-            $carton_quantity = $this->calculateQuantityPerCarton();
+            //$carton_quantity = $this->calculateQuantityPerCarton();
 
             for ($i=1; $i <= $quantity_to_print; $i++) { 
-                for ($j=1; $j <= $carton_quantity; $j++) {
-                    $this->getCartonSequence();
+                $this->getCartonSequence();
 
-                    if($this->pick_location) {
-                        $quantity_check = ($this->qty_ordered - ($j * $this->pick_location));
+                if($this->pick_location) {
+                    $quantity_check = ($this->quantity - ($i * $this->pick_location));
 
-                        if (($quantity_check < $this->pick_location) and ($quantity_check >= 0)){
-                            $this->piquantity = $this->pick_location ? $this->pick_location : 1;    
-                        } else {
-                            $this->piquantity = 0 - ($quantity_check);
-                        }
+                    if (($quantity_check < $this->pick_location) and ($quantity_check >= 0)){
+                        $this->piquantity = $this->pick_location ? $this->pick_location : 1;    
+                    } elseif($quantity_check >= $this->pick_location) { 
+                        $this->piquantity = $this->pick_location ? $this->pick_location : 1;
                     } else {
-                        $this->piquantity = 1;
+                        $this->piquantity = $this->pick_location + ($quantity_check);
                     }
-
-                    $barcode = ($this->generateCartonBarcodeNumber() + $this->generateProductBarcode());
-                    $details[] = $barcode;
+                } else {
+                    $this->piquantity = 1;
                 }
+
+                $barcode = ($this->generateCartonBarcodeNumber() + $this->generateProductBarcode());
+                $details[] = $barcode;
             }
         } else {
             $details = [];
@@ -68,21 +70,21 @@ class Carton extends Model
      * get over print quantity based in carton pack or cartonloose label
      * 
      */ 
-    public function getOverPrintQuantity()
+    public function getPrintQuantity()
     {
         if (!empty($this->pick_location)) {
             //calculate how many overprints
             if (($this->pick_location <= 0) or ($this->quantity < $this->pick_location)){
-                $overprint_quantity = 0;
+                $print_quantity = 0;
             } else {
                 $overprint = ($this->quantity - $this->qty_ordered) / $this->qty_ordered;
-                $overprint_quantity = ceil(($this->quantity / $this->pick_location) * (1 + $overprint));
+                $print_quantity = ceil(($this->quantity / $this->pick_location) * (1 + $overprint));
             }
         } else {
-            $overprint_quantity = 1;
+            $print_quantity = $this->quantity;
         }
 
-        return $overprint_quantity;
+        return $print_quantity;
     }
     /**
      * add carton barcode and number array
