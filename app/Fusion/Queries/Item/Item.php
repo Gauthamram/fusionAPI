@@ -18,14 +18,27 @@ class Item implements RawSqlInterface
             LEFT JOIN uda_item_ff srl ON srl.item = im.item and srl.uda_id = 900
             LEFT JOIN uda_item_lov uil ON uil.item = im.item
             INNER JOIN uda_values v ON uil.uda_id = v.uda_id AND uil.uda_value = v.uda_value AND v.uda_id = 8
-            LEFT JOIN item_master br ON br.item_parent = im.item AND br.primary_ref_item_ind = 'Y'
-            WHERE im.item = :item_number";
+            LEFT JOIN item_master br ON br.item_parent = im.item AND br.primary_ref_item_ind = 'Y'";
 
         return $this;
     }
 
     public function filter($param = '')
     {
+        switch (strtolower($param)) {
+            case 'item':
+                $this->sql .= " WHERE im.item = :item_number"; 
+                break;
+            
+            case 'barcode':
+                $this->sql .= " WHERE br.item = :barcode"; 
+                break;
+                  
+            default:
+                $this->sql;
+                break;
+        }
+
         return $this;
     }
 
