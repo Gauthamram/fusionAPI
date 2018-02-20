@@ -15,7 +15,7 @@ class CartonLooseOrder implements RawSqlInterface
 			inner join item_master on item_master.item = ordloc.item and  item_master.pack_ind = 'N' 
 			left join diff_ids colour on item_master.diff_1 = colour.diff_id and colour.diff_type = 'C' 
 			left join diff_ids sizeDiff on item_master.diff_2 = sizeDiff.diff_id and sizeDiff.diff_type = 'S' 
-			where ordhead.order_no = :order_no  and ordloc.QTY_Ordered > 0";
+			where ordhead.order_no = :order_no  and ordloc.QTY_Ordered > 0 and (ordhead.status = 'A' or ordhead.status = 'C')";
 
         return $this;
     }
@@ -43,7 +43,7 @@ class CartonLooseOrder implements RawSqlInterface
 			inner join item_master item on packitem.item = item.item 
 			left join diff_ids colour on item.diff_1 = colour.diff_id and colour.diff_type = 'C' 
 			left join diff_ids sizeDiff on item.diff_2 = sizeDiff.diff_id and sizeDiff.diff_type = 'S' 
-			where ordhead.order_no  = :order_no  and ordloc.QTY_Ordered > 0";
+			where ordhead.order_no  = :order_no  and ordloc.QTY_Ordered > 0 and (ordhead.status = 'A' or ordhead.status = 'C')";
 
         return $this;
     }

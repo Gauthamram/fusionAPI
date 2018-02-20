@@ -56,7 +56,7 @@ class RatioPackOrder implements RawSqlInterface
           	INNER JOIN item_zone_price AUD ON AUD.zone_group_id = AUStoreZone.zone_group_id 
           	AND AUD.zone_id = AUStoreZone.zone_id AND AUD.item = item_master.item
             LEFT JOIN item_zone_price NZD ON NZD.ZONE_GROUP_ID = 1 AND NZD.zone_id = 4 AND NZD.ITEM = item_master.item
-          	WHERE ordhead.order_no = :order_no AND ordloc.qty_ordered > 0
+          	WHERE ordhead.order_no = :order_no AND ordloc.qty_ordered > 0 and (ordhead.status = 'A' or ordhead.status = 'C')
           	ORDER BY Style, Colour_SEQ, Size_SEQ ";
 
         return $this;
