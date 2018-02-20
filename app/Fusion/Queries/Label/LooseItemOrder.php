@@ -16,7 +16,7 @@ class LooseItemOrder implements RawSqlInterface
         	coalesce(stockroomlocator.UDA_TEXT, '0000') AS stockroomlocator, division.div_name as division_name, 
         	coalesce(AUD.UNIT_RETAIL, -1) AS AUD,
             coalesce(NZD.Unit_Retail, -1) AS NZD, ordloc.qty_ordered as quantity, 
-            1 AS Pack_Quantity, ordsku.earliest_ship_date,
+            1 AS pack_quantity, ordsku.earliest_ship_date,
             coalesce(sup_attributes.Pre_Ticket_Ind, 'N') AS Pre_Ticket_Ind, 0 AS SimplePackItemTicketsReq, 
             AUStore.Channel_Id
             FROM ordhead

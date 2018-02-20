@@ -25,7 +25,9 @@ $api->version('v1', function ($api) use ($middleware) {
         $api->get('order/{order_no}/simplepack', 'App\Api\V1\Controllers\OrderController@simplepack');
         $api->get('order/{order_no}/looseitem', 'App\Api\V1\Controllers\OrderController@looseitem');
         
-        //this is only to get listing of carton details for the order - it will return all the list from the databse - not label data
+        $api->get('order/data/{order_no}/{format?}', 'App\Api\V1\Controllers\OrderController@labeldata');
+
+        //this is only to get listing of carton details for the order - it will return all the list from the database - no label data
         $api->post('order/cartonpack', 'App\Api\V1\Controllers\OrderController@cartonpack');
         $api->post('order/cartonloose', 'App\Api\V1\Controllers\OrderController@cartonloose');
 

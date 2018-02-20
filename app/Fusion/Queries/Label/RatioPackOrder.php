@@ -24,7 +24,7 @@ class RatioPackOrder implements RawSqlInterface
         	coalesce(AUD.UNIT_RETAIL, -1) AS AUD, 
         	coalesce(NZD.Unit_Retail, -1) AS NZD, 
         	ordloc.qty_ordered as quantity, 
-        	Packitem.PACK_QTY as Pack_Quantity, 
+        	Packitem.PACK_QTY as pack_quantity, 
         	ordsku.earliest_ship_date, coalesce(sup_attributes.Pre_Ticket_Ind, 'N') AS Pre_Ticket_Ind,
         	0 AS SimplePackItemTicketsReq, AUStore.Channel_Id
             FROM ordhead
