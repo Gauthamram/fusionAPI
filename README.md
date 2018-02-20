@@ -181,7 +181,7 @@ Fusion API for internal and external stakeholders
 
 ### Route Endpoint 
 PHPUnit Tests are as for each module as Feature
-Run phpunit on teh following
+Run phpunit on the following
 
 - tests/AuthRoutesTest.php
 - tests/OrderRoutesTest.php
