@@ -42,8 +42,7 @@ class ItemController extends ApiController
     public function barcode($barcode)
     { 
         $item_query = $this->item->query()->filter('barcode')->getSql();
-
-        $items = DB::select($item_query, [':barcode' => $barcode]);
+        $items = DB::select($item_query, [':barcode' => +$barcode]);
         $data = $this->itemTransformer->transformCollection($items);
         return $this->respond(['data' => $data]);
     }

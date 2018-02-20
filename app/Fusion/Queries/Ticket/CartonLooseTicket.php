@@ -8,7 +8,7 @@ class CartonLooseTicket implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = " select ticket_request.Create_DateTime, ticket_request.Order_No as order_number, 
+        $this->sql = " SELECT ticket_request.Create_DateTime, ticket_request.Order_No as order_number, 
         		ticket_request.Ticket_Type_ID,   ticket_request.Printer_Type, 
               	ticket_request.item, item_master.item_parent as style, sizeDiff.Diff_Desc as item_size, 
               	colour.diff_desc  as Colour, ticket_request.QTY as quantity, ordloc.qty_ordered, 
