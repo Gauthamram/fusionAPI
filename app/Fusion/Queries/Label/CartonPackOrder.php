@@ -25,7 +25,7 @@ class CartonPackOrder implements RawSqlInterface
 			inner join groups on deps.group_no = groups.group_no
 			inner join ( select pack_no, max(item_parent) as Style from packitem group by pack_no ) PackStyle 
 			on ordloc.item = PackStyle.pack_no
-			where ordloc.order_no = :order_no";
+			where ordloc.order_no = :order_no and (ordhead.status = 'A' or ordhead.status = 'C')";
 
         return $this;
     }

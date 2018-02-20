@@ -20,20 +20,21 @@ class PrintOrder implements RawSqlInterface
 			inner join cgl_tickets_leadtime on Groups.Division = cgl_tickets_leadtime.Division
 			inner join sup_traits_matrix on ordhead.supplier = sup_traits_matrix.supplier 
 			and sup_traits_matrix.sup_trait = :supplier_trait
-			inner join sups on sups.supplier = ordhead.supplier";
+			inner join sups on sups.supplier = ordhead.supplier
+            where (ordhead.status = 'A' or ordhead.status = 'C')";
 
         return $this;
     }
 
     public function forAdmin() {
-         $this->sql .= " where (ordhead.otb_eow_date between sysdate AND sysdate + 30 )";
+         $this->sql .= " and (ordhead.otb_eow_date between sysdate AND sysdate + 30 )";
 
         return $this;
     }
 
     public function forSupplier()
     {
-        $this->sql .= " where ordhead.supplier = :supplier AND (ordhead.otb_eow_date between sysdate AND sysdate + 30 )";
+        $this->sql .= " and ordhead.supplier = :supplier AND (ordhead.otb_eow_date between sysdate AND sysdate + 30 )";
 
         return $this;
     }

@@ -5,7 +5,6 @@ namespace App\Api\V1\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Fusion\Queries\Item\Item;
-use App\Fusion\Queries\Item\ItemBarcode;
 use App\Fusion\Transformers\itemTransformer;
 use DB;
 
@@ -19,6 +18,7 @@ class ItemController extends ApiController
     public function __construct(itemTransformer $itemTransformer)
     {
         $this->itemTransformer = $itemTransformer;
+        $this->item = new Item();
     }
 
     /**
@@ -28,8 +28,7 @@ class ItemController extends ApiController
      */
     public function index($item_no)
     { 
-    	$item = new Item();
-        $item_query = $item->query()->getSql();
+        $item_query = $this->item->query()->filter('item')->getSql();
         $items = DB::select($item_query, [':item_number' => $item_no]);
         $data = $this->itemTransformer->transformCollection($items);
         return $this->respond(['data' => $data]);
@@ -42,10 +41,9 @@ class ItemController extends ApiController
      */
     public function barcode($barcode)
     { 
-    	$item = new ItemBarcode();
-        $item_query = $item->query()->getSql();
-        $items = DB::select($item_query, [':barcode' => $barcode]);
-
-        return $this->respond(['data' => $items]);
+        $item_query = $this->item->query()->filter('barcode')->getSql();
+        $items = DB::select($item_query, [':barcode' => +$barcode]);
+        $data = $this->itemTransformer->transformCollection($items);
+        return $this->respond(['data' => $data]);
     }
 }

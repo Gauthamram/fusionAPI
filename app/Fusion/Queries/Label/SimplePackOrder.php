@@ -55,7 +55,7 @@ class SimplePackOrder implements RawSqlInterface
           	AND AUD.zone_id = AUStoreZone.zone_id
             AND AUD.item = item_master.item
             LEFT JOIN item_zone_price NZD ON NZD.ZONE_GROUP_ID = 1 AND NZD.zone_id = 4 AND NZD.ITEM = item_master.item
-          	WHERE ordhead.order_no = :order_no
+          	WHERE ordhead.order_no = :order_no and (ordhead.status = 'A' or ordhead.status = 'C')
           	ORDER BY Style, Colour_SEQ, Size_SEQ ";
 
         return $this;
