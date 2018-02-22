@@ -241,8 +241,7 @@ class LabelHelper extends Printer
     public function orderData($order_no, $format)
     {
         $supplier = Order::findOrFail($order_no)->supplier()->first();
-
-        // $address = $supplier::findOrFail($supplier->supplier)->address();
+        $address = $supplier->address()->country()->first();
         
         $orderdetails['ordernumber'] = $order_no;
         
@@ -252,7 +251,13 @@ class LabelHelper extends Printer
         $supplier_details['contact_phone'] = $supplier->contact_phone;
         $supplier_details['contact_fax'] = $supplier->contact_fax;
         $supplier_details['contact_email'] = $supplier->contact_email;
-        
+        $supplier_details['address1'] = $address->add_1;
+        $supplier_details['address2'] = $address->add_2;
+        $supplier_details['address3'] = $address->add_3;
+        $supplier_details['city'] = $address->city;
+        $supplier_details['state'] = $address->state;
+        $supplier_details['country'] = $address->country_desc;
+
         $data['orderdetails'] = $orderdetails;
         $data['supplier'] = $supplier_details;
 
