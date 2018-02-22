@@ -15,7 +15,7 @@ class OrderDetail implements RawSqlInterface
           	inner join ordloc on ordhead.order_no = ordloc.order_no 
           	inner join ordsku on ordloc.order_no = ordsku.order_no and ordloc.item = ordsku.item
           	inner join item_master on item_master.item = ordloc.item
-          	where ordhead.order_no = :order_no";
+          	where ordhead.order_no = :order_no and (ordhead.status = 'A' or ordhead.status = 'C')";
 
         return $this;
     }

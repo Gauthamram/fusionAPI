@@ -18,21 +18,21 @@ class Sticky extends Model
         $pricing = false;
 
         //set simplepack flag based on item type
-        if ($this->type == config::set('ticket.looseitem')) {
+        if ($this->type == config::get('ticket.simplepack')) {
             $simplepack = true;
             $this->barcode = $this->packbarcode;
-            $this->stockroomlocator = "PACK ".$this->pack_qty;
+            $this->stockroomlocator = "PACK ".$this->pack_quantity;
         }
 
         //Quantity calculation based on simplepack flag
         if ($simplepack) {
-            $return_value = $this->orderqty;
+            $return_value = $this->quantity;
         } else {
-            $return_value = ($this->packqty * $this->orderqty * (int) $this->GetDivisionMultiplier());
+            $return_value = ($this->pack_quantity * $this->quantity * (int) $this->GetDivisionMultiplier());
 
-            if (strtolower($this->div_name) == 'footwear' || strtolower($this->div_name) == 'accessories') {
-                $pricing = true;
-            }
+            // if (strtolower($this->div_name) == 'footwear' || strtolower($this->div_name) == 'accessories') {
+            //     $pricing = true;
+            // }
         }
 
         //pricing aud
@@ -47,7 +47,7 @@ class Sticky extends Model
             }
         }
 
-        $this->printquantity = ceil((int) $return_value * (100 + (int) config::set('ticket.overprintpercentage'))/100);
+        $this->printquantity = ceil((int) $return_value * (100 + (int) config::get('ticket.overprintpercentage'))/100);
     }
 
     /**
@@ -55,7 +55,7 @@ class Sticky extends Model
      */
     public function getDivisionMultiplier()
     {
-        switch ($this->division) {
+        switch (strtolower($this->division)) {
             case 'accessories':
                 return 2;
             break;

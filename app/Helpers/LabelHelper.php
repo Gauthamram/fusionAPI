@@ -2,12 +2,14 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Facades\DB;
 use Config;
 use Cache;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use App\TipsTicketPrinted;
+use App\Order;
+use App\Supplier;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Fusion\Queries\Label\PrintOrder;
 use App\Fusion\Queries\Label\SearchOrder;
 use App\Fusion\Queries\Label\OrderDetail;
@@ -18,16 +20,16 @@ use App\Fusion\Queries\Label\LooseItemOrder;
 use App\Fusion\Queries\Label\RatioPackOrder;
 use App\Fusion\Queries\Label\SimplePackOrder;
 
+
 class LabelHelper extends Printer
 {
-
     /**
      * Returns OrderCartonpack details of the order
      * @param int  id of the order
      * @param int  item number
      * @param boolean  to get list of db results
      */
-    public function orderCartonpack($order_no, $item_number, $listing)
+    public function orderCartonpack($order_no, $item_number = '', $listing = false)
     {
         $cartonpack_order = new CartonPackOrder();
 
@@ -42,8 +44,33 @@ class LabelHelper extends Printer
         if ($listing || (empty($cartonpacks))) {
             return $cartonpacks;
         } else {
-            $cartons = $this->cartonDetails($cartonpacks);
-            return $cartons;
+            $packcartons = $this->cartonDetails($cartonpacks);
+
+            foreach ($packcartons as $pack) {
+            
+                $cartonpackdetail['cartonpackdetail'] = array(
+                    'style' => $pack->style,
+                    'packnumber' => $pack->item,
+                    'packtype' => $pack->pack_type,
+                    'description' => $pack->description,
+                    'group' => $pack->group_name,
+                    'dept' => $pack->department_name,
+                    'class' => $pack->class_name,
+                    'subclass' => $pack->sub_class_name
+                    );
+
+                foreach ($pack->carton_details as $barcode) {
+                    $cartonpackdetail['cartonpackdetail']['barcodes'][]['barcode'] = [
+                        'productindicatorbarcode' => $barcode['pibarcode'],
+                        'productindicator' => $barcode['pinumber'],
+                        'cartonbarcode' => $barcode['barcode'],
+                        'carton' => $barcode['number']
+                    ]; 
+                }   
+                $cartonpackdetails[] = $cartonpackdetail;         
+            }
+
+            return $cartonpackdetails;
         }
     }
 
@@ -53,7 +80,7 @@ class LabelHelper extends Printer
      * @param int  item number
      * @param boolean to get list of db results
      */
-    public function orderCartonLoose($order_no, $item_number, $listing)
+    public function orderCartonLoose($order_no, $item_number = '', $listing = false)
     {
         $cartonloose_order = new CartonLooseOrder();
 
@@ -69,8 +96,31 @@ class LabelHelper extends Printer
         if ($listing || (empty($cartonloose))) {
             return $cartonloose;
         } else {
-            $cartons = $this->cartonDetails($cartonloose);
-            return $cartons;
+            $loosecartons = $this->cartonDetails($cartonloose);
+
+            foreach ($loosecartons as $loose) {
+                $cartonloosedetail['cartonloosedetail'] = array(
+                    'style' => $loose->style,
+                    'itemnumber' => $loose->item,
+                    'description' => $loose->description,
+                    'colour' => $loose->colour,
+                    'size' => $loose->item_size,
+                    'cartonquantity' => $loose->piquantity,
+                    'printquantity' => 1,
+                );
+
+               foreach ($loose->carton_details as $barcode) {
+                    $cartonloosedetail['cartonloosedetail']['barcodes'][]['barcode'] = [
+                        'productindicatorbarcode' => $barcode['pibarcode'],
+                        'productindicator' => $barcode['pinumber'],
+                        'cartonbarcode' => $barcode['barcode'],
+                        'carton' => $barcode['number']
+                    ]; 
+                }
+                $cartonloosedetails[] = $cartonloosedetail;  
+            }
+
+            return $cartonloosedetails;
         }
     }
 
@@ -95,13 +145,29 @@ class LabelHelper extends Printer
                 break;
         }
 
+        $stickydetail = [];
+        
         $stickies_query = $sticky_order->query()->getSql();
 
         $stickies = DB::select($stickies_query, [':order_no'=>$order_no]);
 
         $stickydetails = $this->stickyDetails($stickies);
+
+        foreach ($stickydetails as $detail) {
+            $stickydetail[]['stickydetail'] = [
+                'style' => $detail->style,
+                'itemnumber' => $detail->item,
+                'description' => $detail->description,
+                'colour' => $detail->colour,
+                'size' => $detail->item_size,
+                'stockroomlocator' => $detail->stockroomlocator,
+                'itembarcode' => $detail->barcode,
+                'itembarcodetype' => $detail->barcode_type,
+                'printquantity' => $detail->printquantity
+            ]; 
+        }
       
-        return $stickydetails;
+        return $stickydetail;
     }
 
     /**
@@ -167,5 +233,42 @@ class LabelHelper extends Printer
         $orderdetails = DB::select($orderdetails_query, [':order_no'=>$order_no]);
 
         return $orderdetails;
+    }
+
+    /**
+     *Returns order label data as requested format
+     */
+    public function orderData($order_no, $format)
+    {
+        $supplier = Order::findOrFail($order_no)->supplier()->first();
+
+        // $address = $supplier::findOrFail($supplier->supplier)->address();
+        
+        $orderdetails['ordernumber'] = $order_no;
+        
+        $supplier_details['id'] = $supplier->supplier;
+        $supplier_details['name'] = $supplier->sup_name;
+        $supplier_details['contact_name'] = $supplier->contact_name;
+        $supplier_details['contact_phone'] = $supplier->contact_phone;
+        $supplier_details['contact_fax'] = $supplier->contact_fax;
+        $supplier_details['contact_email'] = $supplier->contact_email;
+        
+        $data['orderdetails'] = $orderdetails;
+        $data['supplier'] = $supplier_details;
+
+        $data['cartonpackdetails'] = $this->orderCartonpack($order_no);
+          
+        $data['cartonloosedetails'] = $this->orderCartonLoose($order_no);
+
+        $data['stickydetails'][] = $this->orderSticky($order_no, 'RatioPack');      
+      
+        $data['stickydetails'][] = $this->orderSticky($order_no, 'LooseItem');
+
+        $data['stickydetails'][] = $this->orderSticky($order_no, 'SimplePack');
+
+        $this->dataformat->setFormatter($format);
+
+        $return_data = $this->dataformat->format($data);
+        return $return_data;
     }
 }

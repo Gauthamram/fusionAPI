@@ -19,6 +19,8 @@ class SupplierDetail implements RawSqlInterface
 
     public function filter($param = '')
     {
+        $this->sql .= " WHERE sups.supplier = :supplierid";
+
         return $this;
     }
 

@@ -174,6 +174,18 @@ Fusion API for internal and external stakeholders
 			<td></td>
 			<td>Returns the supplier details for based on the search term.</td>
 		</tr>
+		<tr>
+			<td>api/item/{item_no}</td>
+			<td>GET</td>
+			<td></td>
+			<td>Returns item details.</td>
+		</tr>
+		<tr>
+			<td>api/item/barcode/{barcode}</td>
+			<td>GET</td>
+			<td></td>
+			<td>Returns item details by barcode value of the item.</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -181,7 +193,7 @@ Fusion API for internal and external stakeholders
 
 ### Route Endpoint 
 PHPUnit Tests are as for each module as Feature
-Run phpunit on teh following
+Run phpunit on the following
 
 - tests/AuthRoutesTest.php
 - tests/OrderRoutesTest.php

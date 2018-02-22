@@ -12,12 +12,14 @@ use Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use JWTAuth;
+use App\Fusion\Formatter\DataFormat;
 
 class Printer
 {
     public function __construct()
     {
         $this->user = JWTAuth::parseToken()->authenticate();
+        $this->dataformat = New DataFormat();
     }
 
     /**
@@ -120,16 +122,16 @@ class Printer
      */
     public function ediCheck($order_no)
     {
-        if ($cache_value = Cache::get("'".$order_no."-isEDI", false)) {
+        if ($cache_value = Cache::get("'".$order_no."-isNotEDI", false)) {
             return $cache_value;
         } else {
             $order = Order::find($order_no);
         }
         if ($order->edi_po_ind == config::get('ticket.edi')) {
-            Cache::put("'".$order_no."-isEDI", true, 60);
+            Cache::put("'".$order_no."-isNotEDI", true, 60);
             return true;
         } else {
-            Cache::put("'".$order_no."-isEDI", false, 60);
+            Cache::put("'".$order_no."-isNotEDI", false, 60);
             return false;
         }
     }

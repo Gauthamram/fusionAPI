@@ -70,7 +70,7 @@ class OrderController extends ApiController
                 $data = $this->orderdetailTransformer->transformCollection($orders);
                 return $this->respond(['data' => $data]);
             } else {
-                return $this->respondForbidden('Forbidden from performing this action');
+                return $this->respondForbidden('Access Denied');
             }
         } else {
             return $this->respondNotFound('Order Not Found');
@@ -84,7 +84,7 @@ class OrderController extends ApiController
      */
     public function cartonpack(Request $request, $order_no = '', $item_number = '', $listing = false)
     {
-        //if it is post we should return db result by setting listing flag to true else return label data
+        //if post return list of cartonpack items else return label data
         if ($request->isMethod('post')) {
             $listing = true;
             $order_no = $request->order_no;
@@ -103,7 +103,7 @@ class OrderController extends ApiController
                     return $this->respondPreConditionFailed('EDI Order check failed');
                 }
             } else {
-                return $this->respondForbidden('Forbidden from performing this action');
+                return $this->respondForbidden('Access Denied');
             }
         } else {
             return $this->respondNotFound('Order Not Found');
@@ -117,7 +117,7 @@ class OrderController extends ApiController
      */
     public function cartonloose(Request $request, $order_no = '', $item_number = '', $listing = false)
     {
-        //if it is post we should return db result by setting listing flag to true else return label data
+        //if post method return cartonloose list of items else label data
         if ($request->isMethod('post')) {
             $listing = true;
             $order_no = $request->order_no;
@@ -136,7 +136,7 @@ class OrderController extends ApiController
                     return $this->respondPreConditionFailed('EDI Order check failed');
                 }
             } else {
-                return $this->respondForbidden('Forbidden from performing this action');
+                return $this->respondForbidden('Access Denied');
             }
         } else {
             return $this->respondNotFound('Order Not Found');
@@ -158,7 +158,7 @@ class OrderController extends ApiController
 
                 return $this->respond(['data' => $response]);
             } else {
-                return $this->respondForbidden('Forbidden from performing this action');
+                return $this->respondForbidden('Access Denied');
             }
         } else {
             return $this->respondNotFound('Order Not Found');
@@ -180,7 +180,7 @@ class OrderController extends ApiController
 
                 return $this->respond(['data' => $response]);
             } else {
-                return $this->respondForbidden('Forbidden from performing this action');
+                return $this->respondForbidden('Access Denied');
             }
         } else {
             return $this->respondNotFound('Order Not Found');
@@ -202,7 +202,7 @@ class OrderController extends ApiController
 
                 return $this->respond(['data' => $response]);
             } else {
-                return $this->respondForbidden('Forbidden from performing this action');
+                return $this->respondForbidden('Access Denied');
             }
         } else {
             return $this->respondNotFound('Order Not Found');
@@ -224,10 +224,34 @@ class OrderController extends ApiController
 
                 return $this->respond(['data' => $response]);
             } else {
-                return $this->respondForbidden('Forbidden from performing this action');
+                return $this->respondForbidden('Access Denied');
             }
         } else {
             return $this->respondNotFound('Order Not Found');
         }
     }
+
+    /**
+     * Return Order Label Data
+     * @param  $order_no
+     * @return
+     */
+    public function labeldata($order_no, $format = 'json')
+    {
+        if ($order = $this->labelHelper->orderCheck($order_no)) {
+            if (($order->supplier == $this->user->getRoleId()) || ($this->user->isAdmin()) || ($this->user->isWarehouse())) {
+                if ($this->labelHelper->ediCheck($order_no)) {
+                        $response = $this->labelHelper->orderData($order_no, $format);
+                        Log::info('Order label data retrieved by user  : '.$this->user->email);
+                        return $response;
+                    } else {
+                        return $this->respondForbidden('Access Denied');
+                    }
+                }    
+        } else {
+            return $this->respondNotFound('Order Not Found');
+        }
+    }
+
+
 }
