@@ -244,10 +244,12 @@ class OrderController extends ApiController
                         $response = $this->labelHelper->orderData($order_no, $format);
                         Log::info('Order label data retrieved by user  : '.$this->user->email);
                         return $response;
-                    } else {
-                        return $this->respondForbidden('Access Denied');
-                    }
-                }    
+                } else {
+                    return $this->respondForbidden('EDI Order detected, Label data cannot be generated for an EDI Order.');
+                }
+            } else {
+                return $this->respondForbidden('Access Denied.');
+            }   
         } else {
             return $this->respondNotFound('Order Not Found');
         }
