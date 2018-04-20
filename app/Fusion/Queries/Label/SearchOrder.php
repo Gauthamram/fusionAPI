@@ -8,10 +8,10 @@ class SearchOrder implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = "select distinct ordhead.order_no as order_number, sups.sup_name as supplier_name, 
-        		ordhead.ORIG_APPROVAL_DATE as approved_date, ordhead.status
+        $this->sql = "SELECT distinct ordhead.order_no as order_number, sups.sup_name as supplier_name,
+        		datetime(ordhead.ORIG_APPROVAL_DATE, 'unixepoch', 'localtime') as approved_date, ordhead.status
               	from ordhead
-    	  		inner join ordloc on ordhead.order_no = ordloc.order_no 
+    	  		inner join ordloc on ordhead.order_no = ordloc.order_no
                 inner join sups on sups.supplier = ordhead.supplier";
 
         return $this;

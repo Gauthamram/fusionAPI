@@ -8,10 +8,11 @@ class Item implements RawSqlInterface
 {
     public function query()
     {
-        $this->sql = "SELECT  distinct im.item_parent AS productnumber, im.item as item_number, im.short_desc, 
-        	sz.diff_desc AS item_size, cl.diff_desc AS colour, 
+        $this->sql = "SELECT  distinct im.item_parent AS productnumber, im.item as item_number, im.short_desc,
+        	sz.diff_desc AS item_size, cl.diff_desc AS colour,
             1 AS quantity, srl.uda_text as stockroomlocator, v.uda_value_desc  AS brand, br.item AS barcode
             FROM  item_master im
+            INNER JOIN ordsku os ON os.item = im.item
             LEFT JOIN diff_ids sz ON im.diff_2 = sz.diff_id and sz.diff_type = 'S'
             LEFT JOIN diff_ids cl ON im.diff_1 = cl.diff_id and cl.diff_type = 'C'
             LEFT JOIN uda_item_ff srl ON srl.item = im.item and srl.uda_id = 900
@@ -26,13 +27,13 @@ class Item implements RawSqlInterface
     {
         switch (strtolower($param)) {
             case 'item':
-                $this->sql .= " WHERE im.item = :item_number"; 
+                $this->sql .= " WHERE im.item = :item_number";
                 break;
-            
+
             case 'barcode':
-                $this->sql .= " WHERE br.item = :barcode"; 
+                $this->sql .= " WHERE br.item = :barcode";
                 break;
-                  
+
             default:
                 $this->sql;
                 break;

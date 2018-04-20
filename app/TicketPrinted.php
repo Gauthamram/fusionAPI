@@ -11,7 +11,7 @@ class TicketPrinted extends Model
      * [$table name]
      * @var string
      */
-    protected $table = 'cgl_tickets_printed';
+    protected $table = 'tickets_printed';
 
     /**
      * [$primaryKey description]
@@ -30,7 +30,7 @@ class TicketPrinted extends Model
     protected $fillable = [
         'order_no', 'createdate', 'reprint_required','filename','sticky','swing','packcartons','loosesimplecartons','mixedcartons','ticketrequestid'
     ];
-    
+
     /**
      * [order that has tickets]
      * @return [type] [description]
@@ -50,7 +50,7 @@ class TicketPrinted extends Model
     {
         $today = new Carbon();
         $start = $today->subMonth()->startOfMonth()->format('Y-m-d');
-        
+
         $end = $today->addMonths(2)->format('Y-m-d');
         return $query->where('createdate', '>=', $start)->where('createdate', '<=', $end);
     }

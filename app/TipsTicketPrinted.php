@@ -11,7 +11,7 @@ class TipsTicketPrinted extends Model
      * [$table name]
      * @var string
      */
-    protected $table = 'cgl_tickets_tips_printed';
+    protected $table = 'tickets_tips_printed';
 
 
     //turn off timestamp columns
@@ -25,7 +25,7 @@ class TipsTicketPrinted extends Model
     protected $fillable = [
         'order_no', 'createdate','filename','ticketype','quantity'
     ];
-    
+
     /**
      * [order that has tickets]
      * @return [type] [description]
@@ -45,7 +45,7 @@ class TipsTicketPrinted extends Model
     {
         $today = new Carbon();
         $start = $today->subMonth()->startOfMonth()->format('Y-m-d');
-        
+
         $end = $today->addMonths(2)->format('Y-m-d');
         return $query->where('createdate', '>=', $start)->where('createdate', '<=', $end);
     }
